@@ -16,6 +16,18 @@
 <link rel="stylesheet" href="tooplate-2167-orbital-style.css">
 
 <style>
+  /* 階段主題顏色變數定義 */
+  :root {
+    --p1-color: #0088ff;
+    --p2-color: #e62429;
+    --p3-color: #9b51e0;
+    --p4-color: #ff6b00;
+    --p5-color: #00d2ff;
+    --p6-color: #27ae60;
+    --p7-color: #ff007f;
+    --gold-glow: #ffd700;
+  }
+
   /* 多頁切換系統與卡片樣式 */
   .page-view {
     display: none;
@@ -93,23 +105,72 @@
     gap: 20px;
     margin-top: 16px;
   }
+
+  /* 2. 微互動懸浮效果 */
   .mcu-card {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 14px;
     padding: 20px;
     backdrop-filter: blur(8px);
-    transition: transform 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     cursor: pointer;
+    position: relative;
   }
   .mcu-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(6, 182, 212, 0.5);
-    box-shadow: 0 8px 24px rgba(6, 182, 212, 0.2);
+    transform: translateY(-8px) scale(1.02);
   }
+
+  /* 1. 各階段對應卡片 Hover 顏色懸浮光暈 */
+  #page-phase1 .mcu-card:hover { border-color: var(--p1-color); box-shadow: 0 8px 25px rgba(0, 136, 255, 0.35); }
+  #page-phase2 .mcu-card:hover { border-color: var(--p2-color); box-shadow: 0 8px 25px rgba(230, 36, 41, 0.35); }
+  #page-phase3 .mcu-card:hover { border-color: var(--p3-color); box-shadow: 0 8px 25px rgba(155, 81, 224, 0.35); }
+  #page-phase4 .mcu-card:hover { border-color: var(--p4-color); box-shadow: 0 8px 25px rgba(255, 107, 0, 0.35); }
+  #page-phase5 .mcu-card:hover { border-color: var(--p5-color); box-shadow: 0 8px 25px rgba(0, 210, 255, 0.35); }
+  #page-phase6 .mcu-card:hover { border-color: var(--p6-color); box-shadow: 0 8px 25px rgba(39, 174, 96, 0.35); }
+  #page-phase7 .mcu-card:hover { border-color: var(--p7-color); box-shadow: 0 8px 25px rgba(255, 0, 127, 0.35); }
+
+  /* 3. 5分作品黃金呼吸光暈特效 */
+  @keyframes goldPulsing {
+    0% {
+      border-color: rgba(255, 215, 0, 0.5);
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.3), inset 0 0 10px rgba(255, 215, 0, 0.1);
+    }
+    50% {
+      border-color: rgba(255, 215, 0, 1);
+      box-shadow: 0 0 28px rgba(255, 215, 0, 0.85), inset 0 0 18px rgba(255, 215, 0, 0.25);
+    }
+    100% {
+      border-color: rgba(255, 215, 0, 0.5);
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.3), inset 0 0 10px rgba(255, 215, 0, 0.1);
+    }
+  }
+  .mcu-card.gold-star-5 {
+    animation: goldPulsing 2.5s infinite ease-in-out;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.08) 0%, rgba(13, 14, 21, 0.8) 100%);
+  }
+  .mcu-card.gold-star-5:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 0 35px rgba(255, 215, 0, 1);
+  }
+  .gold-badge {
+    position: absolute;
+    top: -10px;
+    right: 14px;
+    background: linear-gradient(135deg, #ffd700, #b8860b);
+    color: #000;
+    font-weight: 700;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 3px 10px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.6);
+    letter-spacing: 0.5px;
+  }
+
   .mcu-card-header {
     display: flex;
     justify-content: space-between;
@@ -123,21 +184,26 @@
     color: var(--white);
     line-height: 1.3;
   }
+
+  /* 1. 各階段標籤專屬顏色 */
   .mcu-badge {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     padding: 3px 8px;
     border-radius: 20px;
-    background: rgba(139, 92, 246, 0.2);
-    border: 1px solid rgba(139, 92, 246, 0.4);
-    color: var(--violet);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--white);
     white-space: nowrap;
   }
-  .mcu-badge.status-done {
-    background: rgba(6, 182, 212, 0.15);
-    border-color: rgba(6, 182, 212, 0.4);
-    color: var(--cyan);
-  }
+  #page-phase1 .mcu-badge.status-done { background: rgba(0, 136, 255, 0.15); border-color: var(--p1-color); color: var(--p1-color); }
+  #page-phase2 .mcu-badge.status-done { background: rgba(230, 36, 41, 0.15); border-color: var(--p2-color); color: var(--p2-color); }
+  #page-phase3 .mcu-badge.status-done { background: rgba(155, 81, 224, 0.15); border-color: var(--p3-color); color: var(--p3-color); }
+  #page-phase4 .mcu-badge.status-done { background: rgba(255, 107, 0, 0.15); border-color: var(--p4-color); color: var(--p4-color); }
+  #page-phase5 .mcu-badge.status-done { background: rgba(0, 210, 255, 0.15); border-color: var(--p5-color); color: var(--p5-color); }
+  #page-phase6 .mcu-badge.status-done { background: rgba(39, 174, 96, 0.15); border-color: var(--p6-color); color: var(--p6-color); }
+  #page-phase7 .mcu-badge.status-done { background: rgba(255, 0, 127, 0.15); border-color: var(--p7-color); color: var(--p7-color); }
+
   .mcu-meta {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
@@ -373,6 +439,129 @@
     margin-bottom: 8px;
   }
 
+  /* 時間軸分頁專屬樣式 */
+  .timeline-mode-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+  .timeline-toggle-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--faint);
+    padding: 10px 22px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .timeline-toggle-btn.active {
+    background: rgba(6, 182, 212, 0.2);
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+  }
+
+  .timeline-container {
+    position: relative;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 20px 0;
+  }
+  .timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--p1-color), var(--p3-color), var(--p5-color), var(--p7-color));
+  }
+  @media (min-width: 768px) {
+    .timeline-container::before {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+  @media (min-width: 768px) {
+    .timeline-item {
+      width: 50%;
+    }
+    .timeline-item:nth-child(odd) {
+      padding-right: 40px;
+      align-self: flex-start;
+      text-align: right;
+    }
+    .timeline-item:nth-child(even) {
+      padding-left: 40px;
+      align-self: flex-end;
+      text-align: left;
+    }
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: 19px;
+    top: 18px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #0d0e15;
+    border: 3px solid var(--cyan);
+    box-shadow: 0 0 10px var(--cyan);
+    z-index: 2;
+  }
+  @media (min-width: 768px) {
+    .timeline-item:nth-child(odd) .timeline-dot {
+      left: auto;
+      right: -10px;
+    }
+    .timeline-item:nth-child(even) .timeline-dot {
+      left: -10px;
+    }
+  }
+
+  .timeline-content-box {
+    margin-left: 60px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 18px 22px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .timeline-content-box:hover {
+    transform: translateY(-4px);
+    border-color: var(--cyan);
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.25);
+  }
+  @media (min-width: 768px) {
+    .timeline-item:nth-child(odd) .timeline-content-box {
+      margin-left: 0;
+    }
+    .timeline-item:nth-child(even) .timeline-content-box {
+      margin-left: 0;
+    }
+  }
+
+  .timeline-time-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--cyan);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
   body.in-subpage .hero {
     display: none;
   }
@@ -395,6 +584,7 @@
     <li><a href="javascript:void(0)" onclick="switchPage('phase5')">第五階段</a></li>
     <li><a href="javascript:void(0)" onclick="switchPage('phase6')">第六階段</a></li>
     <li><a href="javascript:void(0)" onclick="switchPage('phase7')">第七階段與未知</a></li>
+    <li><a href="javascript:void(0)" onclick="switchPage('timeline')" style="color:var(--cyan); font-weight:600;">時間軸</a></li>
   </ul>
   <button class="menu-toggle" aria-label="打開選單" aria-expanded="false">
     <span></span><span></span><span></span>
@@ -409,6 +599,7 @@
   <a href="javascript:void(0)" onclick="switchPage('phase5')">第五階段</a>
   <a href="javascript:void(0)" onclick="switchPage('phase6')">第六階段</a>
   <a href="javascript:void(0)" onclick="switchPage('phase7')">第七階段與未知</a>
+  <a href="javascript:void(0)" onclick="switchPage('timeline')">時間軸</a>
 </div>
 
 <!-- 首頁 3D 旋轉環狀區塊 -->
@@ -607,6 +798,23 @@ phase7 以後為變種人傳奇。</p>
 <main class="page-view" id="page-phase6"></main>
 <main class="page-view" id="page-phase7"></main>
 
+<!-- 時間軸分頁容器 -->
+<main class="page-view" id="page-timeline">
+  <button class="back-btn" onclick="switchPage('hero')">← 返回 3D 旋轉首頁</button>
+  <div class="section-head">
+    <div class="eyebrow">// MCU CHRONOLOGY</div>
+    <h2>漫威影視作品時間軸 ⏳</h2>
+  </div>
+
+  <!-- 模式切換按鈕 -->
+  <div class="timeline-mode-toggle">
+    <button class="timeline-toggle-btn active" id="btn-release-order" onclick="toggleTimelineMode('release')">🎬 依發行上映順序</button>
+    <button class="timeline-toggle-btn" id="btn-story-order" onclick="toggleTimelineMode('story')">🌌 依 MCU 故事內時間軸</button>
+  </div>
+
+  <div class="timeline-container" id="timeline-list"></div>
+</main>
+
 <!-- 電影/影集詳細資料彈出視窗 (Modal) -->
 <div class="modal-overlay" id="detail-modal" onclick="closeModal(event)">
   <div class="modal-content" onclick="event.stopPropagation()">
@@ -681,96 +889,97 @@ phase7 以後為變種人傳奇。</p>
 <script src="tooplate-2167-orbital-script.js"></script>
 
 <script>
-  // 69 部作品完整資料庫 (已完全同步您最新的 CSV 內容)
+  // 69 部作品完整資料庫 (已完全同步您最新的 CSV 與 YT 連結)
   const mcuData = {
     "phase1": [
-      {"id": 1, "title": "鋼鐵人", "type": "電影", "date": "2008/5/2", "status": "已上映", "box_office": "$585,796,247", "desc": "描述億萬富翁兼工程師東尼史塔克在遭遇綁架危機後打造高科技裝甲逃出，後續不斷測試，增強與優化裝甲的性能，最後成為鋼鐵人的過程。", "review": "從原本被綁架到打造戰衣，從原本的軍火商到成為拯救居民的英雄，角色成長曲線不錯。RDJ 風趣的演活了這個角色，鋼鐵人這部片就此開啟了 MCU。", "rating": 4.5, "image": "images/mcu_1.jpg", "characters": ["鋼鐵人", "小辣椒", "羅德上校", "尼克福瑞"], "trailer": "8ugaeA-nMTc"},
-      {"id": 2, "title": "無敵浩克", "type": "電影", "date": "2008/6/13", "status": "已上映", "box_office": "$264,770,996", "desc": "科學家布魯斯班納因實驗受到伽瑪輻射的影響，體內產生了另一個怪物，也就是浩克，因此班納博士努力尋找解除伽瑪輻射影響的方法，同時躲避政府追捕，最後幫助美國政府對抗同樣是伽瑪輻射產物的惡煞。", "review": "浩克 CGI 呈現最兇猛最有威脅的一次，不論是與軍方的衝突還是最終大戰，都能感受到毀滅性的破壞力。", "rating": 3.8, "image": "images/mcu_2.jpg", "characters": ["浩克", "惡煞", "羅斯將軍"], "trailer": "Dtp_bO8H29Y"},
-      {"id": 3, "title": "鋼鐵人2", "type": "電影", "date": "2010/5/7", "status": "已上映", "box_office": "$623,933,331", "desc": "東尼史塔克公開鋼鐵人身分後面臨政府壓力、健康問題，以及與史塔克家族過去有關的新敵人鞭狂。羅德上校搶走並穿上了鋼鐵人製作的銀色機甲，經改造後成為戰爭機器，並與鋼鐵人一同對付鞭狂和其機甲大軍。", "review": "Tony 以酗酒開趴放生自我的狀態下要面對敵人，雖然有許多機甲出現，但反派沒什麼記憶性，主要還是為了帶出羅德的戰爭機器與娜塔莎的黑寡婦。", "rating": 3.9, "image": "images/mcu_3.jpg", "characters": ["鋼鐵人", "黑寡婦", "戰爭機器", "鞭狂"], "trailer": "BoohRoVA9WQ"},
-      {"id": 4, "title": "雷神索爾", "type": "電影", "date": "2011/5/6", "status": "已上映", "box_office": "$449,326,618", "desc": "傲慢的阿斯嘉王子索爾被父親奧丁放逐到地球，索爾逐漸理解責任並重新取得雷神之鎚的資格，最後揭開弟弟洛基的陰謀。", "review": "北歐神話的角色，相當的吸引人，被奧丁放逐到地球並且失去神力後，傲慢自大的個性到重新取得拿取喵喵槌的資格，算是一部就英雄起源的小品。", "rating": 3.6, "image": "images/mcu_4.jpg", "characters": ["雷神索爾", "洛基", "奧丁", "鷹眼"], "trailer": "JOddp-nlNvQ"},
-      {"id": 5, "title": "美國隊長", "type": "電影", "date": "2011/7/22", "status": "已上映", "box_office": "$370,569,774", "desc": "史蒂夫羅傑斯接受超級士兵計畫後成為美國隊長，投入二戰並對抗九頭蛇。", "review": "第一個復仇者的起源故事，但其實在 MCU 的世界裡，我認為他是沒有用的，主要就是作為一個領導的人物，反派也是沒什麼用，並且這部片大半時間都偏無聊。", "rating": 3.1, "image": "images/mcu_5.jpg", "characters": ["美國隊長", "巴奇", "紅骷髏", "佩姬卡特"], "trailer": "M_b4sR1aR-8"},
-      {"id": 6, "title": "復仇者聯盟", "type": "電影", "date": "2012/5/4", "status": "已上映", "box_office": "$1,520,538,536", "desc": "鋼鐵人、雷神索爾、美國隊長、浩克、黑寡婦經歷一些風波與合作上的不愉快，最後集結成復仇者聯盟，共同阻止洛基與外星軍隊奇塔瑞入侵地球。", "review": "首部多個英雄集結的電影，從互不認識、受到挫折、互相責罵、到一同組成團隊去保衛地球，文戲、劇情、特效都還不錯。", "rating": 4.0, "image": "images/mcu_6.jpg", "characters": ["鋼鐵人", "美國隊長", "雷神索爾", "浩克", "黑寡婦", "鷹眼", "洛基"], "trailer": "A7K8A-P0HOc"}
+      {"id": 1, "title": "鋼鐵人", "type": "電影", "date": "2008/5/2", "status": "已上映", "box_office": "$585,796,247", "desc": "描述億萬富翁兼工程師東尼史塔克在遭遇綁架危機後打造高科技裝甲逃出，後續不斷測試，增強與優化裝甲的性能，最後成為鋼鐵人的過程。", "review": "從原本被綁架到打造戰衣，從原本的軍火商到成為拯救居民的英雄，角色成長曲線不錯。RDJ 風趣的演活了這個角色，鋼鐵人這部片就此開啟了 MCU。", "rating": 4.5, "image": "images/mcu_1.jpg", "characters": ["鋼鐵人", "小辣椒", "羅德上校", "尼克福瑞"], "trailer": "8ugaeA-nMTc", "story_year": "2010年 (MCU內時間)"},
+      {"id": 2, "title": "無敵浩克", "type": "電影", "date": "2008/6/13", "status": "已上映", "box_office": "$264,770,996", "desc": "科學家布魯斯班納因實驗受到伽瑪輻射的影響，體內產生了另一個怪物，也就是浩克，因此班納博士努力尋找解除伽瑪輻射影響的方法，同時躲避政府追捕，最後幫助美國政府對抗同樣是伽瑪輻射產物的惡煞。", "review": "浩克 CGI 呈現最兇猛最有威脅的一次，不論是與軍方的衝突還是最終大戰，都能感受到毀滅性的破壞力。", "rating": 3.8, "image": "images/mcu_2.jpg", "characters": ["浩克", "惡煞", "羅斯將軍"], "trailer": "Dtp_bO8H29Y", "story_year": "2011年"},
+      {"id": 3, "title": "鋼鐵人2", "type": "電影", "date": "2010/5/7", "status": "已上映", "box_office": "$623,933,331", "desc": "東尼史塔克公開鋼鐵人身分後面臨政府壓力、健康問題，以及與史塔克家族過去有關的新敵人鞭狂。羅德上校搶走並穿上了鋼鐵人製作的銀色機甲，經改造後成為戰爭機器，並與鋼鐵人一同對付鞭狂和其機甲大軍。", "review": "Tony 以酗酒開趴放生自我的狀態下要面對敵人，雖然有許多機甲出現，但反派沒什麼記憶性，主要還是為了帶出羅德的戰爭機器與娜塔莎的黑寡婦。", "rating": 3.9, "image": "images/mcu_3.jpg", "characters": ["鋼鐵人", "黑寡婦", "戰爭機器", "鞭狂"], "trailer": "BoohRoVA9WQ", "story_year": "2011年"},
+      {"id": 4, "title": "雷神索爾", "type": "電影", "date": "2011/5/6", "status": "已上映", "box_office": "$449,326,618", "desc": "傲慢的阿斯嘉王子索爾被父親奧丁放逐到地球，索爾逐漸理解責任並重新取得雷神之鎚的資格，最後揭開弟弟洛基的陰謀。", "review": "北歐神話的角色，相當的吸引人，被奧丁放逐到地球並且失去神力後，傲慢自大的個性到重新取得拿取喵喵槌的資格，算是一部就英雄起源的小品。", "rating": 3.6, "image": "images/mcu_4.jpg", "characters": ["雷神索爾", "洛基", "奧丁", "鷹眼"], "trailer": "JOddp-nlNvQ", "story_year": "2011年"},
+      {"id": 5, "title": "美國隊長", "type": "電影", "date": "2011/7/22", "status": "已上映", "box_office": "$370,569,774", "desc": "史蒂夫羅傑斯接受超級士兵計畫後成為美國隊長，投入二戰並對抗九頭蛇。", "review": "第一個復仇者的起源故事，但其實在 MCU 的世界裡，我認為他是沒有用的，主要就是作為一個領導的人物，反派也是沒什麼用，並且這部片大半時間都偏無聊。", "rating": 3.1, "image": "images/mcu_5.jpg", "characters": ["美國隊長", "巴奇", "紅骷髏", "佩姬卡特"], "trailer": "M_b4sR1aR-8", "story_year": "1942-1945年 (最早期)"},
+      {"id": 6, "title": "復仇者聯盟", "type": "電影", "date": "2012/5/4", "status": "已上映", "box_office": "$1,520,538,536", "desc": "鋼鐵人、雷神索爾、美國隊長、浩克、黑寡婦經歷一些風波與合作上的不愉快，最後集結成復仇者聯盟，共同阻止洛基與外星軍隊奇塔瑞入侵地球。", "review": "首部多個英雄集結的電影，從互不認識、受到挫折、互相責罵、到一同組成團隊去保衛地球，文戲、劇情、特效都還不錯。", "rating": 4.0, "image": "images/mcu_6.jpg", "characters": ["鋼鐵人", "美國隊長", "雷神索爾", "浩克", "黑寡婦", "鷹眼", "洛基"], "trailer": "A7K8A-P0HOc", "story_year": "2012年"}
     ],
     "phase2": [
-      {"id": 7, "title": "鋼鐵人3", "type": "電影", "date": "2013/5/3", "status": "已上映", "box_office": "$1,215,577,205", "desc": "東尼史塔克在紐約事件後得到憂鬱創傷，他在一個小朋友的幫助下解除憂鬱，並在無機甲的情況下利用聰明才智，解除了新的恐怖威脅絕境病毒士兵與滿大人。", "review": "鋼鐵人最落魄的時候，但並沒有因為整部片中間沒有戰甲就難看，文戲依然保持詼諧幽默，相當好看也有趣，最後還有幾十台機甲一同出場更是看點之一。", "rating": 4.5, "image": "images/mcu_7.jpg", "characters": ["鋼鐵人", "戰爭機器", "小辣椒"], "trailer": "LSMSmBBHnp0"},
-      {"id": 8, "title": "雷神索爾2：黑暗世界", "type": "電影", "date": "2013/11/8", "status": "已上映", "box_office": "$644,783,140", "desc": "索爾與黑暗精靈首領魔雷基交戰，宇宙中的現實寶石 (乙太) 成為關鍵元素，最後洛基的假死使得洛基能登基阿斯嘉之王，並將奧丁放逐到地球等死。", "review": "場面搞得很宏大，但虛有其表，只有洛基的戲份算是這部片的看點。", "rating": 3.2, "image": "images/mcu_8.jpg", "characters": ["雷神索爾", "洛基", "珍佛斯特"], "trailer": "npvJ9FTgZbM"},
-      {"id": 9, "title": "美國隊長2：酷寒戰士", "type": "電影", "date": "2014/4/4", "status": "已上映", "box_office": "$714,421,503", "desc": "史蒂夫羅傑斯在現代世界面對神盾局內部危機，並與黑寡婦一起追查神秘的酷寒戰士。", "review": "我沒看過整部片，因為裡頭的角色皆是基礎沒有超能力的，但聽很多人說這部的打鬥戲堪稱漫威前3。", "rating": "無法評分", "image": "images/mcu_9.jpg", "characters": ["美國隊長", "酷寒戰士", "黑寡婦", "獵鷹"], "trailer": "8DDZ6OKRQJs"},
-      {"id": 10, "title": "星際異攻隊", "type": "電影", "date": "2014/8/1", "status": "已上映", "box_office": "$773,350,147", "desc": "彼得奎爾與一群性格迥異的宇宙罪犯被迫合作，阻止擁有力量寶石的控訴者羅南入侵柴達星。", "review": "詹姆斯岡恩擅長在一部片中塞進多個角色的同時，又讓每個人都有各自的魅力以及記憶點，星際異攻隊正是證明這點的其中一部片。", "rating": 4.3, "image": "images/mcu_10.jpg", "characters": ["星爵", "葛摩菈", "德克斯", "火箭浣熊", "格魯特"], "trailer": "d96cjJhvlMA"},
-      {"id": 11, "title": "復仇者聯盟2：奧創紀元", "type": "電影", "date": "2015/5/1", "status": "已上映", "box_office": "$1,405,018,048", "desc": "鋼鐵人史塔克創造人工智慧奧創來保護人類，但計畫失控，復仇者聯盟必須阻止奧創毀滅人類的計劃。", "review": "AI 失控，劇情上都有不錯的走向，復仇者們依然分分合合，時常意見分歧。角色更多，但沒有因此失真，可惜的是最終大戰少了點什麼。", "rating": 4.0, "image": "images/mcu_11.jpg", "characters": ["鋼鐵人", "美國隊長", "緋紅女巫", "快銀", "幻視", "奧創"], "trailer": "RjaIv5oI4Bo"},
-      {"id": 12, "title": "蟻人", "type": "電影", "date": "2015/7/17", "status": "已上映", "box_office": "$519,311,965", "desc": "頂級竊賊史考特朗恩穿上蟻人戰衣，在漢克皮姆博士指導下成為蟻人並執行一場高科技偷竊任務。", "review": "從一個小偷的身份，將其運用在更好的地方，變成幫助人的英雄，整部片詼諧有趣，加上有其他搞笑人物一起，趣味同時卻不會感到不適。", "rating": 4.6, "image": "images/mcu_12.jpg", "characters": ["蟻人", "黃蜂女", "漢克皮姆"], "trailer": "RcCTzSk2pto"}
+      {"id": 7, "title": "鋼鐵人3", "type": "電影", "date": "2013/5/3", "status": "已上映", "box_office": "$1,215,577,205", "desc": "東尼史塔克在紐約事件後得到憂鬱創傷，他在一個小朋友的幫助下解除憂鬱，並在無機甲的情況下利用聰明才智，解除了新的恐怖威脅絕境病毒士兵與滿大人。", "review": "鋼鐵人最落魄的時候，但並沒有因為整部片中間沒有戰甲就難看，文戲依然保持詼諧幽默，相當好看也有趣，最後還有幾十台機甲一同出場更是看點之一。", "rating": 4.5, "image": "images/mcu_7.jpg", "characters": ["鋼鐵人", "戰爭機器", "小辣椒"], "trailer": "LSMSmBBHnp0", "story_year": "2012年底"},
+      {"id": 8, "title": "雷神索爾2：黑暗世界", "type": "電影", "date": "2013/11/8", "status": "已上映", "box_office": "$644,783,140", "desc": "索爾與黑暗精靈首領魔雷基交戰，宇宙中的現實寶石 (乙太) 成為關鍵元素，最後洛基的假死使得洛基能登基阿斯嘉之王，並將奧丁放逐到地球等死。", "review": "場面搞得很宏大，但虛有其表，只有洛基的戲份算是這部片的看點。", "rating": 3.2, "image": "images/mcu_8.jpg", "characters": ["雷神索爾", "洛基", "珍佛斯特"], "trailer": "npvJ9FTgZbM", "story_year": "2013年"},
+      {"id": 9, "title": "美國隊長2：酷寒戰士", "type": "電影", "date": "2014/4/4", "status": "已上映", "box_office": "$714,421,503", "desc": "史蒂夫羅傑斯在現代世界面對神盾局內部危機，並與黑寡婦一起追查神秘的酷寒戰士。", "review": "我沒看過整部片，因為裡頭的角色皆是基礎沒有超能力的，但聽很多人說這部的打鬥戲堪稱漫威前3。", "rating": "無法評分", "image": "images/mcu_9.jpg", "characters": ["美國隊長", "酷寒戰士", "黑寡婦", "獵鷹"], "trailer": "8DDZ6OKRQJs", "story_year": "2014年"},
+      {"id": 10, "title": "星際異攻隊", "type": "電影", "date": "2014/8/1", "status": "已上映", "box_office": "$773,350,147", "desc": "彼得奎爾與一群性格迥異的宇宙罪犯被迫合作，阻止擁有力量寶石的控訴者羅南入侵柴達星。", "review": "詹姆斯岡恩擅長在一部片中塞進多個角色的同時，又讓每個人都有各自的魅力以及記憶點，星際異攻隊正是證明這點的其中一部片。", "rating": 4.3, "image": "images/mcu_10.jpg", "characters": ["星爵", "葛摩菈", "德克斯", "火箭浣熊", "格魯特"], "trailer": "d96cjJhvlMA", "story_year": "2014年"},
+      {"id": 11, "title": "復仇者聯盟2：奧創紀元", "type": "電影", "date": "2015/5/1", "status": "已上映", "box_office": "$1,405,018,048", "desc": "鋼鐵人史塔克創造人工智慧奧創來保護人類，但計畫失控，復仇者聯盟必須阻止奧創毀滅人類的計劃。", "review": "AI 失控，劇情上都有不錯的走向，復仇者們依然分分合合，時常意見分歧。角色更多，但沒有因此失真，可惜的是最終大戰少了點什麼。", "rating": 4.0, "image": "images/mcu_11.jpg", "characters": ["鋼鐵人", "美國隊長", "緋紅女巫", "快銀", "幻視", "奧創"], "trailer": "RjaIv5oI4Bo", "story_year": "2015年"},
+      {"id": 12, "title": "蟻人", "type": "電影", "date": "2015/7/17", "status": "已上映", "box_office": "$519,311,965", "desc": "頂級竊賊史考特朗恩穿上蟻人戰衣，在漢克皮姆博士指導下成為蟻人並執行一場高科技偷竊任務。", "review": "從一個小偷的身份，將其運用在更好的地方，變成幫助人的英雄，整部片詼諧有趣，加上有其他搞笑人物一起，趣味同時卻不會感到不適。", "rating": 4.6, "image": "images/mcu_12.jpg", "characters": ["蟻人", "黃蜂女", "漢克皮姆"], "trailer": "RcCTzSk2pto", "story_year": "2015年"}
     ],
     "phase3": [
-      {"id": 13, "title": "美國隊長3：英雄內戰", "type": "電影", "date": "2016/5/6", "status": "已上映", "box_office": "$1,155,046,416", "desc": "復仇者聯盟2中奧創的問題使得人民對其感到害怕，國務卿要求英雄們簽署蘇科維亞協議，復仇者們因理念不合分裂，美國隊長與鋼鐵人站在不同立場，加上受到齊莫的陰謀影響，隨後雙方英雄便引發了雙方內戰。", "review": "接續復聯2，因要簽署協議的意見分歧，兩派人馬決裂，好看、動作戲堪稱漫威前3、同時有很好的劇情走向。", "rating": 4.7, "image": "images/mcu_13.jpg", "characters": ["美國隊長", "鋼鐵人", "蜘蛛人", "黑豹", "蟻人", "酷寒戰士"], "trailer": "mDQUnWcHSHA"},
-      {"id": 14, "title": "奇異博士", "type": "電影", "date": "2016/11/4", "status": "已上映", "box_office": "$677,796,076", "desc": "外科醫師史蒂芬史傳奇出車禍後手指骨裂極度嚴重，因而到卡瑪泰姬希望能恢復雙手繼續當醫生，不料卻是接觸神秘法術，最後經由訓練成為守護地球的至尊魔法師。", "review": "從傲慢自大的外科醫生，到放下自我成為守護地球的魔法師，中間有許多酷炫怪異的特效與搞笑的片段，也是一部非常棒的英雄起源電影。", "rating": 4.5, "image": "images/mcu_14.jpg", "characters": ["奇異博士", "王", "古一"], "trailer": "YpqTOUuA9Ds"},
-      {"id": 15, "title": "星際異攻隊2", "type": "電影", "date": "2017/5/5", "status": "已上映", "box_office": "$863,756,051", "desc": "星際異攻隊在宇宙中繼續冒險，也逐漸揭開彼得奎爾的身世與家庭秘密，他的爸爸伊果居然是天神族，但由於他想要讓所有星球都成為伊果，星際異攻隊最終阻止伊果，而彼得奎爾也因為殺死他爸爸後而失去了天神族的神力。", "review": "自組成星際異攻隊後繼續在宇宙中探索，劇中有非常多有趣可愛的台詞，還有幼年格魯特，最後的戰爭場面也算宏大且多元化，不錯。", "rating": 4.4, "image": "images/mcu_15.jpg", "characters": ["星爵", "勇度", "螳螂女", " nebula"], "trailer": "nzlRCyIkAEo"},
-      {"id": 16, "title": "蜘蛛人：返校日", "type": "電影", "date": "2017/7/7", "status": "已上映", "box_office": "$880,936,784", "desc": "高中生彼得帕克努力平衡校園生活與蜘蛛人的身分，同時追查在做黑市武器販賣的禿鷹團隊。", "review": "蜘蛛人成長的過程，內有鋼鐵人 RDJ 的客串。", "rating": 3.7, "image": "images/mcu_16.jpg", "characters": ["蜘蛛人", "鋼鐵人", "禿鷹"], "trailer": "bPXI4sGdVxQ"},
-      {"id": 17, "title": "雷神索爾3：諸神黃昏", "type": "電影", "date": "2017/11/3", "status": "已上映", "box_office": "$855,301,806", "desc": "索爾返回阿斯嘉並揭開洛基的真面目，兩兄弟出發去找奧丁，隨後看著奧丁死去並迎接不懷好意的大姐海拉。由於海拉，索爾與洛基被困在薩卡星，經過一番算計與逃脫後，一同與浩克、瓦爾基麗返回阿斯嘉，阻止海拉的勢力擴張，最後不得不引發諸神黃昏來阻止她。", "review": "整部片以詼諧有趣的對話、各種浩大的場面、索爾與洛基又愛又恨的兄弟情組成，肯定是漫威整體前5。", "rating": 4.8, "image": "images/mcu_17.jpg", "characters": ["雷神索爾", "洛基", "浩克", "海拉", "瓦爾基麗"], "trailer": "Bfkxjx1u78Q"},
-      {"id": 18, "title": "黑豹", "type": "電影", "date": "2018/2/16", "status": "已上映", "box_office": "$1,349,926,083", "desc": "帝查拉回到瓦干達繼承王位，但因未達成國家人民期望，加上來自外部一位具有瓦干達王室血統的齊爾蒙格來挑戰王位，最後帝查拉獲救後回到瓦干達對抗他，平定內亂。", "review": "一個登基的國王遇到一些問題，壤外還要安內，最終才成為稱職的瓦干達國王，反派的演技更是讓人印象深刻。", "rating": 4.7, "image": "images/mcu_18.jpg", "characters": ["黑豹", "齊爾蒙格", "舒莉", "奧科耶"], "trailer": "n9OPh03GnI4"},
-      {"id": 19, "title": "復仇者聯盟：無限之戰", "type": "電影", "date": "2018/4/27", "status": "已上映", "box_office": "$2,052,415,039", "desc": "薩諾斯蒐集六顆無限寶石的過程，復仇者聯盟與宇宙中各地英雄分區域需要阻止他取得寶石，最終薩諾斯集齊六顆無限寶石並彈指，使宇宙一半的生命化為灰燼。", "review": "一部片成功的因素有時候反派更重要，薩諾斯絕對是影史塑造最好的反派之一，讓觀眾會對其動機分支持與反對兩派。打鬥戲豐富，物理魔法皆有，並且能做到各方面平衡，不會有誰太超標的宇宙大戰，直到現在依然會看得很過癮。", "rating": 5.0, "image": "images/mcu_19.jpg", "characters": ["薩諾斯", "鋼鐵人", "雷神索爾", "美國隊長", "奇異博士", "蜘蛛人"], "trailer": "Mo66zXsDPo4"},
-      {"id": 20, "title": "蟻人與黃蜂女", "type": "電影", "date": "2018/7/6", "status": "已上映", "box_office": "$622,674,139", "desc": "蟻人史考特朗恩與黃蜂女合作執行任務，探索量子領域並尋找黃蜂女的母親珍妮特，與此同時過程中需要面對來自覬覦皮姆科技的各方人員的追捕。", "review": "主要為了引出量子領域，但其中還是許多搞笑的片段不錯看。", "rating": 3.9, "image": "images/mcu_20.jpg", "characters": ["蟻人", "黃蜂女", "幽靈"], "trailer": "xFkFkU4yPsk"},
-      {"id": 21, "title": "驚奇隊長", "type": "電影", "date": "2019/3/8", "status": "已上映", "box_office": "$1,131,416,446", "desc": "卡蘿丹佛斯在宇宙與執行任務追捕史克魯爾人中逐步找回自己的過去，並揭開真正的壞人。", "review": "一部蹭無限之戰風頭的英雄起源片。", "rating": 3.0, "image": "images/mcu_21.jpg", "characters": ["驚奇隊長", "尼克福瑞", "塔洛斯"], "trailer": "8_iXX6t6nFY"},
-      {"id": 22, "title": "復仇者聯盟：終局之戰", "type": "電影", "date": "2019/4/26", "status": "已上映", "box_office": "$2,799,439,100", "desc": "在宇宙遭受重大人口損失後，倖存英雄集結並利用時空穿越，回到各個過去取得寶石，試圖要救回被彈走的人。但途中因被過去的薩諾斯發現，他與他的飛船、大軍穿越來到未來，與眾英雄展開最終大戰。", "review": "無限之戰的下半回，對我來說比較還好，大多著重在回到過去時看到過去的遺憾等等，所以才補一個眾英雄對抗年輕版薩諾斯的最終大戰，否則觀眾可能會覺得無聊。", "rating": 4.9, "image": "images/mcu_22.jpg", "characters": ["鋼鐵人", "美國隊長", "雷神索爾", "黑寡婦", "鷹眼", "浩克", "薩諾斯"], "trailer": "ZrB7EdfPBJU"},
-      {"id": 23, "title": "蜘蛛人：離家日", "type": "電影", "date": "2019/7/2", "status": "已上映", "box_office": "$1,132,697,856", "desc": "彼得帕克前往歐洲旅行，卻被尼克福瑞強制召集面對新的超自然威脅。", "review": "劇情在校園出遊與拯救城市之間遊蕩，有製造出 Peter 兩難的情境，也有把青春暗戀的感情、相多與喜歡的人相處卻被迫出任務那無能為力的感覺演出來。中後段的虛擬幻象特效是作得非常好，加上全部都是假的，真正的反派只是一般人用無人機製造的幻象來欺騙所有人，這個構想相當不錯。", "rating": 4.7, "image": "images/mcu_23.jpg", "characters": ["蜘蛛人", "神秘客", "尼克福瑞"], "trailer": "Nt9L1jCKGnE"}
+      {"id": 13, "title": "美國隊長3：英雄內戰", "type": "電影", "date": "2016/5/6", "status": "已上映", "box_office": "$1,155,046,416", "desc": "復仇者聯盟2中奧創的問題使得人民對其感到害怕，國務卿要求英雄們簽署蘇科維亞協議，復仇者們因理念不合分裂，美國隊長與鋼鐵人站在不同立場，加上受到齊莫的陰謀影響，隨後雙方英雄便引發了雙方內戰。", "review": "接續復聯2，因要簽署協議的意見分歧，兩派人馬決裂，好看、動作戲堪稱漫威前3、同時有很好的劇情走向。", "rating": 4.7, "image": "images/mcu_13.jpg", "characters": ["美國隊長", "鋼鐵人", "蜘蛛人", "黑豹", "蟻人", "酷寒戰士"], "trailer": "mDQUnWcHSHA", "story_year": "2016年"},
+      {"id": 14, "title": "奇異博士", "type": "電影", "date": "2016/11/4", "status": "已上映", "box_office": "$677,796,076", "desc": "外科醫師史蒂芬史傳奇出車禍後手指骨裂極度嚴重，因而到卡瑪泰姬希望能恢復雙手繼續當醫生，不料卻是接觸神秘法術，最後經由訓練成為守護地球的至尊魔法師。", "review": "從傲慢自大的外科醫生，到放下自我成為守護地球的魔法師，中間有許多酷炫怪異的特效與搞笑的片段，也是一部非常棒的英雄起源電影。", "rating": 4.5, "image": "images/mcu_14.jpg", "characters": ["奇異博士", "王", "古一"], "trailer": "YpqTOUuA9Ds", "story_year": "2016-2017年"},
+      {"id": 15, "title": "星際異攻隊2", "type": "電影", "date": "2017/5/5", "status": "已上映", "box_office": "$863,756,051", "desc": "星際異攻隊在宇宙中繼續冒險，也逐漸揭開彼得奎爾的身世與家庭秘密，他的爸爸伊果居然是天神族，但由於他想要讓所有星球都成為伊果，星際異攻隊最終阻止伊果，而彼得奎爾也因為殺死他爸爸後而失去了天神族的神力。", "review": "自組成星際異攻隊後繼續在宇宙中探索，劇中有非常多有趣可愛的台詞，還有幼年格魯特，最後的戰爭場面也算宏大且多元化，不錯。", "rating": 4.4, "image": "images/mcu_15.jpg", "characters": ["星爵", "勇度", "螳螂女", " nebula"], "trailer": "nzlRCyIkAEo", "story_year": "2014年 (第一集數月後)"},
+      {"id": 16, "title": "蜘蛛人：返校日", "type": "電影", "date": "2017/7/7", "status": "已上映", "box_office": "$880,936,784", "desc": "高中生彼得帕克努力平衡校園生活與蜘蛛人的身分，同時追查在做黑市武器販賣的禿鷹團隊。", "review": "蜘蛛人成長的過程，內有鋼鐵人 RDJ 的客串。", "rating": 3.7, "image": "images/mcu_16.jpg", "characters": ["蜘蛛人", "鋼鐵人", "禿鷹"], "trailer": "bPXI4sGdVxQ", "story_year": "2016年 (內戰幾個月後)"},
+      {"id": 17, "title": "雷神索爾3：諸神黃昏", "type": "電影", "date": "2017/11/3", "status": "已上映", "box_office": "$855,301,806", "desc": "索爾返回阿斯嘉並揭開洛基的真面目，兩兄弟出發去找奧丁，隨後看著奧丁死去並迎接不懷好意的大姐海拉。由於海拉，索爾與洛基被困在薩卡星，經過一番算計與逃脫後，一同與浩克、瓦爾基麗返回阿斯嘉，阻止海拉的勢力擴張，最後不得不引發諸神黃昏來阻止她。", "review": "整部片以詼諧有趣的對話、各種浩大的場面、索爾與洛基又愛又恨的兄弟情組成，肯定是漫威整體前5。", "rating": 4.8, "image": "images/mcu_17.jpg", "characters": ["雷神索爾", "洛基", "浩克", "海拉", "瓦爾基麗"], "trailer": "Bfkxjx1u78Q", "story_year": "2017年"},
+      {"id": 18, "title": "黑豹", "type": "電影", "date": "2018/2/16", "status": "已上映", "box_office": "$1,349,926,083", "desc": "帝查拉回到瓦干達繼承王位，但因未達成國家人民期望，加上來自外部一位具有瓦干達王室血統的齊爾蒙格來挑戰王位，最後帝查拉獲救後回到瓦干達對抗他，平定內亂。", "review": "一個登基的國王遇到一些問題，壤外還要安內，最終才成為稱職的瓦干達國王，反派的演技更是讓人印象深刻。", "rating": 4.7, "image": "images/mcu_18.jpg", "characters": ["黑豹", "齊爾蒙格", "舒莉", "奧科耶"], "trailer": "n9OPh03GnI4", "story_year": "2016年 (內戰不久後)"},
+      {"id": 19, "title": "復仇者聯盟：無限之戰", "type": "電影", "date": "2018/4/27", "status": "已上映", "box_office": "$2,052,415,039", "desc": "薩諾斯蒐集六顆無限寶石的過程，復仇者聯盟與宇宙中各地英雄分區域需要阻止他取得寶石，最終薩諾斯集齊六顆無限寶石並彈指，使宇宙一半的生命化為灰燼。", "review": "一部片成功的因素有時候反派更重要，薩諾斯絕對是影史塑造最好的反派之一，讓觀眾會對其動機分支持與反對兩派。打鬥戲豐富，物理魔法皆有，並且能做到各方面平衡，不會有誰太超標的宇宙大戰，直到現在依然會看得很過癮。", "rating": 5.0, "image": "images/mcu_19.jpg", "characters": ["薩諾斯", "鋼鐵人", "雷神索爾", "美國隊長", "奇異博士", "蜘蛛人"], "trailer": "Mo66zXsDPo4", "story_year": "2018年"},
+      {"id": 20, "title": "蟻人與黃蜂女", "type": "電影", "date": "2018/7/6", "status": "已上映", "box_office": "$622,674,139", "desc": "蟻人史考特朗恩與黃蜂女合作執行任務，探索量子領域並尋找黃蜂女的母親珍妮特，與此同時過程中需要面對來自覬覦皮姆科技的各方人員的追捕。", "review": "主要為了引出量子領域，但其中還是許多搞笑的片段不錯看。", "rating": 3.9, "image": "images/mcu_20.jpg", "characters": ["蟻人", "黃蜂女", "幽靈"], "trailer": "xFkFkU4yPsk", "story_year": "2018年 (無限之戰前夕)"},
+      {"id": 21, "title": "驚奇隊長", "type": "電影", "date": "2019/3/8", "status": "已上映", "box_office": "$1,131,416,446", "desc": "卡蘿丹佛斯在宇宙與執行任務追捕史克魯爾人中逐步找回自己的過去，並揭開真正的壞人。", "review": "一部蹭無限之戰風頭的英雄起源片。", "rating": 3.0, "image": "images/mcu_21.jpg", "characters": ["驚奇隊長", "尼克福瑞", "塔洛斯"], "trailer": "8_iXX6t6nFY", "story_year": "1995年 (早期故事)"},
+      {"id": 22, "title": "復仇者聯盟：終局之戰", "type": "電影", "date": "2019/4/26", "status": "已上映", "box_office": "$2,799,439,100", "desc": "在宇宙遭受重大人口損失後，倖存英雄集結並利用時空穿越，回到各個過去取得寶石，試圖要救回被彈走的人。但途中因被過去的薩諾斯發現，他與他的飛船、大軍穿越來到未來，與眾英雄展開最終大戰。", "review": "無限之戰的下半回，對我來說比較還好，大多著重在回到過去時看到過去的遺憾等等，所以才補一個眾英雄對抗年輕版薩諾斯的最終大戰，否則觀眾可能會覺得無聊。", "rating": 4.9, "image": "images/mcu_22.jpg", "characters": ["鋼鐵人", "美國隊長", "雷神索爾", "黑寡婦", "鷹眼", "浩克", "薩諾斯"], "trailer": "ZrB7EdfPBJU", "story_year": "2018-2023年"},
+      {"id": 23, "title": "蜘蛛人：離家日", "type": "電影", "date": "2019/7/2", "status": "已上映", "box_office": "$1,132,697,856", "desc": "彼得帕克前往歐洲旅行，卻被尼克福瑞強制召集面對新的超自然威脅。", "review": "劇情在校園出遊與拯救城市之間遊蕩，有製造出 Peter 兩難的情境，也有把青春暗戀的感情、相多與喜歡的人相處卻被迫出任務那無能為力的感覺演出來。中後段的虛擬幻象特效是作得非常好，加上全部都是假的，真正的反派只是一般人用無人機製造的幻象來欺騙所有人，這個構想相當不錯。", "rating": 4.7, "image": "images/mcu_23.jpg", "characters": ["蜘蛛人", "神秘客", "尼克福瑞"], "trailer": "Nt9L1jCKGnE", "story_year": "2024年 (終局之戰8個月後)"}
     ],
     "phase4": [
-      {"id": 31, "title": "汪達幻視", "type": "影集", "date": "2021/1/15", "status": "已完結", "episodes": "9集", "desc": "汪達與幻視過著看似完美的郊區生活，但異常現象逐漸揭開一個與汪達力量有關的真相。", "review": "身為漫威第一部影集，我認為是很及格的作品。不只汪達，觀眾也一同活在汪達控制的現實裡，直到第7集才因反派而揭開整個小鎮都是汪達控制並修改現實的，汪達自己也不知道，不能說特別好看但就是會有驚豔的感覺。", "rating": 4.1, "image": "images/mcu_31.jpg", "characters": ["緋紅女巫", "幻視", "阿嘉莎"], "trailer": "ZhuFXyq9ufQ"},
-      {"id": 32, "title": "獵鷹與酷寒戰士", "type": "影集", "date": "2021/3/19", "status": "已完結", "episodes": "6集", "desc": "山姆威爾遜與巴奇巴恩斯合作處理全球危機，並面對美國隊長傳承所帶來的問題。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_32.jpg", "characters": ["獵鷹", "酷寒戰士", "美國 Agent", "齊莫"], "trailer": "3THwyzXe3E8"},
-      {"id": 33, "title": "洛基 第一季", "type": "影集", "date": "2021/6/9", "status": "已完結", "episodes": "6集", "desc": "復仇者聯盟4中過去的洛基因利用宇宙魔方逃走，因而產生出了另一條時間線。洛基因此被時間變異管理局帶走，開始探索該機構的運作與時間線的秘密。", "review": "探索 TVA 的世界與運作模式，也逐步看洛基是如何從反派轉變為為他人設想的英雄。", "rating": 5.0, "image": "images/mcu_33.jpg", "characters": ["洛基", "梅比斯", "希爾維", "留存者"], "trailer": "zxDmxQE164s"},
-      {"id": 24, "title": "黑寡婦", "type": "電影", "date": "2021/7/9", "status": "已上映", "box_office": "$379,751,655", "desc": "娜塔莎羅曼諾夫面對過去的陰影，與舊家人重新合作，對抗紅房子的勢力。", "review": "只看一半就知道非常難看，無趣且特效有跟沒有一樣，甚至有缺陷，就是一部想蹭終局之戰娜塔莎犧牲清懷的片而已，不知道為什麼很多人愛。", "rating": 2.5, "image": "images/mcu_24.jpg", "characters": ["黑寡婦", "葉蓮娜", "紅色守衛者", "模仿大師"], "trailer": "-gQHSE7cJg8"},
-      {"id": 34, "title": "無限可能：假如...？ 第一季", "type": "動畫影集", "date": "2021/8/11", "status": "已完結", "episodes": "9集", "desc": "觀察者以旁白角度帶觀眾探索不同的宇宙，想像如果 MCU 中關鍵事件以不同方式發生會產生什麼結果。", "review": "腦洞大開，看看若A變成B，情況會如何，引人有其它不同的想法。", "rating": 3.6, "image": "images/mcu_34.jpg", "characters": ["觀察者", "卡特隊長", "黑化奇異博士"], "trailer": "Tc-k6SU-rUM"},
-      {"id": 25, "title": "尚氣與十環傳奇", "type": "電影", "date": "2021/9/3", "status": "已上映", "box_office": "$432,243,292", "desc": "尚氣被迫面對自己的家族與神秘十環組織，最後擊敗受遠古噬魂獸影響而走偏的爸爸，與噬魂獸，並接管了爸爸的十環。", "review": "漫威片中動作戲最多的，堪稱漫威動作片巔峰，梁朝偉搭配十環相當帥氣！主要差在男主女主女配的顏值上引起許多人的不滿。", "rating": 4.7, "image": "images/mcu_25.jpg", "characters": ["尚氣", "文武", "凱蒂"], "trailer": "N2L5Vt4FEKg"},
-      {"id": 26, "title": "永恆族", "type": "電影", "date": "2021/11/5", "status": "已上映", "box_office": "$402,064,899", "desc": "一群古老的外星英雄永恆族長久隱藏在人類社會中，幫忙對抗變異族的威脅，然而他們不知道的是，這其實都是為了孕育天神族的誕生，每一顆星球會誕生一隻天神族，永恆族在完成該任務後會被消除記憶並持續做同樣的任務。", "review": "人物與概念很吸引人，但偏屬文學史詩的片，除了後面的大戰外，其餘文戲會略顯無趣。", "rating": 3.6, "image": "images/mcu_26.jpg", "characters": ["瑟西", "伊卡利斯", "聖娜"], "trailer": "RpuUJN24uwU"},
-      {"id": 35, "title": "鷹眼", "type": "影集", "date": "2021/11/24", "status": "已完結", "episodes": "6集", "desc": "克林特在紐約過節期間遇上年輕弓箭手凱特畢夏普，兩人共同面對危機。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_35.jpg", "characters": ["鷹眼", "凱特畢夏普", "金霸王", "葉蓮娜"], "trailer": "jZMI5ZJj51U"},
-      {"id": 27, "title": "蜘蛛人：無家日", "type": "電影", "date": "2021/12/17", "status": "已上映", "box_office": "$1,921,400,703", "desc": "彼得帕克請求奇異博士施法改變自己身分被神秘法師貝克曝光後對身邊的人所造成的危機，卻意外打開多重宇宙的入口，引來更多麻煩。", "review": "眾多英雄與反派，片長長但劇情豐富，主要看點在蜘蛛人三代同框、中途被綠惡魔背叛後面對梅嬸的死亡、三代蜘蛛人之間的相互對話與合作，不過蜘蛛人能打贏奇異博士是真的很誇張，都是劇情需要而硬設定的。", "rating": 4.6, "image": "images/mcu_27.jpg", "characters": ["蜘蛛人", "奇異博士", "八爪博士", "綠惡魔"], "trailer": "Ua6Sxuhfbh8"},
-      {"id": 36, "title": "月光騎士", "type": "影集", "date": "2022/3/30", "status": "已完結", "episodes": "6集", "desc": "一位擁有三個人格的人與月神孔蘇簽下契約成為月光騎士，他 (們) 捲入與埃及神祇相關的神秘事件。", "review": "以埃及神話為背景很酷，令人欽佩的是裡頭演員的演技，月光騎士本身有3種人格，也分別對應不同月光騎士，其它角色被對應的神祇附生後也能演出兩個人在同一個身體裡的不同表現。", "rating": 4.3, "image": "images/mcu_36.jpg", "characters": ["月光騎士", "阿米特"], "trailer": "is1f2svgE6I"},
-      {"id": 28, "title": "奇異博士2：失控多重宇宙", "type": "電影", "date": "2022/5/6", "status": "已上映", "box_office": "$955,775,804", "desc": "奇異博士與美國小姐探索多重宇宙，對抗受到黑暗神書影響而黑化的汪達。", "review": "主要靠汪達的演技在撐，其他人演技普普，最重要的還是引出 incursion 的概念，也是復聯5的關鍵事件。", "rating": 4.0, "image": "images/mcu_28.jpg", "characters": ["奇異博士", "緋紅女巫", "美國小姐"], "trailer": "cd6gxLg4Fuo"},
-      {"id": 37, "title": "驚奇少女", "type": "影集", "date": "2022/6/8", "status": "已完結", "episodes": "6集", "desc": "熱愛超級英雄的卡瑪拉因為阿嬤的手環突然獲得超能力，開始探索自己的身分與家族歷史。", "review": "一部極為普普的影集，最後面硬是要把她跟變種人扯上關係。", "rating": 3.0, "image": "images/mcu_37.jpg", "characters": ["驚奇少女"], "trailer": "KRvxrm1uuFY"},
-      {"id": 29, "title": "雷神索爾：愛與雷霆", "type": "電影", "date": "2022/7/8", "status": "已上映", "box_office": "$760,928,081", "desc": "索爾再次踏上宇宙冒險，並與珍·佛斯特重新相遇，共同面對屠神者格爾。", "review": "特效有瑕疵，雷神隨意擊敗宙斯太誇張，但我還是很喜歡屠神者。", "rating": 3.3, "image": "images/mcu_29.jpg", "characters": ["雷神索爾", "女雷神", "屠神者格爾", "宙斯"], "trailer": "Yh5ppFdYCVY"},
-      {"id": 38, "title": "律師女浩克", "type": "影集", "date": "2022/8/18", "status": "已完結", "episodes": "9集", "desc": "律師珍妮佛華特斯意外獲得浩克能力，在法律工作與超級英雄生活間尋找平衡。", "review": "前面還行，但越來越偏，甚至最後有注射浩克血清的人後製特效真的長得很怪很噁心。", "rating": 2.6, "image": "images/mcu_38.jpg", "characters": ["女浩克", "浩克", "夜魔俠"], "trailer": "a4G4m8GdexI"},
-      {"id": 30, "title": "黑豹2：瓦干達萬歲", "type": "電影", "date": "2022/11/11", "status": "已上映", "box_office": "$859,208,836", "desc": "瓦干達在失去國王後面臨政府對汎合金的覬覦，同時與同樣擁有大量汎合金的海底王國塔洛坎產生衝突。", "review": "由於黑豹的演員不幸過世才變成這樣的片，資源搶奪的背景很有魅力，反派很有魅力，兩個地球上最有錢的種族很有魅力，但最主要還是差在舒莉的體型不適合作為黑豹，很不搭。", "rating": 3.4, "image": "images/mcu_30.jpg", "characters": ["舒莉", "納摩", "鋼鐵心"], "trailer": "U1a66EWCvv4"}
+      {"id": 31, "title": "汪達幻視", "type": "影集", "date": "2021/1/15", "status": "已完結", "episodes": "9集", "desc": "汪達與幻視過著看似完美的郊區生活，但異常現象逐漸揭開一個與汪達力量有關的真相。", "review": "身為漫威第一部影集，我認為是很及格的作品。不只汪達，觀眾也一同活在汪達控制的現實裡，直到第7集才因反派而揭開整個小鎮都是汪達控制並修改現實的，汪達自己也不知道，不能說特別好看但就是會有驚豔的感覺。", "rating": 4.1, "image": "images/mcu_31.jpg", "characters": ["緋紅女巫", "幻視", "阿嘉莎"], "trailer": "ZhuFXyq9ufQ", "story_year": "2023年 (彈指恢復數週後)"},
+      {"id": 32, "title": "獵鷹與酷寒戰士", "type": "影集", "date": "2021/3/19", "status": "已完結", "episodes": "6集", "desc": "山姆威爾遜與巴奇巴恩斯合作處理全球危機，並面對美國隊長傳承所帶來的問題。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_32.jpg", "characters": ["獵鷹", "酷寒戰士", "美國 Agent", "齊莫"], "trailer": "3THwyzXe3E8", "story_year": "2024年 (終局之戰6個月後)"},
+      {"id": 33, "title": "洛基 第一季", "type": "影集", "date": "2021/6/9", "status": "已完結", "episodes": "6集", "desc": "復仇者聯盟4中過去的洛基因利用宇宙魔方逃走，因而產生出了另一條時間線。洛基因此被時間變異管理局帶走，開始探索該機構的運作與時間線的秘密。", "review": "探索 TVA 的世界與運作模式，也逐步看洛基是如何從反派轉變為為他人設想的英雄。", "rating": 5.0, "image": "images/mcu_33.jpg", "characters": ["洛基", "梅比斯", "希爾維", "留存者"], "trailer": "zxDmxQE164s", "story_year": "時間之外 (TVA)"},
+      {"id": 24, "title": "黑寡婦", "type": "電影", "date": "2021/7/9", "status": "已上映", "box_office": "$379,751,655", "desc": "娜塔莎羅曼諾夫面對過去的陰影，與舊家人重新合作，對抗紅房子的勢力。", "review": "只看一半就知道非常難看，無趣且特效有跟沒有一樣，甚至有缺陷，就是一部想蹭終局之戰娜塔莎犧牲清懷的片而已，不知道為什麼很多人愛。", "rating": 2.5, "image": "images/mcu_24.jpg", "characters": ["黑寡婦", "葉蓮娜", "紅色守衛者", "模仿大師"], "trailer": "-gQHSE7cJg8", "story_year": "2016年 (內戰期間)"},
+      {"id": 34, "title": "無限可能：假如...？ 第一季", "type": "動畫影集", "date": "2021/8/11", "status": "已完結", "episodes": "9集", "desc": "觀察者以旁白角度帶觀眾探索不同的宇宙，想像如果 MCU 中關鍵事件以不同方式發生會產生什麼結果。", "review": "腦洞大開，看看若A變成B，情況會如何，引人有其它不同的想法。", "rating": 3.6, "image": "images/mcu_34.jpg", "characters": ["觀察者", "卡特隊長", "黑化奇異博士"], "trailer": "Tc-k6SU-rUM", "story_year": "多重宇宙各時間點"},
+      {"id": 25, "title": "尚氣與十環傳奇", "type": "電影", "date": "2021/9/3", "status": "已上映", "box_office": "$432,243,292", "desc": "尚氣被迫面對自己的家族與神秘十環組織，最後擊敗受遠古噬魂獸影響而走偏的爸爸，與噬魂獸，並接管了爸爸的十環。", "review": "漫威片中動作戲最多的，堪稱漫威動作片巔峰，梁朝偉搭配十環相當帥氣！主要差在男主女主女配的顏值上引起許多人的不滿。", "rating": 4.7, "image": "images/mcu_25.jpg", "characters": ["尚氣", "文武", "凱蒂"], "trailer": "N2L5Vt4FEKg", "story_year": "2024年 (清明節)"},
+      {"id": 26, "title": "永恆族", "type": "電影", "date": "2021/11/5", "status": "已上映", "box_office": "$402,064,899", "desc": "一群古老的外星英雄永恆族長久隱藏在人類社會中，幫忙對抗變異族的威脅，然而他們不知道的是，這其實都是為了孕育天神族的誕生，每一顆星球會誕生一隻天神族，永恆族在完成該任務後會被消除記憶並持續做同樣的任務。", "review": "人物與概念很吸引人，但偏屬文學史詩的片，除了後面的大戰外，其餘文戲會略顯無趣。", "rating": 3.6, "image": "images/mcu_26.jpg", "characters": ["瑟西", "伊卡利斯", "聖娜"], "trailer": "RpuUJN24uwU", "story_year": "2024年 (彈指恢復後)"},
+      {"id": 35, "title": "鷹眼", "type": "影集", "date": "2021/11/24", "status": "已完結", "episodes": "6集", "desc": "克林特在紐約過節期間遇上年輕弓箭手凱特畢夏普，兩人共同面對危機。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_35.jpg", "characters": ["鷹眼", "凱特畢夏普", "金霸王", "葉蓮娜"], "trailer": "jZMI5ZJj51U", "story_year": "2024年 聖誕節"},
+      {"id": 27, "title": "蜘蛛人：無家日", "type": "電影", "date": "2021/12/17", "status": "已上映", "box_office": "$1,921,400,703", "desc": "彼得帕克請求奇異博士施法改變自己身分被神秘法師貝克曝光後對身邊的人所造成的危機，卻意外打開多重宇宙的入口，引來更多麻煩。", "review": "眾多英雄與反派，片長長但劇情豐富，主要看點在蜘蛛人三代同框、中途被綠惡魔背叛後面對梅嬸的死亡、三代蜘蛛人之間的相互對話與合作，不過蜘蛛人能打贏奇異博士是真的很誇張，都是劇情需要而硬設定的。", "rating": 4.6, "image": "images/mcu_27.jpg", "characters": ["蜘蛛人", "奇異博士", "八爪博士", "綠惡魔"], "trailer": "Ua6Sxuhfbh8", "story_year": "2024年 底"},
+      {"id": 36, "title": "月光騎士", "type": "影集", "date": "2022/3/30", "status": "已完結", "episodes": "6集", "desc": "一位擁有三個人格的人與月神孔蘇簽下契約成為月光騎士，他 (們) 捲入與埃及神祇相關的神秘事件。", "review": "以埃及神話為背景很酷，令人欽佩的是裡頭演員的演技，月光騎士本身有3種人格，也分別對應不同月光騎士，其它角色被對應的神祇附生後也能演出兩個人在同一個身體裡的不同表現。", "rating": 4.3, "image": "images/mcu_36.jpg", "characters": ["月光騎士", "阿米特"], "trailer": "is1f2svgE6I", "story_year": "2025年 初"},
+      {"id": 28, "title": "奇異博士2：失控多重宇宙", "type": "電影", "date": "2022/5/6", "status": "已上映", "box_office": "$955,775,804", "desc": "奇異博士與美國小姐探索多重宇宙，對抗受到黑暗神書影響而黑化的汪達。", "review": "主要靠汪達的演技在撐，其他人演技普普，最重要的還是引出 incursion 的概念，也是復聯5的關鍵事件。", "rating": 4.0, "image": "images/mcu_28.jpg", "characters": ["奇異博士", "緋紅女巫", "美國小姐"], "trailer": "cd6gxLg4Fuo", "story_year": "2025年"},
+      {"id": 37, "title": "驚奇少女", "type": "影集", "date": "2022/6/8", "status": "已完結", "episodes": "6集", "desc": "熱愛超級英雄的卡瑪拉因為阿嬤的手環突然獲得超能力，開始探索自己的身分與家族歷史。", "review": "一部極為普普的影集，最後面硬是要把她跟變種人扯上關係。", "rating": 3.0, "image": "images/mcu_37.jpg", "characters": ["驚奇少女"], "trailer": "KRvxrm1uuFY", "story_year": "2025年 秋季"},
+      {"id": 29, "title": "雷神索爾：愛與雷霆", "type": "電影", "date": "2022/7/8", "status": "已上映", "box_office": "$760,928,081", "desc": "索爾再次踏上宇宙冒險，並與珍·佛斯特重新相遇，共同面對屠神者格爾。", "review": "特效有瑕疵，雷神隨意擊敗宙斯太誇張，但我還是很喜歡屠神者。", "rating": 3.3, "image": "images/mcu_29.jpg", "characters": ["雷神索爾", "女雷神", "屠神者格爾", "宙斯"], "trailer": "Yh5ppFdYCVY", "story_year": "2025年"},
+      {"id": 38, "title": "律師女浩克", "type": "影集", "date": "2022/8/18", "status": "已完結", "episodes": "9集", "desc": "律師珍妮佛華特斯意外獲得浩克能力，在法律工作與超級英雄生活間尋找平衡。", "review": "前面還行，但越來越偏，甚至最後有注射浩克血清的人後製特效真的長得很怪很噁心。", "rating": 2.6, "image": "images/mcu_38.jpg", "characters": ["女浩克", "浩克", "夜魔俠"], "trailer": "a4G4m8GdexI", "story_year": "2025年"},
+      {"id": 30, "title": "黑豹2：瓦干達萬歲", "type": "電影", "date": "2022/11/11", "status": "已上映", "box_office": "$859,208,836", "desc": "瓦干達在失去國王後面臨政府對汎合金的覬覦，同時與同樣擁有大量汎合金的海底王國塔洛坎產生衝突。", "review": "由於黑豹的演員不幸過世才變成這樣的片，資源搶奪的背景很有魅力，反派很有魅力，兩個地球上最有錢的種族很有魅力，但最主要還是差在舒莉的體型不適合作為黑豹，很不搭。", "rating": 3.4, "image": "images/mcu_30.jpg", "characters": ["舒莉", "納摩", "鋼鐵心"], "trailer": "U1a66EWCvv4", "story_year": "2025年 底"}
     ],
     "phase5": [
-      {"id": 39, "title": "蟻人與黃蜂女：量子狂熱", "type": "電影", "date": "2023/2/17", "status": "已上映", "box_office": "$476,071,180", "desc": "蟻人與他的女兒凱西與黃蜂女一家無意間被吸入量子領域，與裡頭的生物一同對抗統治量子領域且想要逃出去征服各宇宙的征服者康。", "review": "量子領域的環境跟生物還行，但是康說的這麼厲害結果最後被大螞蟻跟蟻人打敗真的是比雷神打敗宙斯還誇張。", "rating": 2.7, "image": "images/mcu_39.jpg", "characters": ["蟻人", "黃蜂女", "征服者康"], "trailer": "zNWmjN_bzMU"},
-      {"id": 40, "title": "星際異攻隊3", "type": "電影", "date": "2023/5/5", "status": "已上映", "box_office": "$845,555,777", "desc": "星際異攻隊為拯救瀕危的火箭展開任務，同時逐步揭開他的身世與他的創造者至高進化。", "review": "如果有副標題的話肯定叫火箭的起源。我覺得有點很不錯的就是火箭終於承認自己是浣熊，算是閉環前面牠有出現過的所有電影。至高進化演技很瘋很炸裂。", "rating": 4.5, "image": "images/mcu_40.jpg", "characters": ["火箭浣熊", "星爵", "至高進化", "亞當術士"], "trailer": "PvKiPCgsH3c"},
-      {"id": 45, "title": "秘密入侵", "type": "影集", "date": "2023/6/21", "status": "已完結", "episodes": "6集", "desc": "尼克福瑞發現史克魯爾人滲透地球，必須在全球危機擴大前找出真相。", "review": "題材很有諜對諜的感覺很吸引人，但拍成一部屎，要劇情沒劇情，要特效沒特效 (都集中在最後一集，但有些看起來會覺得很怪)，要角色塑造也沒有，裡頭每個角色都被降智，最傻眼的就是竟然將羅德變成史克魯爾人的時間點設定為在英雄內戰中受傷後，直接毀了無限之戰與終局之戰。", "rating": 2.5, "image": "images/mcu_45.jpg", "characters": ["尼克福瑞", "塔洛斯", "吉亞"], "trailer": "RwEXWJ_4vZs"},
-      {"id": 46, "title": "洛基 第二季", "type": "影集", "date": "2023/10/5", "status": "已完結", "episodes": "6集", "desc": "洛基面臨更大的威脅，他的身體發生了時間溜脫的現象，最後他成功控制了他並能自由穿梭時空，試圖修復無法再承載時間線的時間織布機來阻止多重宇宙時間線的危機。最終他決定犧牲自己，破壞時間織布機，拉起所有時間線並登上與所有人隔絕的王座，成為故事之神。", "review": "自終局之戰後最愛的角色，就是因為洛基的角色塑造太好了，角色成長曲線很絲滑。從雷神索爾1想登上阿斯嘉王座、復聯1想統治地球、雷神2對奧丁下咒並假扮奧丁活著、雷神3背叛索爾，皆為反派角色，直到復聯3承認自己為奧丁之子接著死亡才轉正。而洛基在第二季最後選擇犧牲自己，登上與世隔絕、孤獨的王座，守護他所愛的人與朋友，與所有的時間線。影集最後的「For you. For all of us」同時對應在雷神1中洛基對奧丁所說的，同樣的話，不同的動機，後者是想要受到關注，想要受到器重；前者是甘願犧牲自己來挽救所有時間線上的生命。", "rating": 5.0, "image": "images/mcu_46.jpg", "characters": ["洛基", "梅比斯", "OB", "故事之神"], "trailer": "VQGl7HVVOdk"},
-      {"id": 41, "title": "驚奇隊長2", "type": "電影", "date": "2023/11/10", "status": "已上映", "box_office": "$206,136,825", "desc": "驚奇隊長、驚奇少女與莫妮卡共同面對克里人領導人，三人的力量也產生特殊連結。", "review": "比第一集還糟，劇情爛得跟狗屎一樣，真的不要再叫她最強復仇者了，演員人品不行，角色也不行。", "rating": 2.5, "image": "images/mcu_41.jpg", "characters": ["驚奇隊長", "驚奇少女", "莫妮卡"], "trailer": "InqT0_mABJc"},
-      {"id": 47, "title": "無限可能：假如...？ 第二季", "type": "動畫影集", "date": "2023/12/22", "status": "已完結", "episodes": "9集", "desc": "觀察者繼續探索不同宇宙，呈現更多改變關鍵事件後的全新世界。", "review": "還行，但越來越無吸引力。", "rating": 3.4, "image": "images/mcu_47.jpg", "characters": ["觀察者", "卡霍莉"], "trailer": "p8BzVUE1HnI"},
-      {"id": 48, "title": "回聲女", "type": "影集", "date": "2024/1/9", "status": "已完結", "episodes": "5集", "desc": "瑪雅回到家鄉面對自己的過去、家族與金霸王留下的影響。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_48.jpg", "characters": ["瑪雅", "金霸王", "夜魔俠"], "trailer": "mUWBOC6haa4"},
-      {"id": 42, "title": "死侍與金鋼狼", "type": "電影", "date": "2024/7/26", "status": "已上映", "box_office": "$1,338,073,645", "desc": "死侍捲入時間變異管理局的事件，與金鋼狼合作，展開在虛無的冒險，並解決遇到的威脅。", "review": "完全不能算電影，算是給漫威老粉的彩蛋回饋紀錄片，彩蛋跟致敬雖然非常多，但劇情非常薄弱單調。我第一次看是非常興奮爽快的，但只限前3次，而且這部片觀影門檻極高，一般民眾不會體驗到看到舊角色出現的快樂。", "rating": 3.5, "image": "images/mcu_42.jpg", "characters": ["死侍", "金鋼狼", "卡桑德拉諾瓦"], "trailer": "cd6gxLg4Fuo"},
-      {"id": 49, "title": "阿嘉莎：無所不在", "type": "影集", "date": "2024/9/18", "status": "已完結", "episodes": "9集", "desc": "阿嘉莎·在汪達幻視事件後召集其它女巫，踏上女巫之路，尋找恢復力量的答案。", "review": "中規中矩，主要是第7集撐起，如果只算第7集可以給到4.5分。", "rating": 3.7, "image": "images/mcu_49.jpg", "characters": ["阿嘉莎", "比利"], "trailer": "rutj_9fwGd0"},
-      {"id": 53, "title": "無限可能：假如...？ 第三季", "type": "動畫影集", "date": "2024/12/22", "status": "已完結", "episodes": "8集", "desc": "觀察者繼續探索更多平行宇宙與不同版本的漫威英雄。", "review": "越來越沒有吸引力，而且最後觀察者的上層竟然被打到投降，不過特效上還是挺不錯的，還引出了第一季的無限奧創。", "rating": 3.0, "image": "images/mcu_53.jpg", "characters": ["觀察者"], "trailer": "a63bMF1yN9E"},
-      {"id": 50, "title": "蜘蛛人：你的友好鄰居 第一季", "type": "動畫影集", "date": "2025/1/25", "status": "已完結", "episodes": "10集", "desc": "以另一個宇宙為背景，用動畫重新描寫彼得帕克成為蜘蛛人的早期歷程。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_50.jpg", "characters": ["蜘蛛人"], "trailer": "73_1biulkYk"},
-      {"id": 43, "title": "美國隊長：無畏新世界", "type": "電影", "date": "2025/2/14", "status": "已上映", "box_office": "$415,101,577", "desc": "山姆威爾遜正式承擔美國隊長的身份，在國際事件中面對新的政治與超級英雄危機。", "review": "美國隊長雖然能力上沒什麼特別突出的，但我只認克里斯伊凡的美隊，獵鷹真的不適合，而這部也是一直重拍一直延期，感覺上屬於硬要的電影。各國要搶奪亞德曼合金屬於整部片中最有氣氛的，紅浩克的 CGI 是覺得動作上有點怪怪的。", "rating": 3.7, "image": "images/mcu_43.jpg", "characters": ["美國隊長 (山姆)", "紅浩克"], "trailer": "EhtfaDnu2QA"},
-      {"id": 51, "title": "夜魔俠：重生 第一季", "type": "影集", "date": "2025/3/4", "status": "已完結", "episodes": "9集", "desc": "馬修白天為律師身分，夜晚為夜魔俠身分守護紐約，再次與金霸王產生衝突。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_51.jpg", "characters": ["夜魔俠", "金霸王", "制裁者"], "trailer": "4_K5IBhUzwo"},
-      {"id": 44, "title": "雷霆特攻隊*", "type": "電影", "date": "2025/5/2", "status": "已上映", "box_office": "$382,436,917", "desc": "一群皆犯過大錯的英雄/反派被迫組成團隊，共同對抗 Bob 的黑暗人格虛無。", "review": "聚集一群極度不熱門的英雄與反英雄，協力合作抵抗要他們性命的人，並且在最後所有人都學會與自己和解，並陪伴 Bob 說他不孤單來使得虛無人格能夠暫時消失。簡單來說是一部講述心理層面的電影，盼大家能夠適當緩解自己的心理壓力，是一部不是超英風格的超英作品。", "rating": 4.2, "image": "images/mcu_44.jpg", "characters": ["葉蓮娜", "酷寒戰士", "哨兵"], "trailer": "TuVFMyhOLBE"},
-      {"id": 52, "title": "鋼鐵心", "type": "影集", "date": "2025/6/24", "status": "已完結", "episodes": "6集", "desc": "MIT 的天才學生莉莉威廉斯利用自己的工程能力打造高科技裝甲，並面對來自神秘黑暗力量組織的威脅。", "review": "前面幾集對我來說還不錯，但後面是越走越偏了。鋼鐵心從一開始被學校開除、轉去幹壞事 (雖然一開始有推託但還是向金錢低頭)、後來開始見死不救人並逃走 (雖然不這樣就要換她自己死了)、為了保護自己於是將自身機甲融合魔法且害死 AI 閨蜜、最後與惡魔梅菲斯特的交易中還是選擇與惡魔交易，可以說是第一次有這種主角負向成長的作品。", "rating": 2.9, "image": "images/mcu_52.jpg", "characters": ["鋼鐵心", "紅斗篷"], "trailer": "DM1jyCaen5o"}
+      {"id": 39, "title": "蟻人與黃蜂女：量子狂熱", "type": "電影", "date": "2023/2/17", "status": "已上映", "box_office": "$476,071,180", "desc": "蟻人與他的女兒凱西與黃蜂女一家無意間被吸入量子領域，與裡頭的生物一同對抗統治量子領域且想要逃出去征服各宇宙的征服者康。", "review": "量子領域的環境跟生物還行，但是康說的這麼厲害結果最後被大螞蟻跟蟻人打敗真的是比雷神打敗宙斯還誇張。", "rating": 2.7, "image": "images/mcu_39.jpg", "characters": ["蟻人", "黃蜂女", "征服者康"], "trailer": "zNWmjN_bzMU", "story_year": "2026年 初"},
+      {"id": 40, "title": "星際異攻隊3", "type": "電影", "date": "2023/5/5", "status": "已上映", "box_office": "$845,555,777", "desc": "星際異攻隊為拯救瀕危的火箭展開任務，同時逐步揭開他的身世與他的創造者至高進化。", "review": "如果有副標題的話肯定叫火箭的起源。我覺得有點很不錯的就是火箭終於承認自己是浣熊，算是閉環前面牠有出現過的所有電影。至高進化演技很瘋很炸裂。", "rating": 4.5, "image": "images/mcu_40.jpg", "characters": ["火箭浣熊", "星爵", "至高進化", "亞當術士"], "trailer": "PvKiPCgsH3c", "story_year": "2026年"},
+      {"id": 45, "title": "秘密入侵", "type": "影集", "date": "2023/6/21", "status": "已完結", "episodes": "6集", "desc": "尼克福瑞發現史克魯爾人滲透地球，必須在全球危機擴大前找出真相。", "review": "題材很有諜對諜的感覺很吸引人，但拍成一部屎，要劇情沒劇情，要特效沒特效 (都集中在最後一集，但有些看起來會覺得很怪)，要角色塑造也沒有，裡頭每個角色都被降智，最傻眼的就是竟然將羅德變成史克魯爾人的時間點設定為在英雄內戰中受傷後，直接毀了無限之戰與終局之戰。", "rating": 2.5, "image": "images/mcu_45.jpg", "characters": ["尼克福瑞", "塔洛斯", "吉亞"], "trailer": "RwEXWJ_4vZs", "story_year": "2026年"},
+      {"id": 46, "title": "洛基 第二季", "type": "影集", "date": "2023/10/5", "status": "已完結", "episodes": "6集", "desc": "洛基面臨更大的威脅，他的身體發生了時間溜脫的現象，最後他成功控制了他並能自由穿梭時空，試圖修復無法再承載時間線的時間織布機來阻止多重宇宙時間線的危機。最終他決定犧牲自己，破壞時間織布機，拉起所有時間線並登上與所有人隔絕的王座，成為故事之神。", "review": "自終局之戰後最愛的角色，就是因為洛基的角色塑造太好了，角色成長曲線很絲滑。從雷神索爾1想登上阿斯嘉王座、復聯1想統治地球、雷神2對奧丁下咒並假扮奧丁活著、雷神3背叛索爾，皆為反派角色，直到復聯3承認自己為奧丁之子接著死亡才轉正。而洛基在第二季最後選擇犧牲自己，登上與世隔絕、孤獨的王座，守護他所愛的人與朋友，與所有的時間線。影集最後的「For you. For all of us」同時對應在雷神1中洛基對奧丁所說的，同樣的話，不同的動機，後者是想要受到關注，想要受到器重；前者是甘願犧牲自己來挽救所有時間線上的生命。", "rating": 5.0, "image": "images/mcu_46.jpg", "characters": ["洛基", "梅比斯", "OB", "故事之神"], "trailer": "VQGl7HVVOdk", "story_year": "時間之外 (TVA)"},
+      {"id": 41, "title": "驚奇隊長2", "type": "電影", "date": "2023/11/10", "status": "已上映", "box_office": "$206,136,825", "desc": "驚奇隊長、驚奇少女與莫妮卡共同面對克里人領導人，三人的力量也產生特殊連結。", "review": "比第一集還糟，劇情爛得跟狗屎一樣，真的不要再叫她最強復仇者了，演員人品不行，角色也不行。", "rating": 2.5, "image": "images/mcu_41.jpg", "characters": ["驚奇隊長", "驚奇少女", "莫妮卡"], "trailer": "InqT0_mABJc", "story_year": "2026年"},
+      {"id": 47, "title": "無限可能：假如...？ 第二季", "type": "動畫影集", "date": "2023/12/22", "status": "已完結", "episodes": "9集", "desc": "觀察者繼續探索不同宇宙，呈現更多改變關鍵事件後的全新世界。", "review": "還行，但越來越無吸引力。", "rating": 3.4, "image": "images/mcu_47.jpg", "characters": ["觀察者", "卡霍莉"], "trailer": "p8BzVUE1HnI", "story_year": "多重宇宙各時間點"},
+      {"id": 48, "title": "回聲女", "type": "影集", "date": "2024/1/9", "status": "已完結", "episodes": "5集", "desc": "瑪雅回到家鄉面對自己的過去、家族與金霸王留下的影響。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_48.jpg", "characters": ["瑪雅", "金霸王", "夜魔俠"], "trailer": "mUWBOC6haa4", "story_year": "2025年 底"},
+      {"id": 42, "title": "死侍與金鋼狼", "type": "電影", "date": "2024/7/26", "status": "已上映", "box_office": "$1,338,073,645", "desc": "死侍捲入時間變異管理局的事件，與金鋼狼合作，展開在虛無的冒險，並解決遇到的威脅。", "review": "完全不能算電影，算是給漫威老粉的彩蛋回饋紀錄片，彩蛋跟致敬雖然非常多，但劇情非常薄弱單調。我第一次看是非常興奮爽快的，但只限前3次，而且這部片觀影門檻極高，一般民眾不會體驗到看到舊角色出現的快樂。", "rating": 3.5, "image": "images/mcu_42.jpg", "characters": ["死侍", "金鋼狼", "卡桑德拉諾瓦"], "trailer": "cd6gxLg4Fuo", "story_year": "2024-2026年 / 虛無之地"},
+      {"id": 49, "title": "阿嘉莎：無所不在", "type": "影集", "date": "2024/9/18", "status": "已完結", "episodes": "9集", "desc": "阿嘉莎·在汪達幻視事件後召集其它女巫，踏上女巫之路，尋找恢復力量的答案。", "review": "中規中矩，主要是第7集撐起，如果只算第7集可以給到4.5分。", "rating": 3.7, "image": "images/mcu_49.jpg", "characters": ["阿嘉莎", "比利"], "trailer": "rutj_9fwGd0", "story_year": "2026年 (汪達幻視約三年後)"},
+      {"id": 53, "title": "無限可能：假如...？ 第三季", "type": "動畫影集", "date": "2024/12/22", "status": "已完結", "episodes": "8集", "desc": "觀察者繼續探索更多平行宇宙與不同版本的漫威英雄。", "review": "越來越沒有吸引力，而且最後觀察者的上層竟然被打到投降，不過特效上還是挺不錯的，還引出了第一季的無限奧創。", "rating": 3.0, "image": "images/mcu_53.jpg", "characters": ["觀察者"], "trailer": "a63bMF1yN9E", "story_year": "多重宇宙各時間點"},
+      {"id": 50, "title": "蜘蛛人：你的友好鄰居 第一季", "type": "動畫影集", "date": "2025/1/25", "status": "已完結", "episodes": "10集", "desc": "以另一個宇宙為背景，用動畫重新描寫彼得帕克成為蜘蛛人的早期歷程。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_50.jpg", "characters": ["蜘蛛人"], "trailer": "73_1biulkYk", "story_year": "平行宇宙早期"},
+      {"id": 43, "title": "美國隊長：無畏新世界", "type": "電影", "date": "2025/2/14", "status": "已上映", "box_office": "$415,101,577", "desc": "山姆威爾遜正式承擔美國隊長的身份，在國際事件中面對新的政治與超級英雄危機。", "review": "美國隊長雖然能力上沒什麼特別突出的，但我只認克里斯伊凡的美隊，獵鷹真的不適合，而這部也是一直重拍一直延期，感覺上屬於硬要的電影。各國要搶奪亞德曼合金屬於整部片中最有氣氛的，紅浩克的 CGI 是覺得動作上有點怪怪的。", "rating": 3.7, "image": "images/mcu_43.jpg", "characters": ["美國隊長 (山姆)", "紅浩克"], "trailer": "EhtfaDnu2QA", "story_year": "2026年"},
+      {"id": 51, "title": "夜魔俠：重生 第一季", "type": "影集", "date": "2025/3/4", "status": "已完結", "episodes": "9集", "desc": "馬修白天為律師身分，夜晚為夜魔俠身分守護紐約，再次與金霸王產生衝突。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_51.jpg", "characters": ["夜魔俠", "金霸王", "制裁者"], "trailer": "4_K5IBhUzwo", "story_year": "2026年"},
+      {"id": 44, "title": "雷霆特攻隊*", "type": "電影", "date": "2025/5/2", "status": "已上映", "box_office": "$382,436,917", "desc": "一群皆犯過大錯的英雄/反派被迫組成團隊，共同對抗 Bob 的黑暗人格虛無。", "review": "聚集一群極度不熱門的英雄與反英雄，協力合作抵抗要他們性命的人，並且在最後所有人都學會與自己和解，並陪伴 Bob 說他不孤單來使得虛無人格能夠暫時消失。簡單來說是一部講述心理層面的電影，盼大家能夠適當緩解自己的心理壓力，是一部不是超英風格的超英作品。", "rating": 4.2, "image": "images/mcu_44.jpg", "characters": ["葉蓮娜", "酷寒戰士", "哨兵"], "trailer": "TuVFMyhOLBE", "story_year": "2026年"},
+      {"id": 52, "title": "鋼鐵心", "type": "影集", "date": "2025/6/24", "status": "已完結", "episodes": "6集", "desc": "MIT 的天才學生莉莉威廉斯利用自己的工程能力打造高科技裝甲，並面對來自神秘黑暗力量組織的威脅。", "review": "前面幾集對我來說還不錯，但後面是越走越偏了。鋼鐵心從一開始被學校開除、轉去幹壞事 (雖然一開始有推託但還是向金錢低頭)、後來開始見死不救人並逃走 (雖然不這樣就要換她自己死了)、為了保護自己於是將自身機甲融合魔法且害死 AI 閨蜜、最後與惡魔梅菲斯特的交易中還是選擇與惡魔交易，可以說是第一次有這種主角負向成長的作品。", "rating": 2.9, "image": "images/mcu_52.jpg", "characters": ["鋼鐵心", "紅斗篷"], "trailer": "DM1jyCaen5o", "story_year": "2026年"}
     ],
     "phase6": [
-      {"id": 60, "title": "驚奇4超人：第一步", "type": "電影", "date": "2025/7/25", "status": "已上映", "box_office": "$521,858,728", "desc": "以復古未來主義風格呈現的世界中，驚奇4超人與該世界的人民得到銀色衝浪手宣告的末日預言，行星吞噬者即將吞噬地球。", "review": "宇宙的呈現相當壯麗，但劇情過於平淡，驚奇4超人表現一般，且行星吞噬者沒有到很讓人感到有非常具有威脅性，基本上就是各方互相展示技能而已。", "rating": 4.1, "image": "images/mcu_60.jpg", "characters": ["神奇先生", "隱形女", "霹靂火", "石頭人", "行星吞噬者"], "trailer": "sdhbyuUSkgg"},
-      {"id": 54, "title": "瓦干達之眼", "type": "動畫影集", "date": "2025/8/1", "status": "已完結", "episodes": "4集", "desc": "聚焦瓦干達歷史中不同時代的勇士，探索他們在世界各地執行任務的故事。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_54.jpg", "characters": ["朵拉親衛隊"], "trailer": "D6L9VQG_LNQ"},
-      {"id": 55, "title": "漫威喪屍", "type": "動畫影集", "date": "2025/9/24", "status": "已完結", "episodes": "4集", "desc": "在充滿喪屍的世界中，倖存者面對來自喪屍汪達帶領的喪屍軍團。", "review": "題材好，但過於降智，唯二看點：月光刀鋒砍殺喪屍幽靈 (預告片就播完了整部片最精彩的部分)、無限浩克抵禦喪屍大軍。", "rating": 3.1, "image": "images/mcu_55.jpg", "characters": ["喪屍汪達", "月光刀鋒", "無限浩克"], "trailer": "__G29GP1f7E"},
-      {"id": 56, "title": "神力人", "type": "影集", "date": "2026/1/27", "status": "已完結", "episodes": "8集", "desc": "演員兼特技演員西蒙威廉斯捲入超級英雄世界，聚焦名聲、演藝圈與英雄身分。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_56.jpg", "characters": ["神力人"], "trailer": "nc0x4wFPMcE"},
-      {"id": 57, "title": "夜魔俠：重生 第二季", "type": "影集", "date": "2026/3/24", "status": "已完結", "episodes": "8集", "desc": "夜魔俠故事延續，馬修與紐約的新舊勢力持續交鋒。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_57.jpg", "characters": ["夜魔俠", "金霸王"], "trailer": "Dxsciqqr4Fk"},
-      {"id": 61, "title": "蜘蛛人：重生日", "type": "電影", "date": "2026/7/31", "status": "已上映", "box_office": "$2,495,949,664", "desc": "彼得帕克將在全世界都遺忘彼得是蜘蛛人這件事後，學習如何在正常人的身份與英雄的角色之間達成平衡。", "review": "文戲很好，打戲很好，並且整個劇情架構以上秒獲得歡呼下秒要面對感情等各個正反相互交叉，來展現出蜘蛛人這層身份當得越成功，Peter 這層身份就越失敗。", "rating": 4.7, "image": "images/mcu_61.jpg", "characters": ["蜘蛛人"], "trailer": "SVGbr05SZYw"},
-      {"id": 58, "title": "幻視任務", "type": "影集", "date": "2026/10/14", "status": "即將上映", "episodes": "8集", "desc": "幻視相關故事的後續作品，將延伸第四階段留下的角色與故事線。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_58.jpg", "characters": ["白幻視"], "trailer": "ETMD30oezWg"},
-      {"id": 62, "title": "復仇者聯盟：末日崛起", "type": "電影", "date": "2026/12/18", "status": "即將上映", "desc": "復仇者聯盟系列的新篇章，三個宇宙的眾英雄要處理宇宙衝撞的危機，並與做為宇宙級反派的末日博士對決。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_62.jpg", "characters": ["末日博士", "復仇者聯盟"], "trailer": "EPQ7_-M4yjI"},
-      {"id": 59, "title": "蜘蛛人：你的友好鄰居 第二季", "type": "動畫影集", "date": "2027年1月", "status": "製作中", "episodes": "未知", "desc": "友好鄰居蜘蛛人動畫系列第二季，延續另一宇宙中彼得·帕克的成長與英雄冒險。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_59.jpg", "characters": ["蜘蛛人"], "trailer": "L030K5R7e54"},
-      {"id": 63, "title": "復仇者聯盟：秘密戰爭", "type": "電影", "date": "2027/12/17", "status": "製作中", "desc": "尚無資訊。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_63.jpg", "characters": ["末日博士"], "trailer": "L030K5R7e54"}
+      {"id": 60, "title": "驚奇4超人：第一步", "type": "電影", "date": "2025/7/25", "status": "已上映", "box_office": "$521,858,728", "desc": "以復古未來主義風格呈現的世界中，驚奇4超人與該世界的人民得到銀色衝浪手宣告的末日預言，行星吞噬者即將吞噬地球。", "review": "宇宙的呈現相當壯麗，但劇情過於平淡，驚奇4超人表現一般，且行星吞噬者沒有到很讓人感到有非常具有威脅性，基本上就是各方互相展示技能而已。", "rating": 4.1, "image": "images/mcu_60.jpg", "characters": ["神奇先生", "隱形女", "霹靂火", "石頭人", "行星吞噬者"], "trailer": "sdhbyuUSkgg", "story_year": "1960年代 (平行宇宙)"},
+      {"id": 54, "title": "瓦干達之眼", "type": "動畫影集", "date": "2025/8/1", "status": "已完結", "episodes": "4集", "desc": "聚焦瓦干達歷史中不同時代的勇士，探索他們在世界各地執行任務的故事。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_54.jpg", "characters": ["朵拉親衛隊"], "trailer": "D6L9VQG_LNQ", "story_year": "瓦干達歷史跨時代"},
+      {"id": 55, "title": "漫威喪屍", "type": "動畫影集", "date": "2025/9/24", "status": "已完結", "episodes": "4集", "desc": "在充滿喪屍的世界中，倖存者面對來自喪屍汪達帶領的喪屍軍團。", "review": "題材好，但過於降智，唯二看點：月光刀鋒砍殺喪屍幽靈 (預告片就播完了整部片最精彩的部分)、無限浩克抵禦喪屍大軍。", "rating": 3.1, "image": "images/mcu_55.jpg", "characters": ["喪屍汪達", "月光刀鋒", "無限浩克"], "trailer": "__G29GP1f7E", "story_year": "喪屍平行宇宙"},
+      {"id": 56, "title": "神力人", "type": "影集", "date": "2026/1/27", "status": "已完結", "episodes": "8集", "desc": "演員兼特技演員西蒙威廉斯捲入超級英雄世界，聚焦名聲、演藝圈與英雄身分。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_56.jpg", "characters": ["神力人"], "trailer": "nc0x4wFPMcE", "story_year": "2026年"},
+      {"id": 57, "title": "夜魔俠：重生 第二季", "type": "影集", "date": "2026/3/24", "status": "已完結", "episodes": "8集", "desc": "夜魔俠故事延續，馬修與紐約的新舊勢力持續交鋒。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_57.jpg", "characters": ["夜魔俠", "金霸王"], "trailer": "Dxsciqqr4Fk", "story_year": "2026年"},
+      {"id": 61, "title": "蜘蛛人：重生日", "type": "電影", "date": "2026/7/31", "status": "已上映", "box_office": "$2,495,949,664", "desc": "彼得帕克將在全世界都遺忘彼得是蜘蛛人這件事後，學習如何在正常人的身份與英雄的角色之間達成平衡。", "review": "文戲很好，打戲很好，並且整個劇情架構以上秒獲得歡呼下秒要面對感情等各個正反相互交叉，來展現出蜘蛛人這層身份當得越成功，Peter 這層身份就越失敗。", "rating": 4.7, "image": "images/mcu_61.jpg", "characters": ["蜘蛛人"], "trailer": "SVGbr05SZYw", "story_year": "2026年"},
+      {"id": 58, "title": "幻視任務", "type": "影集", "date": "2026/10/14", "status": "即將上映", "episodes": "8集", "desc": "幻視相關故事的後續作品，將延伸第四階段留下的角色與故事線。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_58.jpg", "characters": ["白幻視"], "trailer": "ETMD30oezWg", "story_year": "2026年"},
+      {"id": 62, "title": "復仇者聯盟：末日崛起", "type": "電影", "date": "2026/12/18", "status": "即將上映", "desc": "復仇者聯盟系列的新篇章，三個宇宙的眾英雄要處理宇宙衝撞的危機，並與做為宇宙級反派的末日博士對決。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_62.jpg", "characters": ["末日博士", "復仇者聯盟"], "trailer": "EPQ7_-M4yjI", "story_year": "2026年"},
+      {"id": 59, "title": "蜘蛛人：你的友好鄰居 第二季", "type": "動畫影集", "date": "2027年1月", "status": "製作中", "episodes": "未知", "desc": "友好鄰居蜘蛛人動畫系列第二季，延續另一宇宙中彼得·帕克的成長與英雄冒險。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_59.jpg", "characters": ["蜘蛛人"], "trailer": "L030K5R7e54", "story_year": "平行宇宙"},
+      {"id": 63, "title": "復仇者聯盟：秘密戰爭", "type": "電影", "date": "2027/12/17", "status": "製作中", "desc": "尚無資訊。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_63.jpg", "characters": ["末日博士"], "trailer": "L030K5R7e54", "story_year": "多重宇宙大戰"}
     ],
     "phase7": [
-      {"id": 66, "title": "惡靈戰警", "type": "電影", "date": "2028年", "status": "開發中", "desc": "尚無資訊。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_66.jpg", "characters": ["惡靈戰警"], "trailer": "L030K5R7e54", "phase": "第七階段"},
-      {"id": 64, "title": "X戰警", "type": "電影", "date": "2028/5/5", "status": "製作中", "desc": "尚無資訊。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_64.jpg", "characters": ["X教授", "萬磁王", "金鋼狼"], "trailer": "L030K5R7e54", "phase": "第七階段"},
-      {"id": 65, "title": "黑豹3", "type": "電影", "date": "2028/12/15", "status": "開發中", "desc": "尚無資訊。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_65.jpg", "characters": ["黑豹"], "trailer": "L030K5R7e54", "phase": "第七階段"},
-      {"id": 67, "title": "裝甲戰爭", "type": "電影", "date": "未知", "status": "開發中", "desc": "尚無資訊。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_67.jpg", "characters": ["戰爭機器"], "trailer": "L030K5R7e54", "phase": "未知階段"},
-      {"id": 68, "title": "未命名新星電影", "type": "電影", "date": "未知", "status": "開發中", "desc": "尚無資訊。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_68.jpg", "characters": ["新星"], "trailer": "L030K5R7e54", "phase": "未知階段"},
-      {"id": 69, "title": "尚氣2", "type": "電影", "date": "未知", "status": "開發中", "desc": "尚氣2相關資料。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_69.jpg", "characters": ["尚氣"], "trailer": "L030K5R7e54", "phase": "未知階段"}
+      {"id": 66, "title": "惡靈戰警", "type": "電影", "date": "2028年", "status": "開發中", "desc": "尚無資訊。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_66.jpg", "characters": ["惡靈戰警"], "trailer": "L030K5R7e54", "phase": "第七階段", "story_year": "未來未知時間"},
+      {"id": 64, "title": "X戰警", "type": "電影", "date": "2028/5/5", "status": "製作中", "desc": "尚無資訊。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_64.jpg", "characters": ["X教授", "萬磁王", "金鋼狼"], "trailer": "L030K5R7e54", "phase": "第七階段", "story_year": "未來未知時間"},
+      {"id": 65, "title": "黑豹3", "type": "電影", "date": "2028/12/15", "status": "開發中", "desc": "尚無資訊。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_65.jpg", "characters": ["黑豹"], "trailer": "L030K5R7e54", "phase": "第七階段", "story_year": "未來未知時間"},
+      {"id": 67, "title": "裝甲戰爭", "type": "電影", "date": "未知", "status": "開發中", "desc": "尚無資訊。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_67.jpg", "characters": ["戰爭機器"], "trailer": "L030K5R7e54", "phase": "未知階段", "story_year": "未知時間"},
+      {"id": 68, "title": "未命名新星電影", "type": "電影", "date": "未知", "status": "開發中", "desc": "尚無資訊。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_68.jpg", "characters": ["新星"], "trailer": "L030K5R7e54", "phase": "未知階段", "story_year": "未知時間"},
+      {"id": 69, "title": "尚氣2", "type": "電影", "date": "未知", "status": "開發中", "desc": "尚氣2相關資料。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_69.jpg", "characters": ["尚氣"], "trailer": "L030K5R7e54", "phase": "未知階段", "story_year": "未知時間"}
     ]
   };
 
   let currentTrailerCode = "";
   let currentSelectedChar = "";
   let currentGroupKey = "";
+  let currentTimelineMode = "release";
 
   // 初始化 7 個階段頁面的 HTML 結構
   function initPages() {
@@ -886,8 +1095,14 @@ phase7 以後為變種人傳奇。</p>
       const extraText = item.box_office ? `票房：${item.box_office}` : `狀態：${item.status}`;
       const phaseTag = item.phase ? `<span style="opacity:0.6; margin-left:4px;">[${item.phase}]</span>` : '';
 
+      // 3. 5分作品黃金呼吸燈標記
+      const isGoldStar = item.rating === 5 || item.rating === 5.0;
+      const goldClass = isGoldStar ? 'gold-star-5' : '';
+      const goldBadgeHtml = isGoldStar ? `<div class="gold-badge">★ 5.0 殿堂神作</div>` : '';
+
       return `
-        <div class="mcu-card" onclick="openModal('${key}', ${item.id})">
+        <div class="mcu-card ${goldClass}" onclick="openModal('${key}', ${item.id})">
+          ${goldBadgeHtml}
           <div>
             <div class="mcu-card-header">
               <div class="mcu-title">${item.title}</div>
@@ -905,6 +1120,56 @@ phase7 以後為變種人傳奇。</p>
         </div>
       `;
     }).join('');
+  }
+
+  // 時間軸渲染邏輯
+  function renderTimeline() {
+    const container = document.getElementById('timeline-list');
+    if (!container) return;
+
+    let allItems = [];
+    for (const [pKey, items] of Object.entries(mcuData)) {
+      items.forEach(item => {
+        allItems.push({ ...item, groupKey: pKey });
+      });
+    }
+
+    if (currentTimelineMode === 'release') {
+      allItems.sort((a, b) => a.date.localeCompare(b.date));
+    } else {
+      // 依 MCU 故事時間軸自訂邏輯排序
+      const storyPriority = {
+        5: 1, 21: 2, 1: 3, 2: 4, 3: 5, 4: 6, 6: 7, 7: 8, 8: 9, 9: 10,
+        10: 11, 15: 12, 11: 13, 12: 14, 13: 15, 24: 16, 18: 17, 16: 18,
+        14: 19, 17: 20, 20: 21, 19: 22, 22: 23, 31: 24, 32: 25, 23: 26,
+        25: 27, 26: 28, 35: 29, 27: 30, 33: 31, 36: 32, 28: 33, 37: 34,
+        29: 35, 38: 36, 30: 37, 39: 38, 40: 39, 45: 40, 46: 41, 41: 42
+      };
+      allItems.sort((a, b) => (storyPriority[a.id] || 999) - (storyPriority[b.id] || 999));
+    }
+
+    container.innerHTML = allItems.map(item => {
+      const timeTag = currentTimelineMode === 'release' ? item.date : (item.story_year || item.date);
+      const icon = item.type.includes('電影') ? '🎬' : '📺';
+      return `
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content-box" onclick="openModal('${item.groupKey}', ${item.id})">
+            <div class="timeline-time-tag">📌 ${timeTag}</div>
+            <div style="font-weight:700; font-size:1.1rem; color:var(--white); margin-bottom:4px;">${item.title}</div>
+            <div style="font-size:12px; color:var(--faint); font-family:'JetBrains Mono';">${icon} ${item.type} | 評分: ★${item.rating}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // 時間軸模式切換
+  function toggleTimelineMode(mode) {
+    currentTimelineMode = mode;
+    document.getElementById('btn-release-order').classList.toggle('active', mode === 'release');
+    document.getElementById('btn-story-order').classList.toggle('active', mode === 'story');
+    renderTimeline();
   }
 
   // 開啟作品詳細 Modal
@@ -1020,7 +1285,11 @@ phase7 以後為變種人傳奇。</p>
       const targetPage = document.getElementById('page-' + pageKey);
       if (targetPage) {
         targetPage.classList.add('active');
-        renderFilteredCards(pageKey);
+        if (pageKey === 'timeline') {
+          renderTimeline();
+        } else {
+          renderFilteredCards(pageKey);
+        }
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }
