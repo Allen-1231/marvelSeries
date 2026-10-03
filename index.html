@@ -681,7 +681,7 @@ phase7 以後為變種人傳奇。</p>
 <script src="tooplate-2167-orbital-script.js"></script>
 
 <script>
-  // 69 部作品完整資料庫（已完整輸入您 CSV 的所有影評與評分數字）
+  // 69 部作品完整資料庫 (已完全同步您最新的 CSV 內容)
   const mcuData = {
     "phase1": [
       {"id": 1, "title": "鋼鐵人", "type": "電影", "date": "2008/5/2", "status": "已上映", "box_office": "$585,796,247", "desc": "描述億萬富翁兼工程師東尼史塔克在遭遇綁架危機後打造高科技裝甲逃出，後續不斷測試，增強與優化裝甲的性能，最後成為鋼鐵人的過程。", "review": "從原本被綁架到打造戰衣，從原本的軍火商到成為拯救居民的英雄，角色成長曲線不錯。RDJ 風趣的演活了這個角色，鋼鐵人這部片就此開啟了 MCU。", "rating": 4.5, "image": "images/mcu_1.jpg", "characters": ["鋼鐵人", "小辣椒", "羅德上校", "尼克福瑞"], "trailer": "8ugaeA-nMTc"},
@@ -938,7 +938,7 @@ phase7 以後為變種人傳奇。</p>
     const trailerBtn = document.getElementById('modal-trailer-btn');
     trailerBtn.style.display = currentTrailerCode ? 'inline-flex' : 'none';
 
-    // 登場角色標籤 (點擊跳出角色照片 Modal)
+    // 登場角色標籤
     const tagsBox = document.getElementById('modal-char-tags');
     if (item.characters && item.characters.length > 0) {
       tagsBox.innerHTML = item.characters.map(c => `<span class="char-tag" onclick="showCharPhoto('${c}')">#${c}</span>`).join('');
@@ -953,7 +953,7 @@ phase7 以後為變種人傳奇。</p>
     document.getElementById('detail-modal').classList.add('active');
   }
 
-  // 開啟角色照片 Modal (讀取 images/characters/角色名.jpg)
+  // 開啟角色照片 Modal
   function showCharPhoto(charName) {
     currentSelectedChar = charName;
     document.getElementById('char-modal-name').innerText = charName;
@@ -965,7 +965,7 @@ phase7 以後為變種人傳奇。</p>
     document.getElementById('char-modal').classList.add('active');
   }
 
-  // 在角色 Modal 點擊搜尋按鈕
+  // 角色 Modal 內部的搜尋按鈕
   function searchByRoleName() {
     closeCharModal();
     closeModal();
