@@ -106,7 +106,7 @@
     margin-top: 16px;
   }
 
-  /* 2. 微互動懸浮效果 */
+  /* 微互動懸浮效果 */
   .mcu-card {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -119,12 +119,13 @@
     justify-content: space-between;
     cursor: pointer;
     position: relative;
+    overflow: hidden;
   }
   .mcu-card:hover {
     transform: translateY(-8px) scale(1.02);
   }
 
-  /* 1. 各階段對應卡片 Hover 顏色懸浮光暈 */
+  /* 各階段對應卡片 Hover 顏色懸浮光暈 */
   #page-phase1 .mcu-card:hover { border-color: var(--p1-color); box-shadow: 0 8px 25px rgba(0, 136, 255, 0.35); }
   #page-phase2 .mcu-card:hover { border-color: var(--p2-color); box-shadow: 0 8px 25px rgba(230, 36, 41, 0.35); }
   #page-phase3 .mcu-card:hover { border-color: var(--p3-color); box-shadow: 0 8px 25px rgba(155, 81, 224, 0.35); }
@@ -133,7 +134,7 @@
   #page-phase6 .mcu-card:hover { border-color: var(--p6-color); box-shadow: 0 8px 25px rgba(39, 174, 96, 0.35); }
   #page-phase7 .mcu-card:hover { border-color: var(--p7-color); box-shadow: 0 8px 25px rgba(255, 0, 127, 0.35); }
 
-  /* 3. 5分作品黃金呼吸光暈特效 */
+  /* 5分作品黃金呼吸光暈特效 */
   @keyframes goldPulsing {
     0% {
       border-color: rgba(255, 215, 0, 0.5);
@@ -171,6 +172,54 @@
     letter-spacing: 0.5px;
   }
 
+  /* 3. 死侍驚訝彩蛋樣式 */
+  .deadpool-easter-egg {
+    position: absolute;
+    bottom: -80px;
+    right: -10px;
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(circle, #e62429 60%, #a00);
+    border-radius: 50% 50% 0 0;
+    border: 3px solid #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10;
+    pointer-events: none;
+    box-shadow: 0 0 15px rgba(230, 36, 41, 0.8);
+  }
+  .deadpool-eyes {
+    display: flex;
+    gap: 8px;
+    margin-top: 5px;
+  }
+  .deadpool-eye {
+    width: 20px;
+    height: 28px;
+    background: #fff;
+    border-radius: 50%;
+    border: 3px solid #000;
+    transform: rotate(-10deg);
+  }
+  .deadpool-eye.right {
+    transform: rotate(10deg);
+  }
+  .deadpool-hands {
+    font-size: 22px;
+    margin-top: -12px;
+    animation: shakeHands 0.5s infinite alternate;
+  }
+  @keyframes shakeHands {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.15) rotate(3deg); }
+  }
+  .mcu-card.deadpool-card:hover .deadpool-easter-egg {
+    transform: translateY(-85px);
+  }
+
   .mcu-card-header {
     display: flex;
     justify-content: space-between;
@@ -185,7 +234,6 @@
     line-height: 1.3;
   }
 
-  /* 1. 各階段標籤專屬顏色 */
   .mcu-badge {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
@@ -226,6 +274,81 @@
   .mcu-detail-link {
     color: var(--cyan);
     font-size: 11px;
+  }
+
+  /* 2. 每日隨機抽片區塊樣式 */
+  .daily-picker-section {
+    max-width: 600px;
+    margin: 40px auto 20px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(230, 36, 41, 0.4);
+    border-radius: 20px;
+    padding: 24px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 25px rgba(230, 36, 41, 0.2);
+  }
+  .daily-picker-btn {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #e62429, #b31217);
+    border: none;
+    padding: 12px 32px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(230, 36, 41, 0.5);
+  }
+  .daily-picker-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(230, 36, 41, 0.8);
+  }
+  .daily-picker-btn:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--faint);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  /* MARVEL 動畫抽片 Modal */
+  .draw-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    background: rgba(0, 0, 0, 0.95);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .draw-modal-overlay.active {
+    display: flex;
+  }
+  .marvel-logo-anim {
+    font-family: 'Impact', 'Space Grotesk', sans-serif;
+    font-size: 4rem;
+    color: #fff;
+    background: #e62429;
+    padding: 0 20px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    border: 3px solid #fff;
+    box-shadow: 0 0 50px rgba(230, 36, 41, 0.8);
+    animation: marvelIntro 2.5s ease-in-out infinite alternate;
+  }
+  @keyframes marvelIntro {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 20px #fff); }
+    100% { transform: scale(0.95); }
+  }
+  .draw-rolling-text {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--cyan);
+    font-size: 1.5rem;
+    margin-top: 30px;
+    letter-spacing: 2px;
   }
 
   /* 作品詳細內頁 Modal */
@@ -346,7 +469,7 @@
     margin-bottom: 12px;
   }
   
-  /* 個人影評紫色外框區塊 */
+  /* 個人影評紫色區塊 */
   .modal-review-box {
     background: rgba(139, 92, 246, 0.08);
     border: 1px solid rgba(139, 92, 246, 0.25);
@@ -725,6 +848,15 @@ phase7 以後為變種人傳奇。</p>
       </div>
     </div>
   </div>
+
+  <!-- 2. 主頁每日隨機抽片區塊 -->
+  <div class="daily-picker-section">
+    <div style="font-family:'JetBrains Mono'; color:var(--cyan); font-size:13px; margin-bottom:8px;">🎲 DAILY MARVEL MOVIE</div>
+    <div style="color:var(--white); font-weight:700; font-size:1.2rem; margin-bottom:12px;">今天重溫哪一部漫威？</div>
+    <button class="daily-picker-btn" id="draw-btn" onclick="startDailyDraw()">🎬 抽取今日漫威作品 (每日1次)</button>
+    <div id="draw-status-msg" style="font-size:12px; color:var(--faint); margin-top:10px;">每日 00:00 自動刷新次數</div>
+  </div>
+
   <div class="hero-controls">
     <div class="ctrl">
       <span class="ctrl-label">圖片模式</span>
@@ -815,6 +947,12 @@ phase7 以後為變種人傳奇。</p>
   <div class="timeline-container" id="timeline-list"></div>
 </main>
 
+<!-- 2. MARVEL 跑字開場動畫抽片 Modal -->
+<div class="draw-modal-overlay" id="draw-modal">
+  <div class="marvel-logo-anim">MARVEL</div>
+  <div class="draw-rolling-text" id="draw-rolling-text">正在選擇今日宇宙...</div>
+</div>
+
 <!-- 電影/影集詳細資料彈出視窗 (Modal) -->
 <div class="modal-overlay" id="detail-modal" onclick="closeModal(event)">
   <div class="modal-content" onclick="event.stopPropagation()">
@@ -889,7 +1027,7 @@ phase7 以後為變種人傳奇。</p>
 <script src="tooplate-2167-orbital-script.js"></script>
 
 <script>
-  // 69 部作品完整資料庫 (已完全同步您最新的 CSV 與 YT 連結)
+  // 69 部作品完整資料庫
   const mcuData = {
     "phase1": [
       {"id": 1, "title": "鋼鐵人", "type": "電影", "date": "2008/5/2", "status": "已上映", "box_office": "$585,796,247", "desc": "描述億萬富翁兼工程師東尼史塔克在遭遇綁架危機後打造高科技裝甲逃出，後續不斷測試，增強與優化裝甲的性能，最後成為鋼鐵人的過程。", "review": "從原本被綁架到打造戰衣，從原本的軍火商到成為拯救居民的英雄，角色成長曲線不錯。RDJ 風趣的演活了這個角色，鋼鐵人這部片就此開啟了 MCU。", "rating": 4.5, "image": "images/mcu_1.jpg", "characters": ["鋼鐵人", "小辣椒", "羅德上校", "尼克福瑞"], "trailer": "8ugaeA-nMTc", "story_year": "2010年 (MCU內時間)"},
@@ -918,7 +1056,7 @@ phase7 以後為變種人傳奇。</p>
       {"id": 20, "title": "蟻人與黃蜂女", "type": "電影", "date": "2018/7/6", "status": "已上映", "box_office": "$622,674,139", "desc": "蟻人史考特朗恩與黃蜂女合作執行任務，探索量子領域並尋找黃蜂女的母親珍妮特，與此同時過程中需要面對來自覬覦皮姆科技的各方人員的追捕。", "review": "主要為了引出量子領域，但其中還是許多搞笑的片段不錯看。", "rating": 3.9, "image": "images/mcu_20.jpg", "characters": ["蟻人", "黃蜂女", "幽靈"], "trailer": "xFkFkU4yPsk", "story_year": "2018年 (無限之戰前夕)"},
       {"id": 21, "title": "驚奇隊長", "type": "電影", "date": "2019/3/8", "status": "已上映", "box_office": "$1,131,416,446", "desc": "卡蘿丹佛斯在宇宙與執行任務追捕史克魯爾人中逐步找回自己的過去，並揭開真正的壞人。", "review": "一部蹭無限之戰風頭的英雄起源片。", "rating": 3.0, "image": "images/mcu_21.jpg", "characters": ["驚奇隊長", "尼克福瑞", "塔洛斯"], "trailer": "8_iXX6t6nFY", "story_year": "1995年 (早期故事)"},
       {"id": 22, "title": "復仇者聯盟：終局之戰", "type": "電影", "date": "2019/4/26", "status": "已上映", "box_office": "$2,799,439,100", "desc": "在宇宙遭受重大人口損失後，倖存英雄集結並利用時空穿越，回到各個過去取得寶石，試圖要救回被彈走的人。但途中因被過去的薩諾斯發現，他與他的飛船、大軍穿越來到未來，與眾英雄展開最終大戰。", "review": "無限之戰的下半回，對我來說比較還好，大多著重在回到過去時看到過去的遺憾等等，所以才補一個眾英雄對抗年輕版薩諾斯的最終大戰，否則觀眾可能會覺得無聊。", "rating": 4.9, "image": "images/mcu_22.jpg", "characters": ["鋼鐵人", "美國隊長", "雷神索爾", "黑寡婦", "鷹眼", "浩克", "薩諾斯"], "trailer": "ZrB7EdfPBJU", "story_year": "2018-2023年"},
-      {"id": 23, "title": "蜘蛛人：離家日", "type": "電影", "date": "2019/7/2", "status": "已上映", "box_office": "$1,132,697,856", "desc": "彼得帕克前往歐洲旅行，卻被尼克福瑞強制召集面對新的超自然威脅。", "review": "劇情在校園出遊與拯救城市之間遊蕩，有製造出 Peter 兩難的情境，也有把青春暗戀的感情、相多與喜歡的人相處卻被迫出任務那無能為力的感覺演出來。中後段的虛擬幻象特效是作得非常好，加上全部都是假的，真正的反派只是一般人用無人機製造的幻象來欺騙所有人，這個構想相當不錯。", "rating": 4.7, "image": "images/mcu_23.jpg", "characters": ["蜘蛛人", "神秘客", "尼克福瑞"], "trailer": "Nt9L1jCKGnE", "story_year": "2024年 (終局之戰8個月後)"}
+      {"id": 23, "title": "蜘蛛人：離家日", "type": "電影", "date": "2019/7/2", "status": "已上映", "box_office": "$1,132,697,856", "desc": "劇情在校園出遊與拯救城市之間遊蕩，有製造出 Peter 兩難的情境，也有把青春暗戀的感情、相多與喜歡的人相處卻被迫出任務那無能為力的感覺演出來。中後段的虛擬幻象特效是作得非常好，加上全部都是假的，真正的反派只是一般人用無人機製造的幻象來欺騙所有人，這個構想相當不錯。", "review": "劇情在校園出遊與拯救城市之間遊蕩，有製造出 Peter 兩難的情境，也有把青春暗戀的感情、相多與喜歡的人相處卻被迫出任務那無能為力的感覺演出來。", "rating": 4.7, "image": "images/mcu_23.jpg", "characters": ["蜘蛛人", "神秘客", "尼克福瑞"], "trailer": "Nt9L1jCKGnE", "story_year": "2024年 (終局之戰8個月後)"}
     ],
     "phase4": [
       {"id": 31, "title": "汪達幻視", "type": "影集", "date": "2021/1/15", "status": "已完結", "episodes": "9集", "desc": "汪達與幻視過著看似完美的郊區生活，但異常現象逐漸揭開一個與汪達力量有關的真相。", "review": "身為漫威第一部影集，我認為是很及格的作品。不只汪達，觀眾也一同活在汪達控制的現實裡，直到第7集才因反派而揭開整個小鎮都是汪達控制並修改現實的，汪達自己也不知道，不能說特別好看但就是會有驚豔的感覺。", "rating": 4.1, "image": "images/mcu_31.jpg", "characters": ["緋紅女巫", "幻視", "阿嘉莎"], "trailer": "ZhuFXyq9ufQ", "story_year": "2023年 (彈指恢復數週後)"},
@@ -960,7 +1098,7 @@ phase7 以後為變種人傳奇。</p>
       {"id": 55, "title": "漫威喪屍", "type": "動畫影集", "date": "2025/9/24", "status": "已完結", "episodes": "4集", "desc": "在充滿喪屍的世界中，倖存者面對來自喪屍汪達帶領的喪屍軍團。", "review": "題材好，但過於降智，唯二看點：月光刀鋒砍殺喪屍幽靈 (預告片就播完了整部片最精彩的部分)、無限浩克抵禦喪屍大軍。", "rating": 3.1, "image": "images/mcu_55.jpg", "characters": ["喪屍汪達", "月光刀鋒", "無限浩克"], "trailer": "__G29GP1f7E", "story_year": "喪屍平行宇宙"},
       {"id": 56, "title": "神力人", "type": "影集", "date": "2026/1/27", "status": "已完結", "episodes": "8集", "desc": "演員兼特技演員西蒙威廉斯捲入超級英雄世界，聚焦名聲、演藝圈與英雄身分。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_56.jpg", "characters": ["神力人"], "trailer": "nc0x4wFPMcE", "story_year": "2026年"},
       {"id": 57, "title": "夜魔俠：重生 第二季", "type": "影集", "date": "2026/3/24", "status": "已完結", "episodes": "8集", "desc": "夜魔俠故事延續，馬修與紐約的新舊勢力持續交鋒。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_57.jpg", "characters": ["夜魔俠", "金霸王"], "trailer": "Dxsciqqr4Fk", "story_year": "2026年"},
-      {"id": 61, "title": "蜘蛛人：重生日", "type": "電影", "date": "2026/7/31", "status": "已上映", "box_office": "$2,495,949,664", "desc": "彼得帕克將在全世界都遺忘彼得是蜘蛛人這件事後，學習如何在正常人的身份與英雄的角色之間達成平衡。", "review": "文戲很好，打戲很好，並且整個劇情架構以上秒獲得歡呼下秒要面對感情等各個正反相互交叉，來展現出蜘蛛人這層身份當得越成功，Peter 這層身份就越失敗。", "rating": 4.7, "image": "images/mcu_61.jpg", "characters": ["蜘蛛人"], "trailer": "SVGbr05SZYw", "story_year": "2026年"},
+      {"id": 61, "title": "蜘蛛人：重生日", "type": "電影", "date": "2026/7/29", "status": "已上映", "box_office": "$2,495,949,664", "desc": "彼得帕克將在全世界都遺忘彼得是蜘蛛人這件事後，學習如何在正常人的身份與英雄的角色之間達成平衡。", "review": "文戲很好，打戲很好，並且整個劇情架構以上秒獲得歡呼下秒要面對感情等各個正反相互交叉，來展現出蜘蛛人這層身份當得越成功，Peter 這層身份就越失敗。", "rating": 4.7, "image": "images/mcu_61.jpg", "characters": ["蜘蛛人"], "trailer": "SVGbr05SZYw", "story_year": "2026年"},
       {"id": 58, "title": "幻視任務", "type": "影集", "date": "2026/10/14", "status": "即將上映", "episodes": "8集", "desc": "幻視相關故事的後續作品，將延伸第四階段留下的角色與故事線。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_58.jpg", "characters": ["白幻視"], "trailer": "ETMD30oezWg", "story_year": "2026年"},
       {"id": 62, "title": "復仇者聯盟：末日崛起", "type": "電影", "date": "2026/12/18", "status": "即將上映", "desc": "復仇者聯盟系列的新篇章，三個宇宙的眾英雄要處理宇宙衝撞的危機，並與做為宇宙級反派的末日博士對決。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_62.jpg", "characters": ["末日博士", "復仇者聯盟"], "trailer": "EPQ7_-M4yjI", "story_year": "2026年"},
       {"id": 59, "title": "蜘蛛人：你的友好鄰居 第二季", "type": "動畫影集", "date": "2027年1月", "status": "製作中", "episodes": "未知", "desc": "友好鄰居蜘蛛人動畫系列第二季，延續另一宇宙中彼得·帕克的成長與英雄冒險。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_59.jpg", "characters": ["蜘蛛人"], "trailer": "L030K5R7e54", "story_year": "平行宇宙"},
@@ -1014,6 +1152,89 @@ phase7 以後為變種人傳奇。</p>
 
       pageEl.appendChild(clone);
     }
+    
+    checkDailyDrawStatus();
+  }
+
+  // 2. 每日抽片邏輯 (每日限1次，00:00 刷新)
+  function getTodayDateString() {
+    const today = new Date();
+    return today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  }
+
+  function checkDailyDrawStatus() {
+    const lastDrawDate = localStorage.getItem('mcu_last_draw_date');
+    const todayStr = getTodayDateString();
+    const btn = document.getElementById('draw-btn');
+    const msg = document.getElementById('draw-status-msg');
+
+    if (lastDrawDate === todayStr) {
+      const savedItemId = localStorage.getItem('mcu_today_drawn_id');
+      btn.disabled = true;
+      btn.innerText = "🔒 今日已完成抽取";
+      msg.innerText = "您今天已抽過囉！明天 00:00 刷新次數 (點擊可重看今日作品)";
+      btn.onclick = () => {
+        if(savedItemId) {
+          const found = findItemById(parseInt(savedItemId));
+          if(found) openModal(found.groupKey, found.item.id);
+        }
+      };
+      btn.disabled = false; // 允許點擊重看
+    }
+  }
+
+  function findItemById(id) {
+    for (const [gKey, list] of Object.entries(mcuData)) {
+      const item = list.find(x => x.id === id);
+      if (item) return { item, groupKey: gKey };
+    }
+    return null;
+  }
+
+  function startDailyDraw() {
+    const lastDrawDate = localStorage.getItem('mcu_last_draw_date');
+    const todayStr = getTodayDateString();
+
+    if (lastDrawDate === todayStr) {
+      const savedItemId = localStorage.getItem('mcu_today_drawn_id');
+      if (savedItemId) {
+        const found = findItemById(parseInt(savedItemId));
+        if (found) openModal(found.groupKey, found.item.id);
+      }
+      return;
+    }
+
+    // 隨機選取一部作品
+    let allItems = [];
+    for (const [gKey, list] of Object.entries(mcuData)) {
+      list.forEach(item => allItems.push({ item, groupKey: gKey }));
+    }
+    const randomIndex = Math.floor(Math.random() * allItems.length);
+    const chosen = allItems[randomIndex];
+
+    // 觸發 MARVEL 動畫
+    const drawModal = document.getElementById('draw-modal');
+    const rollText = document.getElementById('draw-rolling-text');
+    drawModal.classList.add('active');
+
+    const rollTitles = ["鋼鐵人...", "復仇者聯盟...", "洛基...", "蜘蛛人...", "死侍...", "星際異攻隊..."];
+    let count = 0;
+    const interval = setInterval(() => {
+      rollText.innerText = "正在穿越多重宇宙： " + rollTitles[count % rollTitles.length];
+      count++;
+    }, 200);
+
+    setTimeout(() => {
+      clearInterval(interval);
+      drawModal.classList.remove('active');
+
+      // 紀錄今天已抽過
+      localStorage.setItem('mcu_last_draw_date', todayStr);
+      localStorage.setItem('mcu_today_drawn_id', chosen.item.id);
+
+      checkDailyDrawStatus();
+      openModal(chosen.groupKey, chosen.item.id);
+    }, 2600);
   }
 
   // 解析票房數值
@@ -1095,14 +1316,28 @@ phase7 以後為變種人傳奇。</p>
       const extraText = item.box_office ? `票房：${item.box_office}` : `狀態：${item.status}`;
       const phaseTag = item.phase ? `<span style="opacity:0.6; margin-left:4px;">[${item.phase}]</span>` : '';
 
-      // 3. 5分作品黃金呼吸燈標記
+      // 5分作品黃金呼吸燈標記
       const isGoldStar = item.rating === 5 || item.rating === 5.0;
       const goldClass = isGoldStar ? 'gold-star-5' : '';
       const goldBadgeHtml = isGoldStar ? `<div class="gold-badge">★ 5.0 殿堂神作</div>` : '';
 
+      // 3. 死侍與金鋼狼彩蛋標記
+      const isDeadpool = item.id === 42;
+      const deadpoolClass = isDeadpool ? 'deadpool-card' : '';
+      const deadpoolEggHtml = isDeadpool ? `
+        <div class="deadpool-easter-egg">
+          <div class="deadpool-eyes">
+            <div class="deadpool-eye"></div>
+            <div class="deadpool-eye right"></div>
+          </div>
+          <div class="deadpool-hands">😱</div>
+        </div>
+      ` : '';
+
       return `
-        <div class="mcu-card ${goldClass}" onclick="openModal('${key}', ${item.id})">
+        <div class="mcu-card ${goldClass} ${deadpoolClass}" onclick="openModal('${key}', ${item.id})">
           ${goldBadgeHtml}
+          ${deadpoolEggHtml}
           <div>
             <div class="mcu-card-header">
               <div class="mcu-title">${item.title}</div>
@@ -1137,7 +1372,6 @@ phase7 以後為變種人傳奇。</p>
     if (currentTimelineMode === 'release') {
       allItems.sort((a, b) => a.date.localeCompare(b.date));
     } else {
-      // 依 MCU 故事時間軸自訂邏輯排序
       const storyPriority = {
         5: 1, 21: 2, 1: 3, 2: 4, 3: 5, 4: 6, 6: 7, 7: 8, 8: 9, 9: 10,
         10: 11, 15: 12, 11: 13, 12: 14, 13: 15, 24: 16, 18: 17, 16: 18,
@@ -1183,13 +1417,13 @@ phase7 以後為變種人傳奇。</p>
     document.getElementById('modal-type').innerText = '🎬 類型：' + (item.episodes ? `${item.type} (${item.episodes})` : item.type);
     document.getElementById('modal-extra').innerText = item.box_office ? '💰 票房：' + item.box_office : '📌 狀態：' + item.status;
     
-    // 顯示個人評分 (數值或無法評分)
+    // 顯示個人評分
     const ratingEl = document.getElementById('modal-rating');
     if (typeof item.rating === 'number') {
       ratingEl.innerText = '★ ' + item.rating.toFixed(1);
       ratingEl.style.color = '#fbbf24';
     } else {
-      ratingEl.innerText = item.rating; // "無法評分"
+      ratingEl.innerText = item.rating;
       ratingEl.style.color = 'var(--faint)';
     }
 
