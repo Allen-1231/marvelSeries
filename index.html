@@ -172,52 +172,30 @@
     letter-spacing: 0.5px;
   }
 
-  /* 3. 死侍驚訝彩蛋樣式 */
-  .deadpool-easter-egg {
+  /* 3. 改用實體照片的死侍驚訝彩蛋樣式 */
+  .deadpool-photo-egg {
     position: absolute;
-    bottom: -80px;
-    right: -10px;
-    width: 90px;
-    height: 90px;
-    background: radial-gradient(circle, #e62429 60%, #a00);
-    border-radius: 50% 50% 0 0;
-    border: 3px solid #000;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    bottom: -110px;
+    right: 0px;
+    width: 120px;
+    height: 100px;
+    border-radius: 12px 0 0 0;
+    overflow: hidden;
+    border-top: 2px solid #e62429;
+    border-left: 2px solid #e62429;
+    box-shadow: 0 0 20px rgba(230, 36, 41, 0.6);
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 10;
     pointer-events: none;
-    box-shadow: 0 0 15px rgba(230, 36, 41, 0.8);
   }
-  .deadpool-eyes {
-    display: flex;
-    gap: 8px;
-    margin-top: 5px;
+  .deadpool-photo-egg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
-  .deadpool-eye {
-    width: 20px;
-    height: 28px;
-    background: #fff;
-    border-radius: 50%;
-    border: 3px solid #000;
-    transform: rotate(-10deg);
-  }
-  .deadpool-eye.right {
-    transform: rotate(10deg);
-  }
-  .deadpool-hands {
-    font-size: 22px;
-    margin-top: -12px;
-    animation: shakeHands 0.5s infinite alternate;
-  }
-  @keyframes shakeHands {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.15) rotate(3deg); }
-  }
-  .mcu-card.deadpool-card:hover .deadpool-easter-egg {
-    transform: translateY(-85px);
+  .mcu-card.deadpool-card:hover .deadpool-photo-egg {
+    transform: translateY(-110px);
   }
 
   .mcu-card-header {
@@ -276,7 +254,7 @@
     font-size: 11px;
   }
 
-  /* 2. 每日隨機抽片區塊樣式 */
+  /* 每日隨機抽片區塊樣式 */
   .daily-picker-section {
     max-width: 600px;
     margin: 40px auto 20px;
@@ -849,7 +827,7 @@ phase7 以後為變種人傳奇。</p>
     </div>
   </div>
 
-  <!-- 2. 主頁每日隨機抽片區塊 -->
+  <!-- 主頁每日隨機抽片區塊 -->
   <div class="daily-picker-section">
     <div style="font-family:'JetBrains Mono'; color:var(--cyan); font-size:13px; margin-bottom:8px;">🎲 DAILY MARVEL MOVIE</div>
     <div style="color:var(--white); font-weight:700; font-size:1.2rem; margin-bottom:12px;">今天重溫哪一部漫威？</div>
@@ -947,7 +925,7 @@ phase7 以後為變種人傳奇。</p>
   <div class="timeline-container" id="timeline-list"></div>
 </main>
 
-<!-- 2. MARVEL 跑字開場動畫抽片 Modal -->
+<!-- MARVEL 跑字開場動畫抽片 Modal -->
 <div class="draw-modal-overlay" id="draw-modal">
   <div class="marvel-logo-anim">MARVEL</div>
   <div class="draw-rolling-text" id="draw-rolling-text">正在選擇今日宇宙...</div>
@@ -1156,7 +1134,7 @@ phase7 以後為變種人傳奇。</p>
     checkDailyDrawStatus();
   }
 
-  // 2. 每日抽片邏輯 (每日限1次，00:00 刷新)
+  // 每日抽片邏輯
   function getTodayDateString() {
     const today = new Date();
     return today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -1170,7 +1148,6 @@ phase7 以後為變種人傳奇。</p>
 
     if (lastDrawDate === todayStr) {
       const savedItemId = localStorage.getItem('mcu_today_drawn_id');
-      btn.disabled = true;
       btn.innerText = "🔒 今日已完成抽取";
       msg.innerText = "您今天已抽過囉！明天 00:00 刷新次數 (點擊可重看今日作品)";
       btn.onclick = () => {
@@ -1179,7 +1156,6 @@ phase7 以後為變種人傳奇。</p>
           if(found) openModal(found.groupKey, found.item.id);
         }
       };
-      btn.disabled = false; // 允許點擊重看
     }
   }
 
@@ -1321,16 +1297,12 @@ phase7 以後為變種人傳奇。</p>
       const goldClass = isGoldStar ? 'gold-star-5' : '';
       const goldBadgeHtml = isGoldStar ? `<div class="gold-badge">★ 5.0 殿堂神作</div>` : '';
 
-      // 3. 死侍與金鋼狼彩蛋標記
+      // 3. 死侍與金鋼狼專屬實體照片彩蛋
       const isDeadpool = item.id === 42;
       const deadpoolClass = isDeadpool ? 'deadpool-card' : '';
       const deadpoolEggHtml = isDeadpool ? `
-        <div class="deadpool-easter-egg">
-          <div class="deadpool-eyes">
-            <div class="deadpool-eye"></div>
-            <div class="deadpool-eye right"></div>
-          </div>
-          <div class="deadpool-hands">😱</div>
+        <div class="deadpool-photo-egg">
+          <img src="images/死侍.jpg" alt="死侍驚訝" onerror="this.src='死侍.jpg'">
         </div>
       ` : '';
 
