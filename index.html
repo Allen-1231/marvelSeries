@@ -106,7 +106,6 @@
     margin-top: 20px;
   }
 
-  /* 微互動懸浮效果 - 1. 允許邊框外溢 overflow: visible */
   .mcu-card {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -119,8 +118,8 @@
     justify-content: space-between;
     cursor: pointer;
     position: relative;
-    overflow: visible; /* 允許黃金徽章超出頂部邊框不被裁切 */
-    margin-top: 10px;  /* 給頂部徽章留出展示空間 */
+    overflow: visible; /* 允許徽章與死侍超出邊框不被裁切 */
+    margin-top: 10px;
   }
   .mcu-card:hover {
     transform: translateY(-8px) scale(1.02);
@@ -159,7 +158,7 @@
     box-shadow: 0 0 35px rgba(255, 215, 0, 1);
   }
 
-  /* 1. 修正 5.0 殿堂神作徽章：往上補齊超出邊框 */
+  /* 5.0 殿堂神作徽章 */
   .gold-badge {
     position: absolute;
     top: -12px;
@@ -177,30 +176,120 @@
     white-space: nowrap;
   }
 
-  /* 改用實體照片的死侍驚訝彩蛋樣式 */
+  /* 2. 死侍彩蛋修改：平時隱藏，滑過時從左到右順時針轉出 15 度，並濾除白底 */
   .deadpool-photo-egg {
     position: absolute;
-    bottom: -110px;
-    right: 0px;
-    width: 120px;
-    height: 100px;
-    border-radius: 12px 0 0 0;
-    overflow: hidden;
-    border-top: 2px solid #e62429;
-    border-left: 2px solid #e62429;
-    box-shadow: 0 0 20px rgba(230, 36, 41, 0.6);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 10;
+    bottom: -10px;
+    right: 10px;
+    width: 110px;
+    height: 110px;
+    z-index: 15;
     pointer-events: none;
+    opacity: 0; /* 平時完全隱藏 */
+    transform-origin: bottom left; /* 以左下角為旋轉軸心 */
+    transform: translateY(60px) rotate(0deg); /* 預設沉在下方 */
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
   }
+
   .deadpool-photo-egg img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
+    /* 去除白底關鍵語法 */
+    mix-blend-mode: multiply;
+    filter: contrast(1.1) brightness(1.05);
   }
+
+  /* 滑鼠移入死侍卡片時動態轉出 */
   .mcu-card.deadpool-card:hover .deadpool-photo-egg {
-    transform: translateY(-110px);
+    opacity: 1;
+    transform: translateY(-90px) rotate(15deg); /* 從左往右順時針轉出 15 度 */
+  }
+
+  /* 1. 漫威歷史上的今天區塊樣式 */
+  .marvel-today-wrapper {
+    position: relative;
+    z-index: 10;
+    max-width: 720px;
+    margin: 20px auto 30px;
+    padding: 0 20px;
+  }
+  .marvel-today-box {
+    background: rgba(13, 14, 21, 0.8);
+    border: 1px solid rgba(6, 182, 212, 0.4);
+    border-radius: 18px;
+    padding: 20px 24px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .marvel-today-box::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--cyan), #e62429);
+  }
+  .today-icon-badge {
+    background: rgba(230, 36, 41, 0.15);
+    border: 1px solid #e62429;
+    color: #e62429;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    text-align: center;
+    line-height: 1.2;
+    flex-shrink: 0;
+  }
+  .today-content {
+    flex: 1;
+  }
+  .today-title {
+    font-size: 0.85rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--cyan);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .today-event-text {
+    color: var(--white);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .today-event-desc {
+    color: var(--faint);
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+  .today-refresh-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--cyan);
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 6px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .today-refresh-btn:hover {
+    background: var(--cyan);
+    color: var(--void);
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
   }
 
   .mcu-card-header {
@@ -259,12 +348,12 @@
     font-size: 11px;
   }
 
-  /* 2. 每日隨機抽片區塊 (移至旋轉卡片下方粉紅色區域) */
+  /* 每日隨機抽片區塊 */
   .daily-picker-wrapper {
     position: relative;
     z-index: 10;
     max-width: 600px;
-    margin: 30px auto 60px;
+    margin: 20px auto 60px;
     padding: 0 20px;
   }
   .daily-picker-section {
@@ -292,12 +381,6 @@
   .daily-picker-btn:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 20px rgba(230, 36, 41, 0.8);
-  }
-  .daily-picker-btn:disabled {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--faint);
-    cursor: not-allowed;
-    box-shadow: none;
   }
 
   /* MARVEL 動畫抽片 Modal */
@@ -402,7 +485,6 @@
     object-fit: cover;
   }
 
-  /* 預告片按鈕 */
   .trailer-btn {
     display: inline-flex;
     align-items: center;
@@ -426,7 +508,6 @@
     box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
   }
 
-  /* 角色標籤 */
   .char-tags {
     display: flex;
     flex-wrap: wrap;
@@ -457,7 +538,6 @@
     margin-bottom: 12px;
   }
   
-  /* 個人影評紫色區塊 */
   .modal-review-box {
     background: rgba(139, 92, 246, 0.08);
     border: 1px solid rgba(139, 92, 246, 0.25);
@@ -674,6 +754,7 @@
   }
 
   body.in-subpage .hero,
+  body.in-subpage .marvel-today-wrapper,
   body.in-subpage .daily-picker-wrapper {
     display: none;
   }
@@ -866,7 +947,26 @@ phase7 以後為變種人傳奇。</p>
   </div>
 </header>
 
-<!-- 2. 主頁每日隨機抽片區塊 (獨立放在旋轉字卡與控制項正下方) -->
+<!-- 1. 新增：漫威歷史上的今天播報區塊 (位於 3D 旋轉環與隨機抽卡區中間) -->
+<div class="marvel-today-wrapper">
+  <div class="marvel-today-box">
+    <div class="today-icon-badge" id="today-date-badge">
+      <div>10月</div>
+      <div style="font-size:16px;">04日</div>
+    </div>
+    <div class="today-content">
+      <div class="today-title">
+        <span>📡 MARVEL HISTORY TODAY</span>
+        <span style="font-size:10px; opacity:0.6;">// 漫威歷史上的今天</span>
+      </div>
+      <div class="today-event-text" id="today-event-title">載入漫威宇宙大事記中...</div>
+      <div class="today-event-desc" id="today-event-desc">記錄漫威影視作品與故事時間線上的關鍵時刻。</div>
+    </div>
+    <button class="today-refresh-btn" onclick="getRandomHistoryEvent()">🎲 換一個大事記</button>
+  </div>
+</div>
+
+<!-- 主頁每日隨機抽片區塊 (位於歷史上的今天下方) -->
 <div class="daily-picker-wrapper">
   <div class="daily-picker-section">
     <div style="font-family:'JetBrains Mono'; color:var(--cyan); font-size:13px; margin-bottom:8px;">🎲 DAILY MARVEL MOVIE</div>
@@ -884,7 +984,6 @@ phase7 以後為變種人傳奇。</p>
     <h2 id="phase-title">階段作品列表</h2>
   </div>
 
-  <!-- 搜尋、類型、年份篩選與排序工具列 -->
   <div class="filter-bar">
     <input type="text" class="filter-input" placeholder="🔍 搜尋片名、關鍵字或角色..." oninput="onFilterChange(this)">
     
@@ -929,7 +1028,6 @@ phase7 以後為變種人傳奇。</p>
     <h2>漫威影視作品時間軸 ⏳</h2>
   </div>
 
-  <!-- 模式切換按鈕 -->
   <div class="timeline-mode-toggle">
     <button class="timeline-toggle-btn active" id="btn-release-order" onclick="toggleTimelineMode('release')">🎬 依發行上映順序</button>
     <button class="timeline-toggle-btn" id="btn-story-order" onclick="toggleTimelineMode('story')">🌌 依 MCU 故事內時間軸</button>
@@ -949,7 +1047,6 @@ phase7 以後為變種人傳奇。</p>
   <div class="modal-content" onclick="event.stopPropagation()">
     <button class="modal-close" onclick="closeModal()">✕</button>
     
-    <!-- 左側圖片與預告片區 -->
     <div>
       <div class="modal-img-box">
         <img id="modal-img" src="" alt="作品劇照" onerror="this.src='images/image-01.jpg'">
@@ -959,11 +1056,9 @@ phase7 以後為變種人傳奇。</p>
       </button>
     </div>
 
-    <!-- 右側詳細內容區 -->
     <div class="modal-info-box">
       <div class="modal-info-title" id="modal-title">作品名稱</div>
       
-      <!-- 頂部資訊 -->
       <div class="mcu-meta">
         <span id="modal-date">📅 上映日期：</span>
         <span id="modal-type">🎬 類型：</span>
@@ -971,19 +1066,16 @@ phase7 以後為變種人傳奇。</p>
         <span>⭐ 個人評分：<span class="modal-rating" id="modal-rating">無法評分</span></span>
       </div>
 
-      <!-- 登場角色標籤區 -->
       <div style="margin-top: 12px;">
         <div style="font-family:'JetBrains Mono'; font-size:11px; color:var(--faint);">登場角色 (點擊可查看角色照片)：</div>
         <div class="char-tags" id="modal-char-tags"></div>
       </div>
 
-      <!-- 中間：劇情概述 -->
       <div style="margin-top: 18px;">
         <div style="font-family:'JetBrains Mono'; font-size:13px; color:var(--cyan); margin-bottom:6px; font-weight:600;">劇情概述</div>
         <p id="modal-desc" style="color: var(--dim); font-size: 0.94rem; line-height: 1.6;"></p>
       </div>
 
-      <!-- 下方：個人影評紫色區塊 -->
       <div class="modal-review-box">
         <div class="modal-review-title">個人影評</div>
         <p id="modal-review" style="color: var(--dim); font-size: 0.92rem; line-height: 1.5;"></p>
@@ -1105,10 +1197,52 @@ phase7 以後為變種人傳奇。</p>
     ]
   };
 
+  // 漫威歷史大事記資料庫
+  const marvelHistoryEvents = [
+    { month: 5, day: 2, year: 2008, title: "《鋼鐵人》全美上映，MCU 傳奇正式開啟！", desc: "東尼史塔克首次披上鋼鐵戰甲登陸大銀幕，句尾一句『I am Iron Man』奠定了漫威電影宇宙的宏偉藍圖。" },
+    { month: 4, day: 27, year: 2018, title: "《復仇者聯盟：無限之戰》全球上映！", desc: "薩諾斯正式集齊六顆無限寶石彈指，全宇宙半數生命化為灰燼，成為影史最震撼的反派勝利之戰。" },
+    { month: 4, day: 26, year: 2019, title: "《復仇者聯盟：終局之戰》上映，史詩終章！", desc: "倖存英雄穿越時空逆轉危機，『Whatever it takes』句點告別初代鋼鐵人與美國隊長。" },
+    { month: 7, day: 26, year: 2024, title: "《死侍與金鋼狼》正式上映！", desc: "Wade Wilson 攜手羅根闖入 MCU，多重宇宙的狼侍狂歡打破了全球 R 級電影票房紀錄。" },
+    { month: 10, day: 5, year: 2023, title: "《洛基》第二季回歸，故事之神誕生！", desc: "洛基掌握時間溜脫，最終選擇犧牲自我登上時間王座，成為守護全多重宇宙故事時間線的神祇。" },
+    { month: 11, day: 4, year: 2016, title: "《奇異博士》上映，至尊魔法師登場！", desc: "史蒂芬史傳奇踏入卡瑪泰姬，開啟漫威宇宙魔法與鏡像空間的嶄新維度。" },
+    { month: 5, day: 4, year: 2012, title: "《復仇者聯盟》紐約大戰爆發！", desc: "初代六人復仇者聯盟首次集結，齊心對抗洛基與奇塔瑞軍隊的地球入侵行動。" },
+    { month: 7, day: 7, year: 2017, title: "《蜘蛛人：返校日》高中生彼得帕克回歸！", desc: "彼得帕克在鋼鐵人史塔克的指導下，正式展開校園與超級英雄雙重生活的打怪歷程。" }
+  ];
+
   let currentTrailerCode = "";
   let currentSelectedChar = "";
   let currentGroupKey = "";
   let currentTimelineMode = "release";
+
+  // 1. 初始化漫威歷史上的今天
+  function initMarvelHistoryToday() {
+    const today = new Date();
+    const currentMonth = today.getMonth() + 1;
+    const currentDate = today.getDate();
+
+    // 更新日期徽章
+    const dateBadge = document.getElementById('today-date-badge');
+    if (dateBadge) {
+      dateBadge.innerHTML = `<div>${currentMonth}月</div><div style="font-size:16px;">${currentDate < 10 ? '0' + currentDate : currentDate}日</div>`;
+    }
+
+    // 尋找今日匹配事件，若無則挑選精選事件
+    const matched = marvelHistoryEvents.filter(e => e.month === currentMonth && e.day === currentDate);
+    if (matched.length > 0) {
+      const ev = matched[0];
+      document.getElementById('today-event-title').innerText = `${ev.year}年：${ev.title}`;
+      document.getElementById('today-event-desc').innerText = ev.desc;
+    } else {
+      getRandomHistoryEvent();
+    }
+  }
+
+  function getRandomHistoryEvent() {
+    const randomIndex = Math.floor(Math.random() * marvelHistoryEvents.length);
+    const ev = marvelHistoryEvents[randomIndex];
+    document.getElementById('today-event-title').innerText = `${ev.year}年 (${ev.month}/${ev.day})：${ev.title}`;
+    document.getElementById('today-event-desc').innerText = ev.desc;
+  }
 
   // 初始化 7 個階段頁面的 HTML 結構
   function initPages() {
@@ -1132,7 +1266,6 @@ phase7 以後為變種人傳奇。</p>
       clone.querySelector('#phase-eyebrow').innerText = meta.eyebrow;
       clone.querySelector('#phase-title').innerText = meta.title;
 
-      // 動態加入 2008~2028 年份選項
       const yearSelect = clone.querySelector('.filter-year');
       for (let y = 2008; y <= 2028; y++) {
         const opt = document.createElement('option');
@@ -1143,11 +1276,11 @@ phase7 以後為變種人傳奇。</p>
 
       pageEl.appendChild(clone);
     }
-    
+
+    initMarvelHistoryToday();
     checkDailyDrawStatus();
   }
 
-  // 每日抽片邏輯
   function getTodayDateString() {
     const today = new Date();
     return today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -1193,7 +1326,6 @@ phase7 以後為變種人傳奇。</p>
       return;
     }
 
-    // 隨機選取一部作品
     let allItems = [];
     for (const [gKey, list] of Object.entries(mcuData)) {
       list.forEach(item => allItems.push({ item, groupKey: gKey }));
@@ -1201,7 +1333,6 @@ phase7 以後為變種人傳奇。</p>
     const randomIndex = Math.floor(Math.random() * allItems.length);
     const chosen = allItems[randomIndex];
 
-    // 觸發 MARVEL 動畫
     const drawModal = document.getElementById('draw-modal');
     const rollText = document.getElementById('draw-rolling-text');
     drawModal.classList.add('active');
@@ -1217,7 +1348,6 @@ phase7 以後為變種人傳奇。</p>
       clearInterval(interval);
       drawModal.classList.remove('active');
 
-      // 紀錄今天已抽過
       localStorage.setItem('mcu_last_draw_date', todayStr);
       localStorage.setItem('mcu_today_drawn_id', chosen.item.id);
 
@@ -1226,21 +1356,18 @@ phase7 以後為變種人傳奇。</p>
     }, 2600);
   }
 
-  // 解析票房數值
   function parseBoxOffice(boxStr) {
     if (!boxStr) return 0;
     const num = parseFloat(boxStr.replace(/[^0-9.]/g, ''));
     return isNaN(num) ? 0 : num;
   }
 
-  // 解析評分數值
   function parseRatingNum(val) {
     if (typeof val === 'number') return val;
     const num = parseFloat(val);
     return isNaN(num) ? -1 : num;
   }
 
-  // 當任何搜尋、篩選、排序改變時執行
   function onFilterChange(triggerEl) {
     const pageEl = triggerEl.closest('.page-view');
     if (!pageEl) return;
@@ -1249,7 +1376,6 @@ phase7 以後為變種人傳奇。</p>
     renderFilteredCards(key);
   }
 
-  // 渲染頁面卡片
   function renderFilteredCards(key) {
     const pageEl = document.getElementById('page-' + key);
     if (!pageEl) return;
@@ -1262,7 +1388,6 @@ phase7 以後為變種人傳奇。</p>
 
     let list = [...(mcuData[key] || [])];
 
-    // 1. 關鍵字過濾
     if (searchKey) {
       list = list.filter(item => {
         const titleMatch = item.title.toLowerCase().includes(searchKey);
@@ -1272,17 +1397,14 @@ phase7 以後為變種人傳奇。</p>
       });
     }
 
-    // 2. 類型過濾
     if (selectedType) {
       list = list.filter(item => item.type.includes(selectedType));
     }
 
-    // 3. 年份過濾
     if (selectedYear) {
       list = list.filter(item => item.date.includes(selectedYear));
     }
 
-    // 4. 多功能排序
     list.sort((a, b) => {
       if (sortMode === 'date-asc') return a.date.localeCompare(b.date);
       if (sortMode === 'date-desc') return b.date.localeCompare(a.date);
@@ -1305,17 +1427,16 @@ phase7 以後為變種人傳奇。</p>
       const extraText = item.box_office ? `票房：${item.box_office}` : `狀態：${item.status}`;
       const phaseTag = item.phase ? `<span style="opacity:0.6; margin-left:4px;">[${item.phase}]</span>` : '';
 
-      // 5分作品黃金呼吸燈標記
       const isGoldStar = item.rating === 5 || item.rating === 5.0;
       const goldClass = isGoldStar ? 'gold-star-5' : '';
       const goldBadgeHtml = isGoldStar ? `<div class="gold-badge">★ 5.0 殿堂神作</div>` : '';
 
-      // 死侍與金鋼狼專屬實體照片彩蛋
+      // 2. 死侍彩蛋模組 (套用混和去背與順時針轉出 15 度)
       const isDeadpool = item.id === 42;
       const deadpoolClass = isDeadpool ? 'deadpool-card' : '';
       const deadpoolEggHtml = isDeadpool ? `
         <div class="deadpool-photo-egg">
-          <img src="images/死侍.jpg" alt="死侍驚訝" onerror="this.src='死侍.jpg'">
+          <img src="images/死侍.jpg" alt="死侍驚喜" onerror="this.src='死侍.jpg'">
         </div>
       ` : '';
 
@@ -1342,7 +1463,6 @@ phase7 以後為變種人傳奇。</p>
     }).join('');
   }
 
-  // 時間軸渲染邏輯
   function renderTimeline() {
     const container = document.getElementById('timeline-list');
     if (!container) return;
@@ -1383,7 +1503,6 @@ phase7 以後為變種人傳奇。</p>
     }).join('');
   }
 
-  // 時間軸模式切換
   function toggleTimelineMode(mode) {
     currentTimelineMode = mode;
     document.getElementById('btn-release-order').classList.toggle('active', mode === 'release');
@@ -1391,7 +1510,6 @@ phase7 以後為變種人傳奇。</p>
     renderTimeline();
   }
 
-  // 開啟作品詳細 Modal
   function openModal(groupKey, itemId) {
     currentGroupKey = groupKey;
     const item = mcuData[groupKey].find(x => x.id === itemId);
@@ -1402,7 +1520,6 @@ phase7 以後為變種人傳奇。</p>
     document.getElementById('modal-type').innerText = '🎬 類型：' + (item.episodes ? `${item.type} (${item.episodes})` : item.type);
     document.getElementById('modal-extra').innerText = item.box_office ? '💰 票房：' + item.box_office : '📌 狀態：' + item.status;
     
-    // 顯示個人評分
     const ratingEl = document.getElementById('modal-rating');
     if (typeof item.rating === 'number') {
       ratingEl.innerText = '★ ' + item.rating.toFixed(1);
@@ -1412,17 +1529,14 @@ phase7 以後為變種人傳奇。</p>
       ratingEl.style.color = 'var(--faint)';
     }
 
-    // 設定劇照
     const imgEl = document.getElementById('modal-img');
     imgEl.src = item.image || 'images/image-01.jpg';
     imgEl.alt = item.title;
 
-    // 預告片按鈕
     currentTrailerCode = item.trailer || "";
     const trailerBtn = document.getElementById('modal-trailer-btn');
     trailerBtn.style.display = currentTrailerCode ? 'inline-flex' : 'none';
 
-    // 登場角色標籤
     const tagsBox = document.getElementById('modal-char-tags');
     if (item.characters && item.characters.length > 0) {
       tagsBox.innerHTML = item.characters.map(c => `<span class="char-tag" onclick="showCharPhoto('${c}')">#${c}</span>`).join('');
@@ -1430,14 +1544,12 @@ phase7 以後為變種人傳奇。</p>
       tagsBox.innerHTML = `<span style="font-size:11px; color:var(--faint);">暫無角色資訊</span>`;
     }
 
-    // 劇情概述與個人影評
     document.getElementById('modal-desc').innerText = item.desc || '暫無劇情概述';
     document.getElementById('modal-review').innerText = item.review || '尚無個人影評紀錄';
 
     document.getElementById('detail-modal').classList.add('active');
   }
 
-  // 開啟角色照片 Modal
   function showCharPhoto(charName) {
     currentSelectedChar = charName;
     document.getElementById('char-modal-name').innerText = charName;
@@ -1449,7 +1561,6 @@ phase7 以後為變種人傳奇。</p>
     document.getElementById('char-modal').classList.add('active');
   }
 
-  // 角色 Modal 內部的搜尋按鈕
   function searchByRoleName() {
     closeCharModal();
     closeModal();
@@ -1464,13 +1575,11 @@ phase7 以後為變種人傳奇。</p>
     }
   }
 
-  // 關閉角色 Modal
   function closeCharModal(e) {
     if (e && e.target !== e.currentTarget) return;
     document.getElementById('char-modal').classList.remove('active');
   }
 
-  // 播放預告片 Modal
   function openTrailer() {
     if (!currentTrailerCode) return;
     const iframe = document.getElementById('trailer-iframe');
@@ -1478,7 +1587,6 @@ phase7 以後為變種人傳奇。</p>
     document.getElementById('trailer-modal').classList.add('active');
   }
 
-  // 關閉預告片 Modal
   function closeTrailer(e) {
     if (e && e.target !== e.currentTarget) return;
     const iframe = document.getElementById('trailer-iframe');
@@ -1486,13 +1594,11 @@ phase7 以後為變種人傳奇。</p>
     document.getElementById('trailer-modal').classList.remove('active');
   }
 
-  // 關閉詳細 Modal
   function closeModal(e) {
     if (e && e.target !== e.currentTarget && !e.target.classList.contains('modal-close')) return;
     document.getElementById('detail-modal').classList.remove('active');
   }
 
-  // 分頁切換
   function switchPage(pageKey) {
     document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
 
