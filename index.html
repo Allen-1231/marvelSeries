@@ -754,6 +754,59 @@
   body.in-subpage .daily-picker-wrapper {
     display: none;
   }
+
+  /* ===== 首頁：標題移到旋轉環上方，不再互相覆蓋 ===== */
+  .hero { flex-direction: column; justify-content: flex-start; padding-top: 84px; box-sizing: border-box; }
+  .hero-text {
+    position: relative; top: auto; left: auto; transform: none;
+    flex: 0 0 auto; z-index: 3; width: 90vw; max-width: 760px; margin: 0 auto;
+  }
+  .hero-text .eyebrow { margin-bottom: 12px; }
+  .hero-text h1 { font-size: clamp(2.2rem, 5.2vw, 4rem); }
+  .hero-text p { margin-top: 12px; max-width: none; font-size: clamp(0.85rem, 1.6vw, 1rem); line-height: 1.6; }
+  .stage { position: relative; inset: auto; flex: 1 1 auto; width: 100%; min-height: 0; padding-bottom: 56px; box-sizing: border-box; }
+  @media (min-width: 721px) { :root { --ring-radius: 300px; } }
+  @media (min-width: 721px) and (max-height: 820px) { :root { --ring-radius: 250px; } }
+
+  /* ===== 時間軸：電腦版左右交錯（容器需為 flex 才能讓 align-self 生效） ===== */
+  .timeline-container { display: flex; flex-direction: column; }
+
+  /* ===== 手機版（僅 720px 以下生效，電腦版不受影響） ===== */
+  @media (max-width: 720px) {
+    .hero { padding-top: 76px; }
+    .stage { padding-bottom: 0; }
+    .hero-controls {
+      position: static; right: auto; bottom: auto;
+      flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center;
+      gap: 10px 18px; padding: 0 16px; margin-bottom: 64px;
+    }
+    .scroll-cue { bottom: 16px; }
+    .scroll-cue .line { display: none; }
+
+    .marvel-today-box { flex-wrap: wrap; padding: 16px; gap: 12px; }
+    .today-content { flex-basis: calc(100% - 90px); }
+    .today-refresh-btn { width: 100%; padding: 10px 12px; }
+
+    .page-view { padding: 84px 16px 40px; }
+    .filter-bar { padding: 12px; gap: 8px; }
+    .filter-input { flex: 1 1 100%; font-size: 16px; }
+    .filter-select { flex: 1 1 calc(50% - 4px); min-width: 0; font-size: 14px; padding: 10px 12px; }
+    .filter-sort { flex-basis: 100%; }
+    .mcu-grid { grid-template-columns: 1fr; gap: 14px; }
+    .mcu-card { padding: 16px; }
+    .mcu-card:hover { transform: none; }
+    .mcu-meta { flex-direction: row; flex-wrap: wrap; gap: 4px 14px; }
+
+    .modal-overlay { padding: 10px; }
+    .modal-content { padding: 18px 16px 24px; gap: 16px; max-height: 92vh; }
+    .modal-img-box { width: 170px; height: 255px; margin: 0 auto; }
+    .trailer-btn { margin-top: 10px; padding: 10px 14px; }
+    .modal-info-title { font-size: 1.4rem; padding-right: 28px; }
+    .char-tag { padding: 7px 12px; font-size: 12px; }
+
+    .timeline-mode-toggle { flex-wrap: wrap; gap: 8px; }
+    .timeline-toggle-btn { padding: 9px 16px; font-size: 12px; }
+  }
 </style>
 </head>
 
@@ -793,6 +846,14 @@
 
 <!-- 首頁 3D 旋轉環狀區塊 -->
 <header class="hero" id="hero-view">
+  <div class="hero-text">
+        <div class="eyebrow">// MARVEL CINEMATIC UNIVERSE</div>
+        <h1>漫威影視作品📘</h1>
+        <p style="white-space: pre-line;">phase1 到 phase3 為無限傳奇
+phase4 到 phase6 為多重宇宙傳奇
+phase7 以後為變種人傳奇。</p>
+      </div>
+
   <div class="stage">
     <div class="parallax">
       <div class="ring-tilt">
@@ -904,13 +965,6 @@
           </div>
 
         </div>
-      </div>
-      <div class="hero-text">
-        <div class="eyebrow">// MARVEL CINEMATIC UNIVERSE</div>
-        <h1>漫威影視作品📘</h1>
-        <p style="white-space: pre-line;">phase1 到 phase3 為無限傳奇
-phase4 到 phase6 為多重宇宙傳奇
-phase7 以後為變種人傳奇。</p>
       </div>
     </div>
   </div>
