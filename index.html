@@ -1152,6 +1152,7 @@ phase7 以後為變種人傳奇。</p>
       <button class="trailer-btn" id="modal-trailer-btn" onclick="openTrailer()">
         ▶ 觀看官方預告片
       </button>
+      <div id="modal-trailer-list"></div>
     </div>
 
     <div class="modal-info-box">
@@ -1281,7 +1282,7 @@ phase7 以後為變種人傳奇。</p>
       {"id": 57, "title": "夜魔俠：重生 第二季", "type": "影集", "date": "2026/3/4", "status": "已完結", "episodes": "8集", "desc": "夜魔俠故事延續，馬修與紐約的新舊勢力持續交鋒。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_57.jpg", "characters": ["夜魔俠", "金霸王"], "trailer": "Dxsciqqr4Fk", "story_year": "2026年"},
       {"id": 61, "title": "蜘蛛人：重生日", "type": "電影", "date": "2026/7/29", "status": "已上映", "box_office": "$2,495,949,664", "desc": "彼得帕克將在全世界都遺忘彼得是蜘蛛人這件事後，學習如何在正常人的身份與英雄的角色之間達成平衡。", "review": "文戲很好，打戲很好，並且整個劇情架構以上秒獲得歡呼下秒要面對感情等各個正反相互交叉，來展現出蜘蛛人這層身份當得越成功，Peter 這層身份就越失敗。", "rating": 4.7, "image": "images/mcu_61.jpg", "characters": ["蜘蛛人"], "trailer": "SVGbr05SZYw", "story_year": "2026年"},
       {"id": 58, "title": "幻視任務", "type": "影集", "date": "2026/10/14", "status": "即將上映", "episodes": "8集", "desc": "幻視相關故事的後續作品，將延伸第四階段留下的角色與故事線。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_58.jpg", "characters": ["白幻視"], "trailer": "ETMD30oezWg", "story_year": "2026年"},
-      {"id": 62, "title": "復仇者聯盟：末日崛起", "type": "電影", "date": "2026/12/18", "status": "即將上映", "desc": "復仇者聯盟系列的新篇章，三個宇宙的眾英雄要處理宇宙衝撞的危機，並與做為宇宙級反派的末日博士對決。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_62.jpg", "characters": ["末日博士", "復仇者聯盟"], "trailer": "EPQ7_-M4yjI", "story_year": "2026年"},
+      {"id": 62, "title": "復仇者聯盟：末日崛起", "type": "電影", "date": "2026/12/18", "status": "即將上映", "desc": "復仇者聯盟系列的新篇章，三個宇宙的眾英雄要處理宇宙衝撞的危機，並與做為宇宙級反派的末日博士對決。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_62.jpg", "characters": ["末日博士", "復仇者聯盟"], "trailer": "ZpmJZRRGK6o", "trailers": [{"label": "首部正式預告", "code": "ZpmJZRRGK6o"}, {"label": "D23 預告", "code": "EPQ7_-M4yjI"}], "story_year": "2026年"},
       {"id": 59, "title": "蜘蛛人：你的友好鄰居 第二季", "type": "動畫影集", "date": "2027年1月", "status": "製作中", "episodes": "未知", "desc": "友好鄰居蜘蛛人動畫系列第二季，延續另一宇宙中彼得·帕克的成長與英雄冒險。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_59.jpg", "characters": ["蜘蛛人"], "trailer": "", "story_year": "平行宇宙"},
       {"id": 63, "title": "復仇者聯盟：秘密戰爭", "type": "電影", "date": "2027/12/17", "status": "製作中", "desc": "尚無資訊。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_63.jpg", "characters": ["末日博士"], "trailer": "", "story_year": "多重宇宙大戰"}
     ],
@@ -1651,6 +1652,14 @@ phase7 以後為變種人傳奇。</p>
     currentTrailerCode = item.trailer || "";
     const trailerBtn = document.getElementById('modal-trailer-btn');
     trailerBtn.style.display = currentTrailerCode ? 'inline-flex' : 'none';
+    const trailerList = document.getElementById('modal-trailer-list');
+    const multi = item.trailers || [];
+    if (multi.length > 1) {
+      trailerBtn.style.display = 'none';
+      trailerList.innerHTML = multi.map(t => `<button class="trailer-btn" onclick="openTrailer('${t.code}')">▶ ${t.label}</button>`).join('');
+    } else {
+      trailerList.innerHTML = '';
+    }
 
     const tagsBox = document.getElementById('modal-char-tags');
     if (item.characters && item.characters.length > 0) {
@@ -1695,10 +1704,11 @@ phase7 以後為變種人傳奇。</p>
     document.getElementById('char-modal').classList.remove('active');
   }
 
-  function openTrailer() {
-    if (!currentTrailerCode) return;
+  function openTrailer(code) {
+    const vid = code || currentTrailerCode;
+    if (!vid) return;
     const iframe = document.getElementById('trailer-iframe');
-    iframe.src = `https://www.youtube.com/embed/${currentTrailerCode}?autoplay=1`;
+    iframe.src = `https://www.youtube.com/embed/${vid}?autoplay=1`;
     document.getElementById('trailer-modal').classList.add('active');
   }
 
