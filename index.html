@@ -102,11 +102,11 @@
   .mcu-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    margin-top: 16px;
+    gap: 24px;
+    margin-top: 20px;
   }
 
-  /* 微互動懸浮效果 */
+  /* 微互動懸浮效果 - 1. 允許邊框外溢 overflow: visible */
   .mcu-card {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -119,7 +119,8 @@
     justify-content: space-between;
     cursor: pointer;
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* 允許黃金徽章超出頂部邊框不被裁切 */
+    margin-top: 10px;  /* 給頂部徽章留出展示空間 */
   }
   .mcu-card:hover {
     transform: translateY(-8px) scale(1.02);
@@ -157,22 +158,26 @@
     transform: translateY(-10px) scale(1.03);
     box-shadow: 0 0 35px rgba(255, 215, 0, 1);
   }
+
+  /* 1. 修正 5.0 殿堂神作徽章：往上補齊超出邊框 */
   .gold-badge {
     position: absolute;
-    top: -10px;
-    right: 14px;
+    top: -12px;
+    right: 16px;
     background: linear-gradient(135deg, #ffd700, #b8860b);
     color: #000;
     font-weight: 700;
-    font-size: 10px;
+    font-size: 11px;
     font-family: 'JetBrains Mono', monospace;
-    padding: 3px 10px;
+    padding: 4px 12px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.6);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.7);
     letter-spacing: 0.5px;
+    z-index: 5;
+    white-space: nowrap;
   }
 
-  /* 3. 改用實體照片的死侍驚訝彩蛋樣式 */
+  /* 改用實體照片的死侍驚訝彩蛋樣式 */
   .deadpool-photo-egg {
     position: absolute;
     bottom: -110px;
@@ -254,17 +259,22 @@
     font-size: 11px;
   }
 
-  /* 每日隨機抽片區塊樣式 */
-  .daily-picker-section {
+  /* 2. 每日隨機抽片區塊 (移至旋轉卡片下方粉紅色區域) */
+  .daily-picker-wrapper {
+    position: relative;
+    z-index: 10;
     max-width: 600px;
-    margin: 40px auto 20px;
+    margin: 30px auto 60px;
+    padding: 0 20px;
+  }
+  .daily-picker-section {
     text-align: center;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(13, 14, 21, 0.75);
     border: 1px solid rgba(230, 36, 41, 0.4);
     border-radius: 20px;
     padding: 24px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 25px rgba(230, 36, 41, 0.2);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 30px rgba(230, 36, 41, 0.25);
   }
   .daily-picker-btn {
     font-family: 'Space Grotesk', sans-serif;
@@ -663,7 +673,8 @@
     font-weight: 600;
   }
 
-  body.in-subpage .hero {
+  body.in-subpage .hero,
+  body.in-subpage .daily-picker-wrapper {
     display: none;
   }
 </style>
@@ -827,14 +838,6 @@ phase7 以後為變種人傳奇。</p>
     </div>
   </div>
 
-  <!-- 主頁每日隨機抽片區塊 -->
-  <div class="daily-picker-section">
-    <div style="font-family:'JetBrains Mono'; color:var(--cyan); font-size:13px; margin-bottom:8px;">🎲 DAILY MARVEL MOVIE</div>
-    <div style="color:var(--white); font-weight:700; font-size:1.2rem; margin-bottom:12px;">今天重溫哪一部漫威？</div>
-    <button class="daily-picker-btn" id="draw-btn" onclick="startDailyDraw()">🎬 抽取今日漫威作品 (每日1次)</button>
-    <div id="draw-status-msg" style="font-size:12px; color:var(--faint); margin-top:10px;">每日 00:00 自動刷新次數</div>
-  </div>
-
   <div class="hero-controls">
     <div class="ctrl">
       <span class="ctrl-label">圖片模式</span>
@@ -862,6 +865,16 @@ phase7 以後為變種人傳奇。</p>
     <div class="line"></div>
   </div>
 </header>
+
+<!-- 2. 主頁每日隨機抽片區塊 (獨立放在旋轉字卡與控制項正下方) -->
+<div class="daily-picker-wrapper">
+  <div class="daily-picker-section">
+    <div style="font-family:'JetBrains Mono'; color:var(--cyan); font-size:13px; margin-bottom:8px;">🎲 DAILY MARVEL MOVIE</div>
+    <div style="color:var(--white); font-weight:700; font-size:1.2rem; margin-bottom:12px;">今天重溫哪一部漫威？</div>
+    <button class="daily-picker-btn" id="draw-btn" onclick="startDailyDraw()">🎬 抽取今日漫威作品 (每日1次)</button>
+    <div id="draw-status-msg" style="font-size:12px; color:var(--faint); margin-top:10px;">每日 00:00 自動刷新次數</div>
+  </div>
+</div>
 
 <!-- 通用階段頁面模組 -->
 <template id="phase-view-template">
@@ -1037,7 +1050,7 @@ phase7 以後為變種人傳奇。</p>
       {"id": 23, "title": "蜘蛛人：離家日", "type": "電影", "date": "2019/7/2", "status": "已上映", "box_office": "$1,132,697,856", "desc": "劇情在校園出遊與拯救城市之間遊蕩，有製造出 Peter 兩難的情境，也有把青春暗戀的感情、相多與喜歡的人相處卻被迫出任務那無能為力的感覺演出來。中後段的虛擬幻象特效是作得非常好，加上全部都是假的，真正的反派只是一般人用無人機製造的幻象來欺騙所有人，這個構想相當不錯。", "review": "劇情在校園出遊與拯救城市之間遊蕩，有製造出 Peter 兩難的情境，也有把青春暗戀的感情、相多與喜歡的人相處卻被迫出任務那無能為力的感覺演出來。", "rating": 4.7, "image": "images/mcu_23.jpg", "characters": ["蜘蛛人", "神秘客", "尼克福瑞"], "trailer": "Nt9L1jCKGnE", "story_year": "2024年 (終局之戰8個月後)"}
     ],
     "phase4": [
-      {"id": 31, "title": "汪達幻視", "type": "影集", "date": "2021/1/15", "status": "已完結", "episodes": "9集", "desc": "汪達與幻視過著看似完美的郊區生活，但異常現象逐漸揭開一個與汪達力量有關的真相。", "review": "身為漫威第一部影集，我認為是很及格的作品。不只汪達，觀眾也一同活在汪達控制的現實裡，直到第7集才因反派而揭開整個小鎮都是汪達控制並修改現實的，汪達自己也不知道，不能說特別好看但就是會有驚豔的感覺。", "rating": 4.1, "image": "images/mcu_31.jpg", "characters": ["緋紅女巫", "幻視", "阿嘉莎"], "trailer": "ZhuFXyq9ufQ", "story_year": "2023年 (彈指恢復數週後)"},
+      {"id": 31, "title": "汪達幻視", "type": "影集", "date": "2021/1/15", "status": "已完結", "episodes": "9集", "desc": "汪達與幻視過著看似完美的郊區生活，但異常現象逐漸揭開一個與汪達力量有關的真相。", "review": "身為漫威第一部影集，我認為是很及格的作品。不只汪達，觀眾也一同活在汪達控制的現實裡，直到第7集才因反派而揭開整個小鎮都是汪達控制並修改現實的，汪達自己也不知道，無法說特別好看但就是會有驚豔的感覺。", "rating": 4.1, "image": "images/mcu_31.jpg", "characters": ["緋紅女巫", "幻視", "阿嘉莎"], "trailer": "ZhuFXyq9ufQ", "story_year": "2023年 (彈指恢復數週後)"},
       {"id": 32, "title": "獵鷹與酷寒戰士", "type": "影集", "date": "2021/3/19", "status": "已完結", "episodes": "6集", "desc": "山姆威爾遜與巴奇巴恩斯合作處理全球危機，並面對美國隊長傳承所帶來的問題。", "review": "無法評價。", "rating": "無法評分", "image": "images/mcu_32.jpg", "characters": ["獵鷹", "酷寒戰士", "美國 Agent", "齊莫"], "trailer": "3THwyzXe3E8", "story_year": "2024年 (終局之戰6個月後)"},
       {"id": 33, "title": "洛基 第一季", "type": "影集", "date": "2021/6/9", "status": "已完結", "episodes": "6集", "desc": "復仇者聯盟4中過去的洛基因利用宇宙魔方逃走，因而產生出了另一條時間線。洛基因此被時間變異管理局帶走，開始探索該機構的運作與時間線的秘密。", "review": "探索 TVA 的世界與運作模式，也逐步看洛基是如何從反派轉變為為他人設想的英雄。", "rating": 5.0, "image": "images/mcu_33.jpg", "characters": ["洛基", "梅比斯", "希爾維", "留存者"], "trailer": "zxDmxQE164s", "story_year": "時間之外 (TVA)"},
       {"id": 24, "title": "黑寡婦", "type": "電影", "date": "2021/7/9", "status": "已上映", "box_office": "$379,751,655", "desc": "娜塔莎羅曼諾夫面對過去的陰影，與舊家人重新合作，對抗紅房子的勢力。", "review": "只看一半就知道非常難看，無趣且特效有跟沒有一樣，甚至有缺陷，就是一部想蹭終局之戰娜塔莎犧牲清懷的片而已，不知道為什麼很多人愛。", "rating": 2.5, "image": "images/mcu_24.jpg", "characters": ["黑寡婦", "葉蓮娜", "紅色守衛者", "模仿大師"], "trailer": "-gQHSE7cJg8", "story_year": "2016年 (內戰期間)"},
@@ -1297,7 +1310,7 @@ phase7 以後為變種人傳奇。</p>
       const goldClass = isGoldStar ? 'gold-star-5' : '';
       const goldBadgeHtml = isGoldStar ? `<div class="gold-badge">★ 5.0 殿堂神作</div>` : '';
 
-      // 3. 死侍與金鋼狼專屬實體照片彩蛋
+      // 死侍與金鋼狼專屬實體照片彩蛋
       const isDeadpool = item.id === 42;
       const deadpoolClass = isDeadpool ? 'deadpool-card' : '';
       const deadpoolEggHtml = isDeadpool ? `
