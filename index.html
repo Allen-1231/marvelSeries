@@ -844,12 +844,80 @@
     .rc-line { grid-template-columns: 50px 1fr 28px; gap: 8px; padding: 3px 4px; font-size: 12px; }
     .rc-detail { padding-left: 62px; }
   }
+
+  /* ===== 流動背景（極慢、柔和） ===== */
+  .fluid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .fluid-bg i { position: absolute; border-radius: 50%; will-change: transform; }
+  .fluid-bg i:nth-child(1) { width: 75vmax; height: 75vmax; left: -25vmax; top: -30vmax; background: radial-gradient(circle, rgba(0,136,255,0.20), transparent 65%); animation: fbA 80s ease-in-out infinite alternate; }
+  .fluid-bg i:nth-child(2) { width: 70vmax; height: 70vmax; right: -25vmax; top: 10vmax; background: radial-gradient(circle, rgba(155,81,224,0.20), transparent 65%); animation: fbB 95s ease-in-out infinite alternate; }
+  .fluid-bg i:nth-child(3) { width: 60vmax; height: 60vmax; left: 10vmax; bottom: -30vmax; background: radial-gradient(circle, rgba(6,182,212,0.15), transparent 65%); animation: fbC 110s ease-in-out infinite alternate; }
+  .fluid-bg i:nth-child(4) { width: 50vmax; height: 50vmax; right: 5vmax; bottom: -20vmax; background: radial-gradient(circle, rgba(230,36,41,0.10), transparent 65%); animation: fbA 120s ease-in-out infinite alternate-reverse; }
+  @keyframes fbA { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(22vmax,14vmax) scale(1.18); } 100% { transform: translate(8vmax,28vmax) scale(0.95); } }
+  @keyframes fbB { 0% { transform: translate(0,0) scale(1.1); } 50% { transform: translate(-24vmax,10vmax) scale(0.92); } 100% { transform: translate(-10vmax,-12vmax) scale(1.2); } }
+  @keyframes fbC { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(26vmax,-16vmax) scale(1.2); } 100% { transform: translate(-12vmax,-22vmax) scale(1.05); } }
+  @media (prefers-reduced-motion: reduce) { .fluid-bg i { animation: none; } }
+
+  /* ===== 即將上映倒數（科幻 HUD） ===== */
+  .cd-wrapper { position: relative; z-index: 10; max-width: 860px; margin: 0 auto 30px; padding: 0 20px; }
+  .cd-panel { position: relative; overflow: hidden; padding: 26px 26px 18px; border-radius: 6px; border: 1px solid rgba(6,182,212,0.35);
+    background: linear-gradient(rgba(6,182,212,0.05) 1px, transparent 1px) 0 0 / 100% 4px, radial-gradient(ellipse at 0 0, rgba(6,182,212,0.16), transparent 55%), rgba(6,10,18,0.82);
+    box-shadow: 0 0 40px rgba(6,182,212,0.18), inset 0 0 40px rgba(6,182,212,0.06); backdrop-filter: blur(10px); }
+  .cd-panel::before, .cd-panel::after { content: ''; position: absolute; width: 22px; height: 22px; border: 2px solid var(--cyan); }
+  .cd-panel::before { top: 6px; left: 6px; border-right: 0; border-bottom: 0; }
+  .cd-panel::after { bottom: 6px; right: 6px; border-left: 0; border-top: 0; }
+  .cd-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; color: var(--cyan); margin-bottom: 16px; }
+  .cd-eyebrow span { letter-spacing: 1px; opacity: 0.55; margin-left: 8px; }
+  .cd-hero { display: flex; gap: 22px; align-items: center; cursor: pointer; }
+  .cd-poster { width: 104px; height: 156px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(6,182,212,0.5); box-shadow: 0 0 22px rgba(6,182,212,0.35); flex-shrink: 0; }
+  .cd-info { flex: 1; min-width: 0; }
+  .cd-tminus { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 4px; color: #ff4d5a; animation: cdBlink 1.6s steps(2) infinite; }
+  .cd-tminus em, .cd-rname em { font-style: normal; font-size: 10px; letter-spacing: 1px; color: #fbbf24; border: 1px solid rgba(251,191,36,0.5); border-radius: 8px; padding: 0 6px; margin-left: 6px; }
+  @keyframes cdBlink { 50% { opacity: 0.45; } }
+  .cd-name { font-size: clamp(1.15rem, 3vw, 1.6rem); font-weight: 700; color: var(--white); margin: 4px 0 2px; }
+  .cd-date { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--faint); margin-bottom: 12px; }
+  .cd-digits { display: flex; align-items: flex-start; gap: 6px; }
+  .cd-unit { text-align: center; min-width: 58px; padding: 8px 8px 6px; background: rgba(6,182,212,0.07); border: 1px solid rgba(6,182,212,0.3); }
+  .cd-unit b { display: block; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: clamp(1.7rem, 6vw, 2.6rem); line-height: 1.1; color: #aef3ff; text-shadow: 0 0 14px var(--cyan), 0 0 30px rgba(6,182,212,0.6); }
+  .cd-unit span { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--cyan); opacity: 0.7; }
+  .cd-sep { font-family: 'JetBrains Mono', monospace; font-size: clamp(1.4rem, 5vw, 2.2rem); color: var(--cyan); margin-top: 6px; animation: cdBlink 1s steps(2) infinite; }
+  .cd-bar { height: 3px; margin-top: 12px; background: rgba(6,182,212,0.15); }
+  .cd-bar i { display: block; height: 100%; background: linear-gradient(90deg, transparent, var(--cyan)); box-shadow: 0 0 10px var(--cyan); transition: width 1s linear; }
+  #cd-list { margin-top: 18px; border-top: 1px dashed rgba(6,182,212,0.3); }
+  .cd-row { display: grid; grid-template-columns: 1fr auto auto; gap: 14px; padding: 8px 6px; font-size: 13px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; }
+  .cd-row:hover { background: rgba(6,182,212,0.08); }
+  .cd-rname { color: var(--white); }
+  .cd-rdate { font-family: 'JetBrains Mono', monospace; color: var(--faint); font-size: 12px; }
+  .cd-rtime { font-family: 'JetBrains Mono', monospace; color: #aef3ff; font-size: 12px; min-width: 112px; text-align: right; }
+  body.in-subpage .cd-wrapper { display: none; }
+  @media (max-width: 720px) {
+    .cd-panel { padding: 22px 14px 14px; }
+    .cd-hero { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .cd-poster { width: 84px; height: 126px; }
+    .cd-unit { min-width: 0; flex: 1; padding: 6px 2px 4px; }
+    .cd-digits { width: 100%; gap: 3px; }
+    .cd-row { grid-template-columns: 1fr auto; } .cd-rdate { display: none; }
+  }
+
+  /* ===== 全域搜尋 ===== */
+  .gs-overlay { display: none; position: fixed; inset: 0; z-index: 400; background: rgba(2,3,8,0.78); backdrop-filter: blur(8px); align-items: flex-start; justify-content: center; padding: 10vh 16px 16px; }
+  .gs-overlay.active { display: flex; }
+  .gs-box { width: 100%; max-width: 640px; max-height: 76vh; display: flex; flex-direction: column; background: #0b0d16; border: 1px solid rgba(6,182,212,0.4); border-radius: 14px; box-shadow: 0 0 50px rgba(6,182,212,0.25); overflow: hidden; }
+  #gs-input { background: transparent; border: 0; border-bottom: 1px solid rgba(6,182,212,0.25); color: var(--white); font-size: 16px; padding: 16px 18px; outline: none; font-family: 'Space Grotesk', sans-serif; }
+  #gs-results { overflow-y: auto; padding: 6px; }
+  .gs-item { display: flex; gap: 12px; align-items: center; padding: 8px 10px; border-radius: 10px; cursor: pointer; }
+  .gs-item.sel { background: rgba(6,182,212,0.14); box-shadow: inset 0 0 0 1px rgba(6,182,212,0.4); }
+  .gs-item img { width: 40px; height: 60px; object-fit: cover; border-radius: 5px; flex-shrink: 0; background: rgba(255,255,255,0.05); }
+  .gs-title { color: var(--white); font-weight: 600; }
+  .gs-meta { color: var(--faint); font-size: 12px; font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+  .gs-empty { color: var(--faint); text-align: center; padding: 28px 10px; font-size: 14px; }
+  .gs-foot { border-top: 1px solid rgba(255,255,255,0.08); color: var(--faint); font-size: 11px; font-family: 'JetBrains Mono', monospace; padding: 8px 14px; }
 </style>
 </head>
 
 <body class="visuals-on">
 
 <div class="aura"></div>
+<div class="fluid-bg"><i></i><i></i><i></i><i></i></div>
 <div class="stars"></div>
 
 <!-- 導覽列 -->
@@ -864,6 +932,7 @@
     <li><a href="javascript:void(0)" onclick="switchPage('phase6')">第六階段</a></li>
     <li><a href="javascript:void(0)" onclick="switchPage('phase7')">第七階段與未知</a></li>
     <li><a href="javascript:void(0)" onclick="switchPage('timeline')" style="color:var(--cyan); font-weight:600;">時間軸</a></li>
+    <li><a href="javascript:void(0)" onclick="openSearch()" title="快捷鍵：/ 或 Ctrl+K">🔍 搜尋</a></li>
   </ul>
   <button class="menu-toggle" aria-label="打開選單" aria-expanded="false">
     <span></span><span></span><span></span>
@@ -879,6 +948,7 @@
   <a href="javascript:void(0)" onclick="switchPage('phase6')">第六階段</a>
   <a href="javascript:void(0)" onclick="switchPage('phase7')">第七階段與未知</a>
   <a href="javascript:void(0)" onclick="switchPage('timeline')">時間軸</a>
+  <a href="javascript:void(0)" onclick="openSearch()">🔍 全域搜尋</a>
 </div>
 
 <!-- 首頁 3D 旋轉環狀區塊 -->
@@ -1053,6 +1123,15 @@ phase7 以後為變種人傳奇。</p>
   </div>
 </div>
 
+<!-- 即將上映倒數 -->
+<section class="cd-wrapper" id="countdown">
+  <div class="cd-panel">
+    <div class="cd-eyebrow">// NEXT RELEASE · SEQUENCE ONLINE <span>以台灣時間 (UTC+8) 計算</span></div>
+    <div id="cd-main"></div>
+    <div id="cd-list"></div>
+  </div>
+</section>
+
 <!-- 主頁每日隨機抽片區塊 (位於歷史上的今天下方) -->
 <div class="daily-picker-wrapper">
   <div class="daily-picker-section">
@@ -1198,6 +1277,15 @@ phase7 以後為變種人傳奇。</p>
     <img id="char-modal-img" class="char-modal-img" src="" alt="角色照片" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'380\' viewBox=\'0 0 300 380\'><rect width=\'100%\' height=\'100%\' fill=\'%23111827\'/><text x=\'50%\' y=\'50%\' fill=\'%2306b6d4\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\'>📷 尚無角色照片</text></svg>'">
     <div class="char-modal-name" id="char-modal-name">角色名稱</div>
     <button class="back-btn" style="margin-bottom:0; width:100%; justify-content:center;" onclick="searchByRoleName()">🔍 在資料庫中搜尋此角色的作品</button>
+  </div>
+</div>
+
+<!-- 全域搜尋 -->
+<div class="gs-overlay" id="gs-overlay" onclick="closeSearch(event)">
+  <div class="gs-box" onclick="event.stopPropagation()">
+    <input id="gs-input" type="text" placeholder="🔍 搜尋所有階段的片名、角色…" autocomplete="off" oninput="renderSearch(this.value)" onkeydown="searchKey(event)">
+    <div id="gs-results"></div>
+    <div class="gs-foot">↑↓ 選擇 · Enter 開啟 · Esc 關閉</div>
   </div>
 </div>
 
@@ -1756,6 +1844,94 @@ phase7 以後為變種人傳奇。</p>
     }
   }
 
+  // ===== 即將上映倒數 =====
+  function releaseTarget(d) {
+    let m = (d || '').match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
+    if (m) return { t: Date.UTC(+m[1], m[2] - 1, +m[3]) - 8 * 3600e3, est: false };
+    m = (d || '').match(/^(\d{4})年(\d{1,2})月$/);
+    if (m) return { t: Date.UTC(+m[1], m[2] - 1, 1) - 8 * 3600e3, est: true };
+    m = (d || '').match(/^(\d{4})年$/);
+    if (m) return { t: Date.UTC(+m[1], 0, 1) - 8 * 3600e3, est: true };
+    return null;
+  }
+  const pad2 = n => String(n).padStart(2, '0');
+  function parts(ms) {
+    const s = Math.max(0, Math.floor(ms / 1000));
+    return { d: Math.floor(s / 86400), h: Math.floor(s % 86400 / 3600), m: Math.floor(s % 3600 / 60), s: s % 60 };
+  }
+  let cdList = [];
+  function renderCountdown() {
+    const now = Date.now(); cdList = [];
+    for (const [g, list] of Object.entries(mcuData)) list.forEach(it => {
+      const r = releaseTarget(it.date);
+      if (r && r.t > now) cdList.push({ it, g, t: r.t, est: r.est });
+    });
+    cdList.sort((a, b) => a.t - b.t);
+    const main = document.getElementById('cd-main'), box = document.getElementById('cd-list');
+    if (!cdList.length) { document.getElementById('countdown').style.display = 'none'; return; }
+    const n = cdList[0];
+    main.innerHTML = `<div class="cd-hero" onclick="openModal('${n.g}', ${n.it.id})">
+      <img class="cd-poster" src="${n.it.image}" alt="" onerror="this.style.display='none'">
+      <div class="cd-info"><div class="cd-tminus">T - MINUS${n.est ? ' <em>預估</em>' : ''}</div>
+        <div class="cd-name">${n.it.title}</div><div class="cd-date">📅 ${n.it.date}${n.est ? '（暫以該期間起始日計算）' : ' 00:00 台灣時間'}</div>
+        <div class="cd-digits">${['d', 'h', 'm', 's'].map((u, i) => `${i ? '<span class="cd-sep">:</span>' : ''}<div class="cd-unit"><b id="cd-${u}">00</b><span>${{ d: 'DAYS', h: 'HRS', m: 'MIN', s: 'SEC' }[u]}</span></div>`).join('')}</div>
+        <div class="cd-bar"><i id="cd-sweep"></i></div></div></div>`;
+    box.innerHTML = cdList.slice(1).map((x, i) => `<div class="cd-row" onclick="openModal('${x.g}', ${x.it.id})"><span class="cd-rname">${x.it.title}${x.est ? ' <em>預估</em>' : ''}</span><span class="cd-rdate">${x.it.date}</span><span class="cd-rtime" data-i="${i + 1}">--</span></div>`).join('');
+    tickCountdown();
+  }
+  function tickCountdown() {
+    if (!cdList.length) return;
+    const now = Date.now();
+    if (cdList[0].t <= now) { renderCountdown(); return; }
+    const p = parts(cdList[0].t - now);
+    document.getElementById('cd-d').textContent = p.d < 10 ? pad2(p.d) : p.d;
+    document.getElementById('cd-h').textContent = pad2(p.h);
+    document.getElementById('cd-m').textContent = pad2(p.m);
+    document.getElementById('cd-s').textContent = pad2(p.s);
+    document.getElementById('cd-sweep').style.width = ((60 - p.s) / 60 * 100) + '%';
+    document.querySelectorAll('.cd-rtime').forEach(el => {
+      const q = parts(cdList[+el.dataset.i].t - now);
+      el.textContent = `${q.d}天 ${pad2(q.h)}:${pad2(q.m)}:${pad2(q.s)}`;
+    });
+  }
+
+  // ===== 全域搜尋 =====
+  const PHASE_LABEL = { phase1: '第一階段', phase2: '第二階段', phase3: '第三階段', phase4: '第四階段', phase5: '第五階段', phase6: '第六階段', phase7: '第七階段與未知' };
+  let gsRes = [], gsSel = 0;
+  function openSearch() {
+    const mm = document.querySelector('.mobile-menu'); if (mm) mm.classList.remove('open');
+    document.getElementById('gs-overlay').classList.add('active');
+    const inp = document.getElementById('gs-input'); inp.value = ''; renderSearch(''); inp.focus();
+  }
+  function closeSearch(e) {
+    if (e && e.target !== e.currentTarget) return;
+    document.getElementById('gs-overlay').classList.remove('active');
+  }
+  function renderSearch(q) {
+    q = q.trim().toLowerCase(); gsSel = 0; gsRes = [];
+    const box = document.getElementById('gs-results');
+    if (!q) { box.innerHTML = '<div class="gs-empty">輸入片名或角色名稱，一次搜尋全部 ' + Object.values(mcuData).reduce((a, l) => a + l.length, 0) + ' 部作品</div>'; return; }
+    for (const [g, list] of Object.entries(mcuData)) list.forEach(it => {
+      const t = it.title.toLowerCase().includes(q), c = (it.characters || []).filter(x => x.toLowerCase().includes(q)), d = (it.desc || '').toLowerCase().includes(q);
+      if (t || c.length || d) gsRes.push({ it, g, c, score: t ? 3 : c.length ? 2 : 1 });
+    });
+    gsRes.sort((a, b) => b.score - a.score).splice(40);
+    box.innerHTML = gsRes.length ? gsRes.map((r, i) => `<div class="gs-item${i ? '' : ' sel'}" data-i="${i}" onclick="pickSearch(${i})" onmousemove="hoverSearch(${i})">
+      <img src="${r.it.image}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div><div class="gs-title">${r.it.title}</div><div class="gs-meta">${PHASE_LABEL[r.g]} · ${r.it.date}${typeof r.it.rating === 'number' ? ' · ★' + r.it.rating.toFixed(1) : ''}${r.c.length ? ' · 角色：' + r.c.join('、') : ''}</div></div></div>`).join('') : '<div class="gs-empty">找不到符合的作品 🔍</div>';
+  }
+  function hoverSearch(i) { gsSel = i; markSearch(false); }
+  function markSearch(scroll) {
+    document.querySelectorAll('.gs-item').forEach((el, i) => el.classList.toggle('sel', i === gsSel));
+    const el = document.querySelector('.gs-item.sel'); if (el && scroll) el.scrollIntoView({ block: 'nearest' });
+  }
+  function pickSearch(i) { const r = gsRes[i]; if (!r) return; closeSearch(); openModal(r.g, r.it.id); }
+  function searchKey(e) {
+    if (e.key === 'ArrowDown') { e.preventDefault(); gsSel = Math.min(gsRes.length - 1, gsSel + 1); markSearch(true); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); gsSel = Math.max(0, gsSel - 1); markSearch(true); }
+    else if (e.key === 'Enter') { e.preventDefault(); pickSearch(gsSel); }
+  }
+
   function pageFromHash() {
     const k = location.hash.slice(1);
     return (k === 'timeline' || /^phase[1-7]$/.test(k)) ? k : 'hero';
@@ -1765,7 +1941,9 @@ phase7 以後為變種人傳奇。</p>
     switchPage(pageFromHash(), true);
   });
   document.addEventListener('keydown', e => {
+    if ((e.key === '/' || (e.key.toLowerCase() === 'k' && (e.ctrlKey || e.metaKey))) && !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); openSearch(); return; }
     if (e.key !== 'Escape') return;
+    if (document.getElementById('gs-overlay').classList.contains('active')) { closeSearch(); return; }
     if (document.getElementById('trailer-modal').classList.contains('active')) closeTrailer();
     else if (document.getElementById('char-modal').classList.contains('active')) closeCharModal();
     else if (document.getElementById('detail-modal').classList.contains('active')) closeModal();
@@ -1820,6 +1998,7 @@ phase7 以後為變種人傳奇。</p>
   document.addEventListener('DOMContentLoaded', () => {
     initPages();
     initRatingChart();
+    renderCountdown(); setInterval(tickCountdown, 1000);
     if (pageFromHash() !== 'hero') switchPage(pageFromHash(), true);
   });
 </script>
