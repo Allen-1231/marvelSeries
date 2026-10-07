@@ -1101,6 +1101,25 @@ phase7 以後為變種人傳奇。</p>
   </div>
 </header>
 
+<!-- 1. 新增：漫威歷史上的今天播報區塊 (位於 3D 旋轉環與隨機抽卡區中間) -->
+<div class="marvel-today-wrapper">
+  <div class="marvel-today-box">
+    <div class="today-icon-badge" id="today-date-badge">
+      <div>10月</div>
+      <div style="font-size:16px;">04日</div>
+    </div>
+    <div class="today-content">
+      <div class="today-title">
+        <span>📡 MARVEL HISTORY TODAY</span>
+        <span style="font-size:10px; opacity:0.6;">// 漫威歷史上的今天</span>
+      </div>
+      <div class="today-event-text" id="today-event-title">載入漫威宇宙大事記中...</div>
+      <div class="today-event-desc" id="today-event-desc">記錄漫威影視作品與故事時間線上的關鍵時刻。</div>
+    </div>
+    <button class="today-refresh-btn" onclick="getRandomHistoryEvent()">🎲 換一個大事記</button>
+  </div>
+</div>
+
 <!-- 即將上映倒數 -->
 <section class="cd-wrapper" id="countdown">
   <div class="cd-panel">
