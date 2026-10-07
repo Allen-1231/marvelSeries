@@ -1887,20 +1887,23 @@ phase7 以後為變種人傳奇。</p>
     const T = (1 + Math.sqrt(5)) / 2;
     const V0 = [[-1,T,0],[1,T,0],[-1,-T,0],[1,-T,0],[0,-1,T],[0,1,T],[0,-1,-T],[0,1,-T],[T,0,-1],[T,0,1],[-T,0,-1],[-T,0,1]];
     const F = [[0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],[1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],[3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],[4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]];
-    // 菱形三十面體：12 個二十面體頂點 + 20 個面中心，每條稜線對應一個菱形面
-    const U = V0.map(v => { const l = Math.hypot(...v); return v.map(x => x / l); });
-    const cdir = F.map(f => { const s3 = [0, 1, 2].map(k => f.reduce((a, i) => a + U[i][k], 0)); const l = Math.hypot(...s3); return s3.map(x => x / l); });
-    const edges = {};
-    F.forEach((f, fi) => [[f[0], f[1]], [f[1], f[2]], [f[2], f[0]]].forEach(([a, b]) => { const k = Math.min(a, b) + '_' + Math.max(a, b); (edges[k] = edges[k] || { a: Math.min(a, b), b: Math.max(a, b), f: [] }).f.push(fi); }));
-    const E0 = Object.values(edges), e0 = E0[0];
-    const mL = Math.hypot(...[0, 1, 2].map(k => (U[e0.a][k] + U[e0.b][k]) / 2));
-    const bR = mL / Math.hypot(...[0, 1, 2].map(k => (cdir[e0.f[0]][k] + cdir[e0.f[1]][k]) / 2));
-    const BV = U.concat(cdir.map(c => c.map(x => x * bR)));
-    const QF = E0.map(e => [e.a, 12 + e.f[0], e.b, 12 + e.f[1]]);
+    // 三十五面體：以十二面體的 20 個頂點為底；11 個五邊形各切成 3 個三角形，1 個切成 1 個四邊形 + 1 個三角形
+    // → 34 個三角形 + 1 個四邊形 = 35 面（20 頂點、53 稜線）
+    const nrm = v => { const l = Math.hypot(...v); return v.map(x => x / l); };
+    const crs = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+    const U = V0.map(nrm);
+    const BV = F.map(f => nrm([0, 1, 2].map(k => U[f[0]][k] + U[f[1]][k] + U[f[2]][k])));
+    const QF = [];
+    U.forEach((u, i) => {
+      const e1 = nrm(crs(u, [1, 0.3, 0.2])), e2 = crs(u, e1);
+      const ang = fi => Math.atan2(e2[0] * BV[fi][0] + e2[1] * BV[fi][1] + e2[2] * BV[fi][2], e1[0] * BV[fi][0] + e1[1] * BV[fi][1] + e1[2] * BV[fi][2]);
+      const [p0, p1, p2, p3, p4] = F.map((f, fi) => f.includes(i) ? fi : -1).filter(x => x >= 0).sort((p, q) => ang(p) - ang(q));
+      if (i === 0) QF.push([p0, p1, p2, p3], [p0, p3, p4]); else QF.push([p0, p1, p2], [p0, p2, p3], [p0, p3, p4]);
+    });
     const rng = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
     const gems = ST.map((st, i) => {
       const r = rng(i * 97 + 13), ax = [0.85 + r() * 0.3, 1.0 + r() * 0.25, 0.8 + r() * 0.3];
-      const verts = BV.map(v => { const k = 0.97 + r() * 0.06; return [v[0] * k * ax[0], v[1] * k * ax[1], v[2] * k * ax[2]]; });
+      const verts = BV.map(v => { const k = 0.86 + r() * 0.28; return [v[0] * k * ax[0], v[1] * k * ax[1], v[2] * k * ax[2]]; });
       return { name: st[0], c: st[1], verts, sp: [0.5 + r() * 0.5, 0.3 + r() * 0.4], ph: r() * 6.28 };
     });
     let W = 0, H = 0, dpr = 1, visible = true;
@@ -1934,10 +1937,11 @@ phase7 以後為變種人傳奇。</p>
         const P = g.verts.map(([x, y, z]) => { const x1 = x * cyy + z * syy, z1 = -x * syy + z * cyy; return [x1, y * cxx - z1 * sxx, y * sxx + z1 * cxx]; });
         const faces = [];
         for (const f of QF) {
-          const a = P[f[0]], b2 = P[f[1]], c = P[f[2]], d2 = P[f[3]];
-          const u = [c[0] - a[0], c[1] - a[1], c[2] - a[2]], v = [d2[0] - b2[0], d2[1] - b2[1], d2[2] - b2[2]];
-          let n = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]]; const l = Math.hypot(...n) || 1; n = n.map(x => x / l);
-          const cen = [(a[0] + b2[0] + c[0] + d2[0]) / 4, (a[1] + b2[1] + c[1] + d2[1]) / 4, (a[2] + b2[2] + c[2] + d2[2]) / 4];
+          const pv = f.map(i => P[i]);
+          let n = [0, 0, 0];
+          pv.forEach((p, j) => { const q = pv[(j + 1) % pv.length]; n[0] += (p[1] - q[1]) * (p[2] + q[2]); n[1] += (p[2] - q[2]) * (p[0] + q[0]); n[2] += (p[0] - q[0]) * (p[1] + q[1]); });
+          const l = Math.hypot(...n) || 1; n = n.map(x => x / l);
+          const cen = [0, 1, 2].map(k => pv.reduce((s2, p) => s2 + p[k], 0) / pv.length);
           if (n[0] * cen[0] + n[1] * cen[1] + n[2] * cen[2] < 0) n = n.map(x => -x);
           if (n[2] > 0) faces.push({ f, n, z: cen[2] });
         }
