@@ -908,6 +908,13 @@
   .gs-meta { color: var(--faint); font-size: 12px; font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
   .gs-empty { color: var(--faint); text-align: center; padding: 28px 10px; font-size: 14px; }
   .gs-foot { border-top: 1px solid rgba(255,255,255,0.08); color: var(--faint); font-size: 11px; font-family: 'JetBrains Mono', monospace; padding: 8px 14px; }
+
+  /* ===== 無限寶石 ===== */
+  .stones-wrapper { position: relative; z-index: 10; max-width: 980px; margin: 0 auto 30px; padding: 0 20px; text-align: center; }
+  .stones-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 6px; color: var(--cyan); opacity: 0.7; }
+  #stones-canvas { display: block; width: 100%; height: 340px; }
+  body.in-subpage .stones-wrapper { display: none; }
+  @media (max-width: 720px) { #stones-canvas { height: 260px; } }
 </style>
 </head>
 
@@ -1101,25 +1108,6 @@ phase7 以後為變種人傳奇。</p>
   </div>
 </header>
 
-<!-- 1. 新增：漫威歷史上的今天播報區塊 (位於 3D 旋轉環與隨機抽卡區中間) -->
-<div class="marvel-today-wrapper">
-  <div class="marvel-today-box">
-    <div class="today-icon-badge" id="today-date-badge">
-      <div>10月</div>
-      <div style="font-size:16px;">04日</div>
-    </div>
-    <div class="today-content">
-      <div class="today-title">
-        <span>📡 MARVEL HISTORY TODAY</span>
-        <span style="font-size:10px; opacity:0.6;">// 漫威歷史上的今天</span>
-      </div>
-      <div class="today-event-text" id="today-event-title">載入漫威宇宙大事記中...</div>
-      <div class="today-event-desc" id="today-event-desc">記錄漫威影視作品與故事時間線上的關鍵時刻。</div>
-    </div>
-    <button class="today-refresh-btn" onclick="getRandomHistoryEvent()">🎲 換一個大事記</button>
-  </div>
-</div>
-
 <!-- 即將上映倒數 -->
 <section class="cd-wrapper" id="countdown">
   <div class="cd-panel">
@@ -1127,6 +1115,12 @@ phase7 以後為變種人傳奇。</p>
     <div id="cd-main"></div>
     <div id="cd-list"></div>
   </div>
+</section>
+
+<!-- 無限寶石 -->
+<section class="stones-wrapper" id="stones">
+  <div class="stones-eyebrow">// INFINITY STONES</div>
+  <canvas id="stones-canvas"></canvas>
 </section>
 
 <!-- 主頁每日隨機抽片區塊 (位於歷史上的今天下方) -->
@@ -1381,52 +1375,10 @@ phase7 以後為變種人傳奇。</p>
     ]
   };
 
-  // 漫威歷史大事記資料庫
-  const marvelHistoryEvents = [
-    { month: 5, day: 2, year: 2008, title: "《鋼鐵人》全美上映，MCU 傳奇正式開啟！", desc: "東尼史塔克首次披上鋼鐵戰甲登陸大銀幕，句尾一句『I am Iron Man』奠定了漫威電影宇宙的宏偉藍圖。" },
-    { month: 4, day: 27, year: 2018, title: "《復仇者聯盟：無限之戰》全球上映！", desc: "薩諾斯正式集齊六顆無限寶石彈指，全宇宙半數生命化為灰燼，成為影史最震撼的反派勝利之戰。" },
-    { month: 4, day: 26, year: 2019, title: "《復仇者聯盟：終局之戰》上映，史詩終章！", desc: "倖存英雄穿越時空逆轉危機，『Whatever it takes』句點告別初代鋼鐵人與美國隊長。" },
-    { month: 7, day: 26, year: 2024, title: "《死侍與金鋼狼》正式上映！", desc: "Wade Wilson 攜手羅根闖入 MCU，多重宇宙的狼侍狂歡打破了全球 R 級電影票房紀錄。" },
-    { month: 10, day: 5, year: 2023, title: "《洛基》第二季回歸，故事之神誕生！", desc: "洛基掌握時間溜脫，最終選擇犧牲自我登上時間王座，成為守護全多重宇宙故事時間線的神祇。" },
-    { month: 11, day: 4, year: 2016, title: "《奇異博士》上映，至尊魔法師登場！", desc: "史蒂芬史傳奇踏入卡瑪泰姬，開啟漫威宇宙魔法與鏡像空間的嶄新維度。" },
-    { month: 5, day: 4, year: 2012, title: "《復仇者聯盟》紐約大戰爆發！", desc: "初代六人復仇者聯盟首次集結，齊心對抗洛基與奇塔瑞軍隊的地球入侵行動。" },
-    { month: 7, day: 7, year: 2017, title: "《蜘蛛人：返校日》高中生彼得帕克回歸！", desc: "彼得帕克在鋼鐵人史塔克的指導下，正式展開校園與超級英雄雙重生活的打怪歷程。" }
-  ];
-
   let currentTrailerCode = "";
   let currentSelectedChar = "";
   let currentGroupKey = "";
   let currentTimelineMode = "release";
-
-  // 1. 初始化漫威歷史上的今天
-  function initMarvelHistoryToday() {
-    const today = new Date();
-    const currentMonth = today.getMonth() + 1;
-    const currentDate = today.getDate();
-
-    // 更新日期徽章
-    const dateBadge = document.getElementById('today-date-badge');
-    if (dateBadge) {
-      dateBadge.innerHTML = `<div>${currentMonth}月</div><div style="font-size:16px;">${currentDate < 10 ? '0' + currentDate : currentDate}日</div>`;
-    }
-
-    // 尋找今日匹配事件，若無則挑選精選事件
-    const matched = marvelHistoryEvents.filter(e => e.month === currentMonth && e.day === currentDate);
-    if (matched.length > 0) {
-      const ev = matched[0];
-      document.getElementById('today-event-title').innerText = `${ev.year}年：${ev.title}`;
-      document.getElementById('today-event-desc').innerText = ev.desc;
-    } else {
-      getRandomHistoryEvent();
-    }
-  }
-
-  function getRandomHistoryEvent() {
-    const randomIndex = Math.floor(Math.random() * marvelHistoryEvents.length);
-    const ev = marvelHistoryEvents[randomIndex];
-    document.getElementById('today-event-title').innerText = `${ev.year}年 (${ev.month}/${ev.day})：${ev.title}`;
-    document.getElementById('today-event-desc').innerText = ev.desc;
-  }
 
   // 初始化 7 個階段頁面的 HTML 結構
   function initPages() {
@@ -1461,7 +1413,6 @@ phase7 以後為變種人傳奇。</p>
       pageEl.appendChild(clone);
     }
 
-    initMarvelHistoryToday();
     checkDailyDrawStatus();
   }
 
@@ -1927,6 +1878,74 @@ phase7 以後為變種人傳奇。</p>
     else if (e.key === 'Enter') { e.preventDefault(); pickSearch(gsSel); }
   }
 
+  // ===== 無限寶石：切面寶石沿橢圓軌道公轉，同時各自 3D 自轉 =====
+  function initStones() {
+    const cv = document.getElementById('stones-canvas');
+    if (!cv) return;
+    const ctx = cv.getContext('2d');
+    const ST = [['空間寶石', [47, 107, 255]], ['心靈寶石', [255, 198, 26]], ['現實寶石', [255, 42, 58]], ['力量寶石', [169, 59, 255]], ['時間寶石', [34, 224, 107]], ['靈魂寶石', [255, 138, 42]]];
+    const T = (1 + Math.sqrt(5)) / 2;
+    const V0 = [[-1,T,0],[1,T,0],[-1,-T,0],[1,-T,0],[0,-1,T],[0,1,T],[0,-1,-T],[0,1,-T],[T,0,-1],[T,0,1],[-T,0,-1],[-T,0,1]];
+    const F = [[0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],[1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],[3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],[4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]];
+    const rng = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    const gems = ST.map((st, i) => {
+      const r = rng(i * 97 + 13), ax = [0.85 + r() * 0.3, 1.0 + r() * 0.25, 0.8 + r() * 0.3];
+      const verts = V0.map(v => { const l = Math.hypot(...v), k = (0.82 + r() * 0.36) / l; return [v[0] * k * ax[0], v[1] * k * ax[1], v[2] * k * ax[2]]; });
+      return { name: st[0], c: st[1], verts, sp: [0.5 + r() * 0.5, 0.3 + r() * 0.4], ph: r() * 6.28 };
+    });
+    let W = 0, H = 0, dpr = 1, visible = true;
+    function resize() {
+      const w = cv.clientWidth, h = cv.clientHeight; if (w < 10) return;
+      dpr = Math.min(window.devicePixelRatio || 1, 2); W = w; H = h;
+      cv.width = w * dpr; cv.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    new ResizeObserver(resize).observe(cv); resize();
+    new IntersectionObserver(e => { visible = e[0].isIntersecting; }).observe(cv);
+    const L = (() => { const v = [-0.4, -0.6, 0.7], l = Math.hypot(...v); return v.map(x => x / l); })();
+    function draw(now) {
+      requestAnimationFrame(draw);
+      if (!visible || W < 10) return;
+      const t = now / 1000;
+      ctx.clearRect(0, 0, W, H);
+      const cx = W / 2, cy = H * 0.5, A = W * 0.4, B = H * 0.15, size = Math.min(H * 0.16, W * 0.075);
+      ctx.strokeStyle = 'rgba(6,182,212,0.18)'; ctx.setLineDash([4, 8]); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.ellipse(cx, cy, A, B, 0, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
+      const items = gems.map((g, i) => {
+        const th = t * (Math.PI * 2 / 40) + i * Math.PI / 3, d = Math.sin(th);
+        return { g, px: cx + A * Math.cos(th), py: cy + B * d, d, k: 0.6 + 0.4 * (d + 1) / 2 };
+      }).sort((a, b) => a.d - b.d);
+      for (const it of items) {
+        const { g, px, py, d, k } = it, s = size * k, [r, gg, b] = g.c;
+        const glow = ctx.createRadialGradient(px, py, 0, px, py, s * 2.6);
+        glow.addColorStop(0, `rgba(${r},${gg},${b},${0.42 * k})`); glow.addColorStop(1, `rgba(${r},${gg},${b},0)`);
+        ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = glow; ctx.fillRect(px - s * 3, py - s * 3, s * 6, s * 6);
+        ctx.globalCompositeOperation = 'source-over';
+        const ay = t * g.sp[0] + g.ph, ax = t * g.sp[1] + g.ph * 0.5, cyy = Math.cos(ay), syy = Math.sin(ay), cxx = Math.cos(ax), sxx = Math.sin(ax);
+        const P = g.verts.map(([x, y, z]) => { const x1 = x * cyy + z * syy, z1 = -x * syy + z * cyy; return [x1, y * cxx - z1 * sxx, y * sxx + z1 * cxx]; });
+        const faces = [];
+        for (const f of F) {
+          const a = P[f[0]], b2 = P[f[1]], c = P[f[2]];
+          const u = [b2[0] - a[0], b2[1] - a[1], b2[2] - a[2]], v = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
+          let n = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]]; const l = Math.hypot(...n) || 1; n = n.map(x => x / l);
+          const cen = [(a[0] + b2[0] + c[0]) / 3, (a[1] + b2[1] + c[1]) / 3, (a[2] + b2[2] + c[2]) / 3];
+          if (n[0] * cen[0] + n[1] * cen[1] + n[2] * cen[2] < 0) n = n.map(x => -x);
+          if (n[2] > 0) faces.push({ f, n, z: cen[2] });
+        }
+        faces.sort((p, q) => p.z - q.z);
+        for (const { f, n } of faces) {
+          const dl = Math.max(0, n[0] * L[0] + n[1] * L[1] + n[2] * L[2]), it2 = 0.3 + 0.9 * dl, sp = Math.pow(dl, 10) * 120;
+          ctx.fillStyle = `rgba(${Math.min(255, r * it2 + sp)|0},${Math.min(255, gg * it2 + sp)|0},${Math.min(255, b * it2 + sp)|0},0.94)`;
+          ctx.strokeStyle = 'rgba(255,255,255,0.22)'; ctx.lineWidth = 0.7;
+          ctx.beginPath(); f.forEach((vi, j) => { const p = P[vi], X = px + p[0] * s, Y = py - p[1] * s; j ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y); });
+          ctx.closePath(); ctx.fill(); ctx.stroke();
+        }
+        ctx.font = '12px "JetBrains Mono", monospace'; ctx.textAlign = 'center';
+        ctx.fillStyle = `rgba(${r},${gg},${b},${0.3 + 0.7 * (d + 1) / 2})`; ctx.fillText(g.name, px, py + s * 1.6 + 12);
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+
   function pageFromHash() {
     const k = location.hash.slice(1);
     return (k === 'timeline' || /^phase[1-7]$/.test(k)) ? k : 'hero';
@@ -1993,6 +2012,7 @@ phase7 以後為變種人傳奇。</p>
   document.addEventListener('DOMContentLoaded', () => {
     initPages();
     initRatingChart();
+    initStones();
     renderCountdown(); setInterval(tickCountdown, 1000);
     if (pageFromHash() !== 'hero') switchPage(pageFromHash(), true);
   });
