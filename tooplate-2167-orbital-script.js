@@ -70,7 +70,7 @@
 
   var rotation = 0;
   var velocity = 0;
-  var baseDrift = reduceMotion ? 0 : 0.12;   /* gentle auto rotation per frame */
+  var baseDrift = reduceMotion ? 0 : -0.12;   /* gentle auto rotation per frame */
   var friction = 0.94;                        /* momentum decay after a flick */
   var MAX_VELOCITY = 7;
   var DRAG_SENS = 0.32;                        /* degrees of spin per pixel dragged */
