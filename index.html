@@ -937,6 +937,102 @@
   /* ===== 版權宣告 ===== */
   .footer { flex-wrap: wrap; }
   .footer-copy { flex: 0 0 100%; max-width: 100%; box-sizing: border-box; padding: 0 clamp(0px, 8vw, 140px); margin: 18px 0 0; text-align: center; font-size: 12px; line-height: 1.7; color: var(--faint); opacity: 0.8; }
+
+  /* ===== 故事詳細解說 ===== */
+  @media (max-width: 1320px) { .nav-links { gap: 24px; } }
+  @media (max-width: 1100px) { .nav-links { gap: 15px; } .nav-links a { font-size: 12px; letter-spacing: 0; } }
+  .st-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
+  body.in-story .st-progress { opacity: 1; }
+  .st-progress i { display: block; height: 100%; width: 0; background: var(--st-accent, var(--cyan)); box-shadow: 0 0 12px var(--st-accent, var(--cyan)); }
+  .st-intro { color: var(--dim); margin: -6px 0 26px; max-width: 640px; line-height: 1.7; }
+  .st-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
+  .st-empty { grid-column: 1 / -1; color: var(--faint); text-align: center; padding: 40px 0; }
+  .st-card { --st-accent: #06b6d4; display: flex; gap: 18px; padding: 18px; border-radius: 16px; position: relative; overflow: hidden; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: linear-gradient(135deg, color-mix(in srgb, var(--st-accent) 16%, transparent), rgba(13,14,21,0.78) 62%); backdrop-filter: blur(8px); transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
+  .st-card:hover { transform: translateY(-6px); border-color: var(--st-accent); box-shadow: 0 10px 32px color-mix(in srgb, var(--st-accent) 40%, transparent); }
+  .st-card-poster { width: 104px; flex-shrink: 0; aspect-ratio: 2 / 3; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 6px 18px rgba(0,0,0,0.5); }
+  .st-card-poster img, .st-hero-poster img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .st-card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+  .st-card-title { font-size: 1.3rem; font-weight: 700; color: var(--white); line-height: 1.3; }
+  .st-card-tag { color: var(--dim); font-size: 0.88rem; line-height: 1.55; }
+  .st-card-go { margin-top: auto; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--st-accent); }
+  .st-badge { display: inline-block; font: 11px 'JetBrains Mono', monospace; letter-spacing: 1px; padding: 2px 10px; border-radius: 20px; border: 1px solid rgba(251,191,36,0.5); color: #fbbf24; background: rgba(251,191,36,0.1); }
+  .st-badge.done { border-color: rgba(46,204,113,0.5); color: #2ecc71; background: rgba(46,204,113,0.1); }
+  .st-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .st-chip { font: 11px 'JetBrains Mono', monospace; color: var(--dim); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 3px 10px; white-space: nowrap; }
+  .st-chip-rate { color: #fbbf24; border-color: rgba(251,191,36,0.4); }
+
+  .st-hero { position: relative; display: flex; gap: 32px; align-items: flex-end; padding: 8px 0 30px; margin-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .st-hero::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 120px; height: 2px; background: var(--st-accent); box-shadow: 0 0 12px var(--st-accent); }
+  .st-hero-poster { width: 180px; flex-shrink: 0; aspect-ratio: 2 / 3; border-radius: 12px; overflow: hidden; background: rgba(255,255,255,0.04); border: 1px solid color-mix(in srgb, var(--st-accent) 60%, transparent); box-shadow: 0 0 32px color-mix(in srgb, var(--st-accent) 45%, transparent); }
+  .st-hero-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+  .st-hero .eyebrow { display: flex; align-items: center; gap: 12px; }
+  .st-title { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.15; font-weight: 700; text-shadow: 0 0 30px color-mix(in srgb, var(--st-accent) 50%, transparent); }
+  .st-sub { color: var(--dim); font-size: 1.05rem; line-height: 1.6; max-width: 640px; }
+  .st-work-btn { align-self: flex-start; font: 12px 'JetBrains Mono', monospace; color: var(--st-accent); cursor: pointer; padding: 9px 18px; border-radius: 20px; background: color-mix(in srgb, var(--st-accent) 12%, transparent); border: 1px solid color-mix(in srgb, var(--st-accent) 50%, transparent); transition: all 0.25s; }
+  .st-work-btn:hover { background: var(--st-accent); color: #000; box-shadow: 0 0 16px var(--st-accent); }
+  .st-spoiler { font-size: 13px; color: #fbbf24; background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.3); border-radius: 10px; padding: 10px 16px; margin-bottom: 28px; }
+
+  .st-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 44px; align-items: start; }
+  .st-toc { position: sticky; top: 96px; font-size: 13px; }
+  .st-toc-title { font: 11px 'JetBrains Mono', monospace; letter-spacing: 3px; color: var(--cyan); margin-bottom: 12px; }
+  .st-toc-list { display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.12); }
+  .st-toc-link { display: flex; gap: 10px; margin-left: -1px; padding: 8px 12px; line-height: 1.4; color: var(--dim); border-left: 2px solid transparent; transition: all 0.2s; }
+  .st-toc-link em { font: normal 11px 'JetBrains Mono', monospace; color: var(--faint); padding-top: 2px; }
+  .st-toc-link:hover { color: var(--white); }
+  .st-toc-link.on { color: var(--white); border-left-color: var(--st-accent); background: linear-gradient(90deg, color-mix(in srgb, var(--st-accent) 15%, transparent), transparent); }
+  .st-toc-link.on em { color: var(--st-accent); }
+  .st-toc-empty { color: var(--faint); font-size: 12px; line-height: 1.6; padding-left: 12px; }
+
+  .st-body { counter-reset: ch; max-width: 760px; }
+  .st-h2 { counter-increment: ch; font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.3; margin: 56px 0 18px; padding-left: 16px; border-left: 3px solid var(--st-accent); scroll-margin-top: 96px; }
+  .st-h2::before { content: 'CH ' counter(ch, decimal-leading-zero); display: block; font: 11px 'JetBrains Mono', monospace; letter-spacing: 3px; color: var(--st-accent); margin-bottom: 6px; }
+  .st-body > .st-h2:first-child { margin-top: 0; }
+  .st-h3 { font-size: 1.2rem; margin: 32px 0 10px; color: var(--white); }
+  .st-p { color: rgba(255,255,255,0.78); font-size: 1.03rem; line-height: 2; margin-bottom: 18px; }
+  .st-quote { margin: 30px 0; padding: 20px 26px; border-left: 3px solid var(--st-accent); border-radius: 0 12px 12px 0; background: linear-gradient(90deg, color-mix(in srgb, var(--st-accent) 11%, transparent), transparent); }
+  .st-quote p { font-size: 1.2rem; line-height: 1.7; font-weight: 500; color: var(--white); }
+  .st-quote cite { display: block; margin-top: 10px; font: normal 12px 'JetBrains Mono', monospace; color: var(--st-accent); }
+  .st-callout { display: flex; gap: 14px; margin: 28px 0; padding: 18px 20px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); }
+  .st-callout-ico { font-size: 1.5rem; line-height: 1.2; }
+  .st-callout-title { font-weight: 700; color: var(--white); margin-bottom: 4px; }
+  .st-callout-text { color: rgba(255,255,255,0.72); line-height: 1.8; font-size: 0.97rem; }
+  .st-list { margin: 0 0 20px; padding-left: 1.4em; color: rgba(255,255,255,0.78); line-height: 1.95; }
+  .st-list li::marker { color: var(--st-accent); }
+  .st-tl { position: relative; margin: 28px 0; padding-left: 30px; }
+  .st-tl::before { content: ''; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: linear-gradient(180deg, var(--st-accent), transparent); }
+  .st-tl-item { position: relative; padding-bottom: 26px; }
+  .st-tl-item::before { content: ''; position: absolute; left: -30px; top: 5px; width: 16px; height: 16px; border-radius: 50%; background: #0d0e15; border: 3px solid var(--st-accent); box-shadow: 0 0 10px var(--st-accent); }
+  .st-tl-time { font: 12px 'JetBrains Mono', monospace; color: var(--st-accent); margin-bottom: 2px; }
+  .st-tl-title { font-weight: 700; font-size: 1.08rem; }
+  .st-tl-text { color: rgba(255,255,255,0.7); line-height: 1.8; margin-top: 4px; font-size: 0.97rem; }
+  .st-fig { margin: 30px 0; }
+  .st-fig img { display: block; width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
+  .st-fig figcaption { text-align: center; font: 12px 'JetBrains Mono', monospace; color: var(--faint); margin-top: 8px; }
+  .st-video-box { aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #000; }
+  .st-video-box iframe { width: 100%; height: 100%; border: 0; }
+  .st-hr { border: 0; height: 1px; margin: 44px 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); }
+  .st-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 64px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .st-pg { display: flex; flex-direction: column; gap: 4px; padding: 16px 20px; border-radius: 14px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); transition: all 0.25s; }
+  .st-pg:hover { border-color: var(--st-accent); transform: translateY(-3px); }
+  .st-pg span { font: 12px 'JetBrains Mono', monospace; color: var(--faint); }
+  .st-pg b { font-size: 1.05rem; color: var(--white); }
+  .st-pg.next { text-align: right; }
+  @media (max-width: 900px) {
+    .st-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .st-toc { position: static; }
+    .st-toc-list { flex-direction: row; gap: 8px; overflow-x: auto; border-left: 0; padding-bottom: 6px; }
+    .st-toc-link { margin: 0; padding: 7px 14px; white-space: nowrap; border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; }
+    .st-toc-link.on { border-color: var(--st-accent); }
+    .st-hero { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .st-hero-poster { width: 130px; }
+  }
+  @media (max-width: 720px) {
+    .st-grid { grid-template-columns: 1fr; }
+    .st-card-poster { width: 88px; }
+    .st-pager { grid-template-columns: 1fr; }
+    .st-pg.next { text-align: left; }
+    .st-p { font-size: 1rem; line-height: 1.95; }
+  }
 </style>
 </head>
 
@@ -958,12 +1054,15 @@
     <li><a href="javascript:void(0)" onclick="switchPage('phase6')">第六階段</a></li>
     <li><a href="javascript:void(0)" onclick="switchPage('phase7')">第七階段與未知</a></li>
     <li><a href="javascript:void(0)" onclick="switchPage('timeline')" style="color:var(--cyan); font-weight:600;">時間軸</a></li>
+    <li><a href="javascript:void(0)" onclick="switchPage('story')" style="color:#c4b5fd; font-weight:600;">📖 故事解說</a></li>
     <li><a href="javascript:void(0)" onclick="openSearch()" title="快捷鍵：/ 或 Ctrl+K">🔍 搜尋</a></li>
   </ul>
   <button class="menu-toggle" aria-label="打開選單" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
 </nav>
+
+<div class="st-progress"><i id="st-progress-bar"></i></div>
 
 <div class="mobile-menu">
   <a href="javascript:void(0)" onclick="switchPage('phase1')">第一階段</a>
@@ -974,6 +1073,7 @@
   <a href="javascript:void(0)" onclick="switchPage('phase6')">第六階段</a>
   <a href="javascript:void(0)" onclick="switchPage('phase7')">第七階段與未知</a>
   <a href="javascript:void(0)" onclick="switchPage('timeline')">時間軸</a>
+  <a href="javascript:void(0)" onclick="switchPage('story')">📖 故事解說</a>
   <a href="javascript:void(0)" onclick="openSearch()">🔍 全域搜尋</a>
 </div>
 
@@ -1320,6 +1420,7 @@ phase7 以後為變種人傳奇。</p>
 </footer>
 
 <script src="tooplate-2167-orbital-script.js?v=2"></script>
+<script src="stories.js?v=1"></script>
 
 <script>
   // 69 部作品完整資料庫
@@ -1800,17 +1901,21 @@ phase7 以後為變種人傳奇。</p>
       if (location.hash !== want) history.pushState(null, '', want || (location.pathname + location.search));
     }
     document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
+    document.body.classList.toggle('in-story', /^story-/.test(pageKey));
 
     if (pageKey === 'hero') {
       document.body.classList.remove('in-subpage');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       document.body.classList.add('in-subpage');
-      const targetPage = document.getElementById('page-' + pageKey);
+      const isStory = pageKey === 'story' || /^story-/.test(pageKey);
+      const targetPage = isStory ? ensureStoryPage(pageKey) : document.getElementById('page-' + pageKey);
       if (targetPage) {
         targetPage.classList.add('active');
         if (pageKey === 'timeline') {
           renderTimeline();
+        } else if (isStory) {
+          renderStoryPage(pageKey);
         } else {
           renderFilteredCards(pageKey);
         }
@@ -2054,9 +2159,106 @@ phase7 以後為變種人傳奇。</p>
     } else wrap.classList.add('in');
   }
 
+  // ===== 故事詳細解說（內容在 stories.js） =====
+  const STORIES = (typeof storyData !== 'undefined' && Array.isArray(storyData)) ? storyData : [];
+  const storyKey = x => 'story-' + x.slug;
+  const storyWork = x => findItemById(x.workId);
+  const stBadge = x => x.status === 'done' ? '<span class="st-badge done">已完成</span>' : '<span class="st-badge">撰寫中</span>';
+  function stMeta(x) {
+    const w = storyWork(x); if (!w) return '';
+    const it = w.item, ico = it.type.includes('電影') ? '🎬' : '📺';
+    const rate = typeof it.rating === 'number' ? `<span class="st-chip st-chip-rate">★ ${it.rating.toFixed(1)}</span>` : '';
+    return `<span class="st-chip">📅 ${it.date}</span><span class="st-chip">${ico} ${it.episodes ? it.type + '（' + it.episodes + '）' : it.type}</span>${rate}`;
+  }
+  function ensureStoryPage(key) {
+    let el = document.getElementById('page-' + key);
+    if (!el) { el = document.createElement('main'); el.className = 'page-view'; el.id = 'page-' + key; document.querySelector('.footer').before(el); }
+    return el;
+  }
+  function renderStoryPage(key) { if (key === 'story') renderStoryHub(); else renderStoryArticle(key); }
+
+  function renderStoryHub() {
+    const el = ensureStoryPage('story');
+    const cards = STORIES.map(x => {
+      const w = storyWork(x), img = w ? w.item.image : '';
+      return `<a class="st-card" href="javascript:void(0)" onclick="switchPage('${storyKey(x)}')" style="--st-accent:${x.accent || '#06b6d4'}">
+        <div class="st-card-poster">${img ? `<img src="${img}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}</div>
+        <div class="st-card-body">
+          <div>${stBadge(x)}</div>
+          <div class="st-card-title">${x.title}</div>
+          <div class="st-card-tag">${x.tagline || ''}</div>
+          <div class="st-chips">${stMeta(x)}</div>
+          <div class="st-card-go">閱讀解說 ➔</div>
+        </div></a>`;
+    }).join('');
+    el.innerHTML = `<button class="back-btn" onclick="switchPage('hero')">← 返回 3D 旋轉首頁</button>
+      <div class="section-head"><div class="eyebrow">// STORY BREAKDOWN</div><h2>故事詳細解說 📖</h2></div>
+      <p class="st-intro">點選下方作品，進入各自獨立的解說頁。內容含劇透，建議看完作品再來閱讀。</p>
+      <div class="st-grid">${cards || '<div class="st-empty">還沒有任何解說。</div>'}</div>`;
+  }
+
+  function renderStoryBlocks(sections) {
+    const toc = []; let html = '';
+    (sections || []).forEach((b, i) => {
+      switch (b.type) {
+        case 'h2': toc.push({ id: 'st-h-' + i, text: b.text }); html += `<h2 class="st-h2" id="st-h-${i}">${b.text}</h2>`; break;
+        case 'h3': html += `<h3 class="st-h3">${b.text}</h3>`; break;
+        case 'p': html += `<p class="st-p">${b.text}</p>`; break;
+        case 'quote': html += `<blockquote class="st-quote"><p>${b.text}</p>${b.by ? `<cite>— ${b.by}</cite>` : ''}</blockquote>`; break;
+        case 'callout': html += `<div class="st-callout"><div class="st-callout-ico">${b.icon || '💡'}</div><div>${b.title ? `<div class="st-callout-title">${b.title}</div>` : ''}<div class="st-callout-text">${b.text || ''}</div></div></div>`; break;
+        case 'list': { const tag = b.ordered ? 'ol' : 'ul'; html += `<${tag} class="st-list">${(b.items || []).map(t => `<li>${t}</li>`).join('')}</${tag}>`; break; }
+        case 'timeline': html += `<div class="st-tl">${(b.items || []).map(t => `<div class="st-tl-item"><div class="st-tl-time">${t.time || ''}</div><div class="st-tl-title">${t.title || ''}</div>${t.text ? `<div class="st-tl-text">${t.text}</div>` : ''}</div>`).join('')}</div>`; break;
+        case 'image': html += `<figure class="st-fig"><img src="${b.src}" alt="" loading="lazy">${b.caption ? `<figcaption>${b.caption}</figcaption>` : ''}</figure>`; break;
+        case 'video': html += `<figure class="st-fig"><div class="st-video-box"><iframe src="https://www.youtube.com/embed/${b.code}" allow="encrypted-media; fullscreen" allowfullscreen loading="lazy"></iframe></div>${b.caption ? `<figcaption>${b.caption}</figcaption>` : ''}</figure>`; break;
+        case 'divider': html += '<hr class="st-hr">'; break;
+      }
+    });
+    return { html, toc };
+  }
+
+  function renderStoryArticle(key) {
+    const idx = STORIES.findIndex(x => storyKey(x) === key), el = ensureStoryPage(key);
+    if (idx < 0) { el.innerHTML = `<button class="back-btn" onclick="switchPage('story')">← 返回故事解說</button><div class="st-empty">找不到這一篇解說。</div>`; return; }
+    const x = STORIES[idx], w = storyWork(x), it = w && w.item, accent = x.accent || '#06b6d4', body = renderStoryBlocks(x.sections);
+    el.style.setProperty('--st-accent', accent);
+    document.getElementById('st-progress-bar').style.setProperty('--st-accent', accent);
+    const tocHtml = body.toc.map((t, i) => `<a href="javascript:void(0)" class="st-toc-link" data-id="${t.id}" onclick="stGo('${t.id}')"><em>${String(i + 1).padStart(2, '0')}</em>${t.text}</a>`).join('');
+    const pager = (p, dir) => p ? `<a class="st-pg ${dir}" href="javascript:void(0)" onclick="switchPage('${storyKey(p)}')"><span>${dir === 'prev' ? '← 上一篇' : '下一篇 →'}</span><b>${p.title}</b></a>` : '<span></span>';
+    el.innerHTML = `<button class="back-btn" onclick="switchPage('story')">← 返回故事解說</button>
+      <header class="st-hero">
+        <div class="st-hero-poster">${it && it.image ? `<img src="${it.image}" alt="" onerror="this.style.display='none'">` : ''}</div>
+        <div class="st-hero-info">
+          <div class="eyebrow">// STORY BREAKDOWN ${stBadge(x)}</div>
+          <h1 class="st-title">${x.title}</h1>
+          <p class="st-sub">${x.tagline || ''}</p>
+          <div class="st-chips">${stMeta(x)}</div>
+          ${w ? `<button class="st-work-btn" onclick="openModal('${w.groupKey}', ${it.id})">🎞 查看作品資料與我的影評</button>` : ''}
+        </div>
+      </header>
+      <div class="st-spoiler">⚠️ 本篇內容含大量劇透，建議看完作品再閱讀。</div>
+      <div class="st-layout">
+        <aside class="st-toc"><div class="st-toc-title">目錄</div><div class="st-toc-list">${tocHtml || '<span class="st-toc-empty">加入 h2 章節標題後，目錄會自動出現</span>'}</div></aside>
+        <article class="st-body">${body.html || '<div class="st-empty">這一篇的解說還在撰寫中。</div>'}</article>
+      </div>
+      <nav class="st-pager">${pager(STORIES[idx - 1], 'prev')}${pager(STORIES[idx + 1], 'next')}</nav>`;
+    stSpy();
+  }
+  function stGo(id) { const h = document.getElementById(id); if (h) h.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  function stSpy() {
+    if (!document.body.classList.contains('in-story')) return;
+    const page = document.querySelector('.page-view.active'), bar = document.getElementById('st-progress-bar'), art = page && page.querySelector('.st-body');
+    if (!art || !bar) return;
+    const r = art.getBoundingClientRect();
+    bar.style.width = Math.max(0, Math.min(1, -r.top / Math.max(1, r.height - innerHeight * 0.6))) * 100 + '%';
+    let cur = null;
+    page.querySelectorAll('.st-h2').forEach(h => { if (h.getBoundingClientRect().top < 150) cur = h.id; });
+    page.querySelectorAll('.st-toc-link').forEach(a => a.classList.toggle('on', a.dataset.id === cur));
+  }
+  window.addEventListener('scroll', stSpy, { passive: true });
+
   function pageFromHash() {
     const k = location.hash.slice(1);
-    return (k === 'timeline' || /^phase[1-7]$/.test(k)) ? k : 'hero';
+    return (k === 'timeline' || k === 'story' || /^phase[1-7]$/.test(k) || STORIES.some(x => storyKey(x) === k)) ? k : 'hero';
   }
   window.addEventListener('popstate', () => {
     closeModal(); closeCharModal(); closeTrailer();
