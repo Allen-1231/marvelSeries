@@ -981,6 +981,29 @@
   .st-toc-link:hover { color: var(--white); }
   .st-toc-link.on { color: var(--white); border-left-color: var(--st-accent); background: linear-gradient(90deg, color-mix(in srgb, var(--st-accent) 15%, transparent), transparent); }
   .st-toc-link.on em { color: var(--st-accent); }
+  /* ---- 彩蛋條列版型（layout: 'eggs'） ---- */
+  .st-eggbar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; margin: 0 0 26px; padding: 14px 18px; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; background: rgba(255,255,255,0.03); }
+  .st-eggbar-count { font: 13px 'JetBrains Mono', monospace; color: var(--dim); }
+  .st-eggbar-count b { color: var(--st-accent); font-size: 1.3rem; margin: 0 2px; }
+  .st-eggbar-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .st-eggbar-tags button { font: inherit; font-size: 13px; color: var(--dim); background: transparent; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 5px 13px; cursor: pointer; transition: all 0.2s; }
+  .st-eggbar-tags button i { font: normal 11px 'JetBrains Mono', monospace; opacity: 0.6; margin-left: 3px; }
+  .st-eggbar-tags button:hover { color: var(--white); border-color: var(--st-accent); }
+  .st-eggbar-tags button.on { color: var(--white); border-color: var(--st-accent); background: color-mix(in srgb, var(--st-accent) 22%, transparent); }
+  .st-layout.st-eggs { grid-template-columns: minmax(0, 1fr); }
+  .st-eggs .st-body { counter-reset: egg; }
+  .st-egg { counter-increment: egg; display: flex; gap: 20px; padding: 22px 24px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.1); border-left: 3px solid var(--st-accent); border-radius: 14px; background: linear-gradient(90deg, color-mix(in srgb, var(--st-accent) 8%, transparent), rgba(255,255,255,0.02) 40%); transition: transform 0.2s, border-color 0.2s; }
+  .st-egg:hover { transform: translateX(3px); border-color: var(--st-accent); }
+  .st-egg-no::before { content: counter(egg, decimal-leading-zero); font: 700 1.6rem 'JetBrains Mono', monospace; color: var(--st-accent); opacity: 0.85; line-height: 1.2; }
+  .st-egg-main { flex: 1; min-width: 0; }
+  .st-egg-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+  .st-egg-title { font-size: 1.18rem; line-height: 1.4; margin: 0; }
+  .st-egg-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .st-egg-tags span { font-size: 12px; padding: 2px 10px; border-radius: 20px; color: var(--st-accent); border: 1px solid color-mix(in srgb, var(--st-accent) 50%, transparent); }
+  .st-egg-ref { margin-top: 8px; font-size: 13px; color: var(--faint); }
+  .st-egg-text { margin-top: 10px; color: rgba(255,255,255,0.78); line-height: 1.9; font-size: 0.98rem; }
+  .st-egg-fig { margin: 16px 0 0; }
+  @media (max-width: 720px) { .st-egg { flex-direction: column; gap: 6px; padding: 18px; } }
   .st-toc-empty { color: var(--faint); font-size: 12px; line-height: 1.6; padding-left: 12px; }
 
   .st-body { counter-reset: ch; max-width: 760px; }
@@ -2198,9 +2221,19 @@ phase7 以後為變種人傳奇。</p>
   }
 
   function renderStoryBlocks(sections) {
-    const toc = []; let html = '';
+    const toc = [], tags = {}; let html = '', eggs = 0;
     (sections || []).forEach((b, i) => {
       switch (b.type) {
+        case 'egg': {
+          eggs++;
+          const tg = (b.tags || (b.tag ? [b.tag] : [])); tg.forEach(t => tags[t] = (tags[t] || 0) + 1);
+          html += `<section class="st-egg" data-tags="${tg.join('|')}"><div class="st-egg-no"></div><div class="st-egg-main">
+            <div class="st-egg-head"><h3 class="st-egg-title">${b.title || ''}</h3>${tg.length ? `<div class="st-egg-tags">${tg.map(t => `<span>${t}</span>`).join('')}</div>` : ''}</div>
+            ${b.ref ? `<div class="st-egg-ref">📍 ${b.ref}</div>` : ''}
+            ${b.text ? `<div class="st-egg-text">${b.text}</div>` : ''}
+            ${b.image ? `<figure class="st-fig st-egg-fig"><img src="${b.image}" alt="" loading="lazy">${b.caption ? `<figcaption>${b.caption}</figcaption>` : ''}</figure>` : ''}
+          </div></section>`; break;
+        }
         case 'h2': toc.push({ id: 'st-h-' + i, text: b.text }); html += `<h2 class="st-h2" id="st-h-${i}">${b.text}</h2>`; break;
         case 'h3': html += `<h3 class="st-h3">${b.text}</h3>`; break;
         case 'p': html += `<p class="st-p">${b.text}</p>`; break;
@@ -2213,7 +2246,7 @@ phase7 以後為變種人傳奇。</p>
         case 'divider': html += '<hr class="st-hr">'; break;
       }
     });
-    return { html, toc };
+    return { html, toc, eggs, tags };
   }
 
   function renderStoryArticle(key) {
@@ -2222,6 +2255,8 @@ phase7 以後為變種人傳奇。</p>
     const x = STORIES[idx], w = storyWork(x), it = w && w.item, accent = x.accent || '#06b6d4', body = renderStoryBlocks(x.sections);
     el.style.setProperty('--st-accent', accent);
     document.getElementById('st-progress-bar').style.setProperty('--st-accent', accent);
+    const eggMode = x.layout === 'eggs';
+    const filterHtml = eggMode ? `<div class="st-eggbar"><div class="st-eggbar-count">共 <b id="st-egg-n">${body.eggs}</b> 個彩蛋</div>${Object.keys(body.tags).length ? `<div class="st-eggbar-tags"><button class="on" onclick="stFilter(this,'')">全部</button>${Object.keys(body.tags).map(t => `<button onclick="stFilter(this,'${t.replace(/'/g, "\\'")}')">${t} <i>${body.tags[t]}</i></button>`).join('')}</div>` : ''}</div>` : '';
     const tocHtml = body.toc.map((t, i) => `<a href="javascript:void(0)" class="st-toc-link" data-id="${t.id}" onclick="stGo('${t.id}')"><em>${String(i + 1).padStart(2, '0')}</em>${t.text}</a>`).join('');
     const pager = (p, dir) => p ? `<a class="st-pg ${dir}" href="javascript:void(0)" onclick="switchPage('${storyKey(p)}')"><span>${dir === 'prev' ? '← 上一篇' : '下一篇 →'}</span><b>${p.title}</b></a>` : '<span></span>';
     el.innerHTML = `<button class="back-btn" onclick="switchPage('story')">← 返回故事解說</button>
@@ -2236,12 +2271,19 @@ phase7 以後為變種人傳奇。</p>
         </div>
       </header>
       <div class="st-spoiler">⚠️ 本篇內容含大量劇透，建議看完作品再閱讀。</div>
-      <div class="st-layout">
-        <aside class="st-toc"><div class="st-toc-title">目錄</div><div class="st-toc-list">${tocHtml || '<span class="st-toc-empty">加入 h2 章節標題後，目錄會自動出現</span>'}</div></aside>
+      ${filterHtml}
+      <div class="st-layout${eggMode ? ' st-eggs' : ''}">
+        ${eggMode ? '' : `<aside class="st-toc"><div class="st-toc-title">目錄</div><div class="st-toc-list">${tocHtml || '<span class="st-toc-empty">加入 h2 章節標題後，目錄會自動出現</span>'}</div></aside>`}
         <article class="st-body">${body.html || '<div class="st-empty">這一篇的解說還在撰寫中。</div>'}</article>
       </div>
       <nav class="st-pager">${pager(STORIES[idx - 1], 'prev')}${pager(STORIES[idx + 1], 'next')}</nav>`;
     stSpy();
+  }
+  function stFilter(btn, tag) {
+    const page = btn.closest('.page-view'); let n = 0;
+    page.querySelectorAll('.st-eggbar-tags button').forEach(b => b.classList.toggle('on', b === btn));
+    page.querySelectorAll('.st-egg').forEach(e => { const ok = !tag || e.dataset.tags.split('|').includes(tag); e.style.display = ok ? '' : 'none'; if (ok) n++; });
+    const c = page.querySelector('#st-egg-n'); if (c) c.textContent = n;
   }
   function stGo(id) { const h = document.getElementById(id); if (h) h.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   function stSpy() {
