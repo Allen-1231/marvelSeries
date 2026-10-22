@@ -994,6 +994,8 @@
   .st-egg-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
   .st-egg-title { font-size: 1.18rem; line-height: 1.4; margin: 0; }
   .st-egg-text { margin-top: 10px; color: rgba(255,255,255,0.78); line-height: 1.9; font-size: 0.98rem; }
+  .st-egg-link { display: inline-block; margin-top: 12px; padding: 6px 16px; font-size: 13px; color: var(--st-accent); border: 1px solid color-mix(in srgb, var(--st-accent) 55%, transparent); border-radius: 20px; transition: all 0.2s; }
+  .st-egg-link:hover { background: color-mix(in srgb, var(--st-accent) 20%, transparent); color: var(--white); }
   .st-egg-fig { margin: 16px 0 0; }
   @media (max-width: 720px) { .st-egg { flex-direction: column; gap: 6px; padding: 18px; } }
   .st-toc-empty { color: var(--faint); font-size: 12px; line-height: 1.6; padding-left: 12px; }
@@ -2221,6 +2223,7 @@ phase7 以後為變種人傳奇。</p>
           html += `<section class="st-egg"><div class="st-egg-no"></div><div class="st-egg-main">
             <div class="st-egg-head"><h3 class="st-egg-title">${b.title || ''}</h3></div>
             ${b.text ? `<div class="st-egg-text">${b.text}</div>` : ''}
+            ${b.link ? `<a class="st-egg-link" href="${b.link}" target="_blank" rel="noopener">▶ Video</a>` : ''}
             ${b.image ? `<figure class="st-fig st-egg-fig"><img src="${b.image}" alt="" loading="lazy">${b.caption ? `<figcaption>${b.caption}</figcaption>` : ''}</figure>` : ''}
           </div></section>`; break;
         }
