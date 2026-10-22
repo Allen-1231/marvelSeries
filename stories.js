@@ -13,7 +13,7 @@
      tagline  一句話簡介（顯示在卡片和標題下方）
      accent   這一篇的主題色（卡片光暈、標題線、目錄高亮都用它）
      layout   （可省略）'eggs' = 彩蛋條列版型：沒有章節與目錄，
-              改成一個個編號卡片，上方有「依標籤篩選」按鈕
+              改成一個個編號卡片
      status   'draft' = 撰寫中（會顯示「撰寫中」標籤）
               'done'  = 已完成
      sections 文章內容，是一個陣列，每個 { } 是一個區塊，由上到下排列
@@ -35,9 +35,8 @@
      { type: 'video', code: 'YouTube影片代碼', caption: '說明（可省略）' }
      { type: 'divider' }
          一條分隔線
-     { type: 'egg', title: '彩蛋名稱', tags: ['漫畫','演員'], ref: '出處／出現時間', text: '說明', image: 'images/stories/xxx.jpg', caption: '圖說' }
-         彩蛋卡片（搭配 layout: 'eggs'）。編號自動產生，tags 會自動變成上方的篩選按鈕；
-         tags、ref、text、image、caption 都可以省略
+     { type: 'egg', title: '彩蛋名稱', text: '說明', image: 'images/stories/xxx.jpg', caption: '圖說' }
+         彩蛋卡片（搭配 layout: 'eggs'）。編號自動產生；text、image、caption 都可以省略
 
    【小提醒】
      · 每個 { } 後面要有逗號，最後一個可有可無。
@@ -72,22 +71,13 @@ const DEMO_SECTIONS = [
 ];
 
 const EGG_SECTIONS = [
-  { type: 'egg', title: '（彩蛋名稱一）', tags: ['（標籤A）', '（標籤B）'], ref: '（出處或出現時間，例如：片頭、1:12:30）', text: '（說明這個彩蛋是什麼、對應哪部作品或漫畫。）' },
-  { type: 'egg', title: '（彩蛋名稱二）', tags: ['（標籤A）'], ref: '（出處或出現時間）', text: '（說明。）' },
-  { type: 'egg', title: '（彩蛋名稱三，附圖範例）', tags: ['（標籤B）'], text: '（有截圖的話，加上 image 和 caption 欄位即可。）' }
+  { type: 'egg', title: 'Bye Bye Bye', text: '開場片段，背景音樂為超級男孩的 Bye Bye Bye，伴隨著死侍殺人的畫面，與跳舞致敬。', link: 'https://youtu.be/Eo-KmOd3i7s?si=aE4eWs-gk8QIW3gr' },
+  { type: 'egg', title: '多一根骨頭', text: '死侍說人類有 206 根骨頭，但他在看 【花邊教主】時會有 207 根，這是因為死侍演員萊恩雷諾斯的老婆 Blake Lively 正是【花邊教主】的女主角之一。' },
+  { type: 'egg', title: '面試復仇者聯盟', text: '死侍穿越到 MCU 主宇宙 (地球 616) 想要加入復仇者聯盟，時間點為 2018 年 3 月 14，著名的復仇者聯盟 3 的薩諾斯事件正是在 2018 年 5 月，可以得知該時間點尚未發生彈指事件。' },
+  { type: 'egg', title: '', text: '' }
 ];
 
 const storyData = [
-  {
-    slug: 'deadpool-wolverine',
-    workId: 42,
-    title: '死侍與金鋼狼',
-    tagline: '（一句話簡介：這部片的故事在講什麼？）',
-    accent: '#e62429',
-    layout: 'eggs',
-    status: 'draft',
-    sections: EGG_SECTIONS
-  },
   {
     slug: 'loki-s1',
     workId: 33,
@@ -105,5 +95,15 @@ const storyData = [
     accent: '#2ecc71',
     status: 'draft',
     sections: DEMO_SECTIONS
+  },
+  {
+    slug: 'deadpool-wolverine',
+    workId: 42,
+    title: '死侍與金鋼狼',
+    tagline: '（一句話簡介：這部片的故事在講什麼？）',
+    accent: '#e62429',
+    layout: 'eggs',
+    status: 'draft',
+    sections: EGG_SECTIONS
   }
 ];
