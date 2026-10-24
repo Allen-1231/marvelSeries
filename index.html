@@ -1020,6 +1020,12 @@
   .st-tl-item { position: relative; padding-bottom: 26px; }
   .st-tl-item::before { content: ''; position: absolute; left: -30px; top: 5px; width: 16px; height: 16px; border-radius: 50%; background: #0d0e15; border: 3px solid var(--st-accent); box-shadow: 0 0 10px var(--st-accent); }
   .st-tl-time { font: 12px 'JetBrains Mono', monospace; color: var(--st-accent); margin-bottom: 2px; }
+  .st-tl-tag { display: inline-block; margin-left: 10px; padding: 1px 10px; font: 12px 'Noto Sans TC', sans-serif; color: var(--tg, var(--st-accent)); border: 1px solid color-mix(in srgb, var(--tg, var(--st-accent)) 55%, transparent); border-radius: 20px; }
+  .st-terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 24px 0; }
+  .st-term { padding: 16px 18px; border: 1px solid rgba(255,255,255,0.1); border-top: 2px solid var(--st-accent); border-radius: 12px; background: rgba(255,255,255,0.03); }
+  .st-term-name { font-weight: 700; font-size: 1.05rem; }
+  .st-term-name em { display: block; margin-top: 2px; font: normal 11px 'JetBrains Mono', monospace; letter-spacing: 1px; color: var(--st-accent); }
+  .st-term-text { margin-top: 8px; color: rgba(255,255,255,0.72); line-height: 1.8; font-size: 0.95rem; }
   .st-tl-title { font-weight: 700; font-size: 1.08rem; }
   .st-tl-text { color: rgba(255,255,255,0.7); line-height: 1.8; margin-top: 4px; font-size: 0.97rem; }
   .st-fig { margin: 30px 0; }
@@ -2233,7 +2239,8 @@ phase7 以後為變種人傳奇。</p>
         case 'quote': html += `<blockquote class="st-quote"><p>${b.text}</p>${b.by ? `<cite>— ${b.by}</cite>` : ''}</blockquote>`; break;
         case 'callout': html += `<div class="st-callout"><div class="st-callout-ico">${b.icon || '💡'}</div><div>${b.title ? `<div class="st-callout-title">${b.title}</div>` : ''}<div class="st-callout-text">${b.text || ''}</div></div></div>`; break;
         case 'list': { const tag = b.ordered ? 'ol' : 'ul'; html += `<${tag} class="st-list">${(b.items || []).map(t => `<li>${t}</li>`).join('')}</${tag}>`; break; }
-        case 'timeline': html += `<div class="st-tl">${(b.items || []).map(t => `<div class="st-tl-item"><div class="st-tl-time">${t.time || ''}</div><div class="st-tl-title">${t.title || ''}</div>${t.text ? `<div class="st-tl-text">${t.text}</div>` : ''}</div>`).join('')}</div>`; break;
+        case 'terms': html += `<div class="st-terms">${(b.items || []).map(t => `<div class="st-term"><div class="st-term-name">${t.title || ''}${t.en ? `<em>${t.en}</em>` : ''}</div><div class="st-term-text">${t.text || ''}</div></div>`).join('')}</div>`; break;
+        case 'timeline': html += `<div class="st-tl">${(b.items || []).map(t => `<div class="st-tl-item"><div class="st-tl-time">${t.time || ''}${t.tag ? `<span class="st-tl-tag"${t.color ? ` style="--tg:${t.color}"` : ''}>${t.tag}</span>` : ''}</div><div class="st-tl-title">${t.title || ''}</div>${t.text ? `<div class="st-tl-text">${t.text}</div>` : ''}</div>`).join('')}</div>`; break;
         case 'image': html += `<figure class="st-fig"><img src="${b.src}" alt="" loading="lazy">${b.caption ? `<figcaption>${b.caption}</figcaption>` : ''}</figure>`; break;
         case 'video': html += `<figure class="st-fig"><div class="st-video-box"><iframe src="https://www.youtube.com/embed/${b.code}" allow="encrypted-media; fullscreen" allowfullscreen loading="lazy"></iframe></div>${b.caption ? `<figcaption>${b.caption}</figcaption>` : ''}</figure>`; break;
         case 'divider': html += '<hr class="st-hr">'; break;
