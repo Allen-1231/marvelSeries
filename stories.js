@@ -35,6 +35,10 @@
      { type: 'video', code: 'YouTube影片代碼', caption: '說明（可省略）' }
      { type: 'divider' }
          一條分隔線
+     { type: 'terms', items: [ { title: '名詞', en: 'English Name', text: '說明' } ] }
+         名詞／設定卡片，自動排成多欄，適合解釋背景設定（en 可省略）
+     timeline 的每個事件還可以加 tag（小標籤，例如 '神聖時間線'）和 color（標籤顏色，例如 '#ef4444'），
+         用來區分「主時間線」與「分支」
      { type: 'egg', title: '彩蛋名稱', text: '說明', image: 'images/stories/xxx.jpg', caption: '圖說' }
          彩蛋卡片（搭配 layout: 'eggs'）。編號自動產生；text、image、caption 都可以省略
 
@@ -77,6 +81,33 @@ const EGG_SECTIONS = [
   { type: 'egg', title: '', text: '' }
 ];
 
+/* 洛基專用範本：先講背景設定，再整理時間線，最後寫自己的看法 */
+const LOKI_SECTIONS = [
+  { type: 'h2', text: '背景設定' },
+  { type: 'p', text: '（先用一兩段話說明：看這一季之前需要先知道什麼？）' },
+  {
+    type: 'terms',
+    items: [
+      { title: '（名詞一）', en: 'English Name', text: '（用一兩句話解釋這個設定。）' },
+      { title: '（名詞二）', en: 'English Name', text: '（說明。）' },
+      { title: '（名詞三）', en: 'English Name', text: '（說明。）' },
+      { title: '（名詞四）', en: 'English Name', text: '（說明。）' }
+    ]
+  },
+  { type: 'h2', text: '時間線整理' },
+  { type: 'p', text: '（說明這條時間線怎麼讀：標籤顏色代表什麼？）' },
+  {
+    type: 'timeline',
+    items: [
+      { time: '（時間點或集數）', tag: '（標籤A）', color: '#f0b43c', title: '（事件一）', text: '（事件說明。）' },
+      { time: '（時間點或集數）', tag: '（標籤B）', color: '#ef4444', title: '（事件二）', text: '（事件說明。）' },
+      { time: '（時間點或集數）', tag: '（標籤A）', color: '#f0b43c', title: '（事件三）', text: '（事件說明。）' }
+    ]
+  },
+  { type: 'divider' },
+  { type: 'callout', icon: '✍️', title: '我的看法', text: '（寫下你自己對這一季的想法與評價。）' }
+];
+
 const storyData = [
   {
     slug: 'loki-s1',
@@ -85,7 +116,7 @@ const storyData = [
     tagline: '（一句話簡介：這一季的故事在講什麼？）',
     accent: '#f0b43c',
     status: 'draft',
-    sections: DEMO_SECTIONS
+    sections: LOKI_SECTIONS
   },
   {
     slug: 'loki-s2',
@@ -94,7 +125,7 @@ const storyData = [
     tagline: '（一句話簡介：這一季的故事在講什麼？）',
     accent: '#2ecc71',
     status: 'draft',
-    sections: DEMO_SECTIONS
+    sections: LOKI_SECTIONS
   },
   {
     slug: 'deadpool-wolverine',
